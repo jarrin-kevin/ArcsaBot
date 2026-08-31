@@ -1,0 +1,3 @@
+# Self-hosted Tesseract OCR instead of a hosted OCR vendor
+
+Scanned ARCSA PDFs need OCR before they can be chunked. We deliberately did not pick a hosted OCR API (e.g. Google Document AI) despite the rest of the stack already being Google (Gemini LLM/embeddings, Vertex AI Vector Search, Firebase) — the user wants OCR specifically kept vendor-independent, since a misread article number changes legal meaning and we don't want that step tied to one provider's pricing/availability. Using Tesseract via Python (pytesseract) as the default; escalate to PaddleOCR/docTR only if Tesseract's accuracy proves insufficient on real scans.

@@ -1,0 +1,2832 @@
+[
+  {
+    "id": "",
+    "title": "",
+    "source_url": "http://www.controlsanitario.gob.ec/requisitos-autorizacion-para-importacion-de-alimentos-sin-valor-comercial-con-fines-de-estudio-de-mercado-investigacion-desarrollo-pruebas-de-laboratorio-y-ensayos/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Alimentos procesados"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "http://www.controlsanitario.gob.ec/certificados-de-libre-venta-clv/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Dispositivos médicos, productos dentales y reactivos bioquímicos de diagnóstico"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "http://www.controlsanitario.gob.ec/certificado-sanitario-de-donacion/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Dispositivos médicos, productos dentales y reactivos bioquímicos de diagnóstico"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "http://www.controlsanitario.gob.ec/inscripcion-de-registro-sanitario-de-alimentos-procesados-fabricacion-nacional/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Medicamentos biológicos"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "http://www.controlsanitario.gob.ec/notificacion-de-publicidad-y-promocion-de-productos-sujetos-a-control-sanitario/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Medicamentos homeopáticos"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "arcsa-d3e4e331",
+    "title": "Arcsa",
+    "source_url": "http://aplicacionesmedicamentoscontrolados.controlsanitario.gob.ec/forms/frmservlet?config=sisalem",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "PARA INGRESAR AL SISALEM PULSE AQUÍ"
+    ],
+    "capture_status": "empty_content",
+    "exclusion_reason": "capture_status:empty_content"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "http://www.controlsanitario.gob.ec/solicitud-autorizacion-importacion-de-muestras-sin-valor-comercial-con-fines-de-desarrollo-e-investigacion-pruebas-de-laboratorio-y-ensayos/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Productos higiénicos de uso doméstico y absorbentes de higiene personal"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://www.controlsanitario.gob.ec/certificados-y-capacitaciones-arcsa/816%209698 2515",
+    "section_path": [
+      "Servicios",
+      "Establecimientos",
+      "FECHA"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "rendicion-de-cuentas-arcsa-2025-924e4226",
+    "title": "RENDICIÓN DE CUENTAS ARCSA 2025",
+    "source_url": "https://www.controlsanitario.gob.ec/rendicion-de-cuentas-arcsa-2025/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "rendicion-de-cuentas-arcsa-2024-fc6a9d96",
+    "title": "RENDICIÓN DE CUENTAS ARCSA 2024",
+    "source_url": "https://www.controlsanitario.gob.ec/rendicion-de-cuentas-arcsa-2024/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-2023-388f6fd2",
+    "title": "Proceso de Rendición de Cuentas 2023",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-2023/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-2022-52b4159f",
+    "title": "Proceso de Rendición de Cuentas 2022",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-2022/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-2021-0f557a3f",
+    "title": "Proceso de Rendición de Cuentas 2021",
+    "source_url": "https://www.controlsanitario.gob.ec/rendicion-de-cuentas-2021/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-2020-f8bc6aa3",
+    "title": "Proceso de Rendición de Cuentas 2020",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-2020/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-d191eefe",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-9c8480ca",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-1e140d95",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2017 / Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/24573-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-f9ec0d2c",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "rendicion-de-cuentas-2015-a3dba9ca",
+    "title": "Rendición de Cuentas 2015",
+    "source_url": "https://www.controlsanitario.gob.ec/rendicion-de-cuentas-2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "rendicion-de-cuentas-2014-4668a8dd",
+    "title": "Rendición de Cuentas 2014",
+    "source_url": "https://www.controlsanitario.gob.ec/rendicion-de-cuentas2014/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://www.controlsanitario.gob.ec/tasas-de-servicios/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Alimentos procesados",
+      "Inscripción de Alimentos Procesados por Línea Certificada en Buenas Prácticas de Manufactura-BPM"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "http://archie.controlsanitario.gob.ec/#/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "PARA INGRESAR AL SISALEM PULSE AQUÍ",
+      "RENOVACIÓN DE CALIFICACIÓN PARA EL MANEJO DE MEDICAMENTOS QUE CONTENGAN SUSTANCIAS CATALOGADAS SUJETAS A FISCALIZACIÓN"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "http://www.controlsanitario.gob.ec/normativa-vigente/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "PARA INGRESAR AL SISALEM PULSE AQUÍ",
+      "AUTORIZACIÓN PARA LA INCLUSIÓN O MODIFICACIÓN DE LA ACTIVIDAD PARA EL MANEJO DE MEDICAMENTOS QUE CONTENGAN SUSTANCIAS CATALOGADAS SUJETAS A FISCALIZACIÓN"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/pTBwchU682SZgVU/download?path=%2F&files=Calificate%20con%20Arcsa_paso%20a%20paso.pdf",
+    "section_path": [
+      "Servicios",
+      "Establecimientos",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://www.controlsanitario.gob.ec/www.controlsanitario.gob.ec",
+    "section_path": [
+      "Servicios",
+      "Establecimientos",
+      "FECHA",
+      "Agencia Nacional de Regulación, Control  y Vigilancia Sanitaria – Regulación de medicamentos, alimentos procesados, cosméticos y vigilancia sanitaria en establecimientos sujetos a control."
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "dr-fray-martinez-reyes-d494b18b",
+    "title": "Dr. Fray Martínez Reyes",
+    "source_url": "https://www.controlsanitario.gob.ec/dr-fray-martinez-reyes/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "Expertos Externos",
+      "COMITÉ DE EXPERTOS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "personnel_directory_bio"
+  },
+  {
+    "id": "dra-ruth-jimbo-sotomayor-46684d85",
+    "title": "Dra. Ruth Jimbo Sotomayor",
+    "source_url": "https://www.controlsanitario.gob.ec/dra-ruth-jimbo-sotomayor/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "Expertos Externos",
+      "COMITÉ DE EXPERTOS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "personnel_directory_bio"
+  },
+  {
+    "id": "dr-hugo-solis-garcia-f88ecab4",
+    "title": "Dr. Hugo Solís García",
+    "source_url": "https://www.controlsanitario.gob.ec/dr-hugo-solis-garcia/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "Expertos Externos",
+      "COMITÉ DE EXPERTOS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "personnel_directory_bio"
+  },
+  {
+    "id": "dra-sonia-zapata-mena-d98ae905",
+    "title": "Dra. Sonia Zapata Mena",
+    "source_url": "https://www.controlsanitario.gob.ec/dra-sonia-zapata-mena/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "Expertos Externos",
+      "COMITÉ DE EXPERTOS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "personnel_directory_bio"
+  },
+  {
+    "id": "dr-jesus-romero-lugo-d82beaf4",
+    "title": "Dr. Jesús Romero Lugo",
+    "source_url": "https://www.controlsanitario.gob.ec/dr-jesus-romero-lugo/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "Expertos Externos",
+      "COMITÉ DE EXPERTOS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "personnel_directory_bio"
+  },
+  {
+    "id": "mgs-ruth-martinez-espinoza-5fd3b126",
+    "title": "Mgs. Ruth Martínez Espinoza",
+    "source_url": "https://www.controlsanitario.gob.ec/mgs-ruth-martinez-espinoza/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "Expertos Externos",
+      "COMITÉ DE EXPERTOS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "personnel_directory_bio"
+  },
+  {
+    "id": "dr-fausto-zaruma-torres-fd878c90",
+    "title": "Dr. Fausto Zaruma Torres",
+    "source_url": "https://www.controlsanitario.gob.ec/dr-fausto-zaruma-torres/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "Expertos Externos",
+      "COMITÉ DE EXPERTOS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "personnel_directory_bio"
+  },
+  {
+    "id": "dra-shirley-tenesaca-cayambe-5a605be8",
+    "title": "Dra. Shirley Tenesaca Cayambe",
+    "source_url": "https://www.controlsanitario.gob.ec/dra-shirley-tenesaca-cayambe/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "Expertos Externos",
+      "COMITÉ DE EXPERTOS ARCSA"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "personnel_directory_bio"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-1993f389",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-94c1d852",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 1",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-6cddbcd5",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 2",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-f4989a0c",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 3",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-230e2d12",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 4",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-7c806d7d",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 5",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-efc6dfbe",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 6",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-6518f158",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 7",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-14b1e9ba",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 8",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-664dd938",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 9",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2025-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-b9a8cd01",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-58282904",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 1",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-0a929834",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 2",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-33951792",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 3",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-ef9d0051",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 4",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "empty_content",
+    "exclusion_reason": "capture_status:empty_content"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-d068d98a",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 5",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-61d093ca",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 6",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-db6119be",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 7",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-99987f0f",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-dd6385a3",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 9",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2024-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-495c0181",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-9d75c25e",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 1",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-a1129527",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 2",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-614b5373",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 3",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-423f7da5",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 4",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-abb8809a",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 5",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-dd51f39b",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 6",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-e997616c",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 7",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-392dd1de",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-b94d1b68",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 9",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2023-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-4b4ef569",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-74e69999",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 1",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-51817504",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 2",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-fd57e240",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 3",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-9173fc2f",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 4",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-5c81f697",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 5",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-d6b47679",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 6",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-1ad0636d",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 7",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-a7914b90",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 8",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-9eadb30f",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2022/Coordinación Zonal 9",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2022-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2022"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-ee424820",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 / Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-e5a4f2f2",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 / Coordinación Zonal 1",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-d076e8ff",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 Coordinación Zonal 2",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-961adca0",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 Coordinación Zonal 3",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-e1f77b52",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 Coordinación Zonal 4",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-5b9f721e",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 Coordinación Zonal 5",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "empty_content",
+    "exclusion_reason": "capture_status:empty_content"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-03a149f2",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 Coordinación Zonal 6",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-ddc5e434",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 Coordinación Zonal 7",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-1f414b56",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 Coordinación Zonal 8",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-332f25aa",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2021 Coordinación Zonal 9",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2021-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2021"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-43a7f56c",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-3843b689",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 1",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-8bdc8da1",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 2",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-dfff7dde",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 3",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-955895f0",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 4",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-309493ea",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 5",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-efb5ef7c",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 6",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-e8d6ea90",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 7",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-8e1c52bd",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 8",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-403e1cea",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2020 / Coordinación Zonal 9",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2020-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2020"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-fd1b4a5d",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-a95c5b94",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 1",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-e5aee7cc",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 2",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-2ea7da10",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 3",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-6e161a5e",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 4",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-69fa5aba",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 5",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-58c14bb3",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 6",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-1a1c21c3",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 7",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-2b1db6d6",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 8",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-c2db23f2",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2019 / Coordinación Zonal 9",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2019-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2019"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-74ffcd94",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Planta Central",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-bdb3b51e",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 1",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-9a923e5b",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 2",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-4a951364",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 3",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-d64ba240",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 4",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-cee9ad89",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 5",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-15123709",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 6",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-6bad1ba0",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 7",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-44b35c04",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 8",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-f5d45109",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2018 / Coordinación Zonal 9",
+    "source_url": "https://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2018-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2018"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-52607728",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Planta Central",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-81813319",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 1",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-09b4620a",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 2",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-e37934f4",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 3",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-5078f3a8",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 4",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-eb849c15",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 5",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-49ebe1d0",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 6",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-20ad73fb",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 7",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-1bf5efeb",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 8",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "proceso-de-rendicion-de-cuentas-arcsa-20-9ce2195a",
+    "title": "Proceso de Rendición de Cuentas Arcsa 2016 / Coordinación Zonal 9",
+    "source_url": "http://www.controlsanitario.gob.ec/proceso-de-rendicion-de-cuentas-arcsa-2016-coordinacion-zonal-9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas Arcsa 2016"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "planta-central-rc2015-3d53c586",
+    "title": "Planta Central – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/planta-central-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-1-rc2015-646bd6ab",
+    "title": "Coordinación Zonal 1 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-1-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-2-rc2015-ada72641",
+    "title": "Coordinación Zonal 2 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-2-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-3-rc2015-c0a5f724",
+    "title": "Coordinación Zonal 3 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-3-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-4-rc2015-60df0fc3",
+    "title": "Coordinación Zonal 4 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-4-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-5-rc2015-34bc8453",
+    "title": "Coordinación Zonal 5 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-5-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-6-rc2015-449ecb47",
+    "title": "Coordinación Zonal 6 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-6-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-7-rc2015-15924a43",
+    "title": "Coordinación Zonal 7 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-7-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-8-rc2015-9bc4fb30",
+    "title": "Coordinación Zonal 8 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-8-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "coordinacion-zonal-9-rc2015-56bb5eec",
+    "title": "Coordinación Zonal 9 – RC2015",
+    "source_url": "http://www.controlsanitario.gob.ec/coordinacion-zonal-9-rc2015/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2015"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-7ff670d2",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-bc544e95",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/zona-1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-ddf85f91",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/zona2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-9383963d",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/zona3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-c281a826",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/zona4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-fdd7721a",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/rendicionzona5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-c0c37983",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/rendicionzona6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-7cddf27a",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/rendicionzona7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-1ee36ff4",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/rendicionzona8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase-0-930891c2",
+    "title": "Fase 0",
+    "source_url": "http://www.controlsanitario.gob.ec/rendicionzona9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://www.controlsanitario.gob.ec/certificado-de-buenas-practicas-de-manufactura-para-laboratorios-farmaceuticos-para-gases-medicinales/_wp_link_placeholder",
+    "section_path": [
+      "Servicios",
+      "Establecimientos",
+      "Certificados de Buenas Prácticas",
+      "Laboratorios Farmacéuticos de Productos Naturales Procesados de Uso Medicinal",
+      "Certificado de Buenas Prácticas de Manufactura para Laboratorios Farmacéuticos para Gases Medicinales"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "files-3253edfe",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/7Gdouw4P9kkxZBQ",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-de2aeab8",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/5LmwM1zATQJYB4y",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-870cf704",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/kkCIExmqB5MjXmX",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-d809d65f",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/CSYpBcZxqTBx5T7",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-1bc3d3dd",
+    "title": "Files",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/ns19wSOLmaaoRBx",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 7"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-3ee31f9a",
+    "title": "Files",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/G9ELwfdOxTBfdrk",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 7"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-dd42eb82",
+    "title": "Files",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/mI2eUdIe2ggOJLm",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 7"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-e060f53c",
+    "title": "Files",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/8avGl0g7DbLkT4P",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 7"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-a98cb204",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/I7fhUQJCqXdE8iv",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-100a8c3c",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/tV0Fk8yDGdPe0jR",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-b3ee29c6",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/aQHeDkSyhWlQNrJ",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-77ff2522",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/PLiMnLQznfk4VEs",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-c4535731",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/wbuoHqtAQV0EXN9",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-f3f9606a",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/MLijI9XGgrh39Qd",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-1e056dab",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/zHY4tDkezbjAaMe",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-211f00c6",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/RAD2zFGecsIXNls",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/VE3fRgz32M6FucG",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 7"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/aDPgXxWSb1ooqRC",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 7"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/DLMfkruRDDJh5Nd",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 7"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "files-884e6a5a",
+    "title": "Files",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/83mjfepERSpiM0Y",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 7"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-c405b35b",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/mKcl2uvcvcV3jWp",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-7c8a5edd",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/YqjFIfpbgoWnEql",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-6862fdfe",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/DpUqJdHn81GJnKc",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-228acb1c",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/2GsQgkLLh3CgXa8",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-c398aacb",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/JvFRsvFjIs0nCsn",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-c4b2731e",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/BKOnmYOdU9rZrP5",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-f56150dd",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/JDW1DZNKo3sE2p7",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-b7118be2",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/na3FHtiCC6X8Bcu",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-84ec7878",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/uVMBuRJrF7fRP5J",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-4b46d412",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/3bYLCeeRQr38axK",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-fbcbddbb",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/To7mK4lEhWLysJU",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "files-ec2c0ded",
+    "title": "Files",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/P6gvpsuX8D6Yy9P",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "invitacion-planta-central-f9b70194",
+    "title": "Invitación planta central",
+    "source_url": "http://www.controlsanitario.gob.ec/invitacion-planta-central/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona1-61d9beaa",
+    "title": "fase2-zona1",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona1/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona2-a1fa4c7c",
+    "title": "fase2-zona2",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona2/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona3-17f300b6",
+    "title": "fase2-zona3",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona3/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona4-2244f91b",
+    "title": "fase2-zona4",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona4/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona5-079cd9f7",
+    "title": "fase2-zona5",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona5/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona6-de736cad",
+    "title": "fase2-zona6",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona6/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona7-aeab7cd0",
+    "title": "fase2-zona7",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona7/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona8-3c1490fa",
+    "title": "fase2-zona8",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona8/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "fase2-zona9-253e5112",
+    "title": "fase2-zona9",
+    "source_url": "http://www.controlsanitario.gob.ec/fase2-zona9/",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Rendición de Cuentas 2014",
+      "Fase 0"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "ie-b-3-4-2-lf-01-bpm-lab-farma-v5-0-pdf-b1dbc63f",
+    "title": "IE-B.3.4.2-LF-01_BPM Lab. Farma. V5.0.pdf",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/apps/onlyoffice/s/KusFo7Bd8bmntuc",
+    "section_path": [
+      "Servicios",
+      "Establecimientos",
+      "Certificados de Buenas Prácticas",
+      "Laboratorios Farmacéuticos de Productos Naturales Procesados de Uso Medicinal",
+      "Inclusión de Forma Farmacéutica a una área de producción certificada en BPM",
+      "ownCloud"
+    ],
+    "capture_status": "empty_content",
+    "exclusion_reason": "capture_status:empty_content"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/KusFo7Bd8bmntuc/download",
+    "section_path": [
+      "Servicios",
+      "Establecimientos",
+      "Certificados de Buenas Prácticas",
+      "Laboratorios Farmacéuticos de Productos Naturales Procesados de Uso Medicinal",
+      "Inclusión de Forma Farmacéutica a una área de producción certificada en BPM",
+      "ownCloud"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/kkCIExmqB5MjXmX/download?path=%2F&files=Acta%20de%20compromisos%20asumidos%20con%20la%20ciudadan%C3%ADa%20en%20la%20deliberaci%C3%B3n.%2024-04...-signed.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/CSYpBcZxqTBx5T7/download?path=%2F&files=FORMULARIO%20FUNCIONES_DEL_ESTADO%20consolidado.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/ns19wSOLmaaoRBx/download?path=%2F&files=1_Conformaci%C3%B3n%20equipo%20RDC%202026.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 7",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/8avGl0g7DbLkT4P/download?path=%2F&files=Formulario%20_%20RDC-2025-CPCCS.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 7",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/tV0Fk8yDGdPe0jR/download?path=%2F&files=Formulario%20preliminar%20CZ8.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/aQHeDkSyhWlQNrJ/download?path=%2F&files=Registro%20RDC%20CZ8.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/PLiMnLQznfk4VEs/download?path=%2F&files=Informe%20de%20Rendici%C3%B3n%20de%20cuentas%202025%20CZ8%20No.%2018097.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2025",
+      "Proceso de Rendición de Cuentas Arcsa 2025/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/wbuoHqtAQV0EXN9/download?path=%2F&files=0.%20resolucion_no__cpccs-ple-sg-007-e-2025-0070.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/MLijI9XGgrh39Qd/download?path=%2F&files=1.-FUNCIONES-DEL-ESTADO%20Preliminar.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/zHY4tDkezbjAaMe/download?path=%2F&files=0.%20Agenda%20de%20seguimiento%20proceso%20de%20Deliberaci%C3%B3n.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/RAD2zFGecsIXNls/download?path=%2F&files=Informe%20de%20RDC%20gesti%C3%B3n%202024%20con%20la%20incorporaci%C3%B3n%20de%20aportes%20ciudadanos-signed.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nubecz.controlsanitario.gob.ec/index.php/s/83mjfepERSpiM0Y/download?path=%2F&files=COMUNICADO%20CPCCS.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 7",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/mKcl2uvcvcV3jWp/download?path=%2F&files=0.%20resolucion_no__cpccs-ple-sg-007-e-2025-0070.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/YqjFIfpbgoWnEql/download?path=%2F&files=1.%20Registro%20Formulario%20cz8.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/DpUqJdHn81GJnKc/download?path=%2F&files=---FINAL---%20PPT-RENDICION%20DE%20CUENTAS%202024%20COORDINACI%C3%93N%20ZONAL%208%20-%20ARCSA.pptx",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/2GsQgkLLh3CgXa8/download?path=%2F&files=CZ8%20Informe%20de%20RDC%20No%2016331.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "RENDICIÓN DE CUENTAS ARCSA 2024",
+      "Proceso de Rendición de Cuentas Arcsa 2024/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/JvFRsvFjIs0nCsn/download?path=%2F&files=Conformaci%C3%B3n%20del%20Equipo%20de%20RDC%202023%20.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/BKOnmYOdU9rZrP5/download?path=%2F&files=ACTIVACI%C3%93N%20DE%20INSTITUCI%C3%93N%20EN%20SISTEMA%20CPCCS%202023.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/JDW1DZNKo3sE2p7/download?path=%2F&files=1.%20Compromisos%20asumidos%20con%20la%20ciudadan%C3%ADa.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/na3FHtiCC6X8Bcu/download?path=%2F&files=INFORME%20DE%20RENDICI%C3%93N%20DE%20CUENTAS%20No%2011527.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Planta Central",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/uVMBuRJrF7fRP5J/download?path=%2F&files=Equipo%20del%20proceso%20de%20RDC%202023%20CZ8.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/3bYLCeeRQr38axK/download?path=%2F&files=2024.03.06_Informe%20de%20Rendici%C3%B3n%20Cuentas%202023_CZ8-signed-signed-signed.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/To7mK4lEhWLysJU/download?path=%2F&files=Consultas%20atendidas%20a%20la%20ciudadan%C3%ADa%20en%20la%20RDC2023.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "",
+    "title": "",
+    "source_url": "https://nube.controlsanitario.gob.ec/index.php/s/P6gvpsuX8D6Yy9P/download?path=%2F&files=1.INFORME%20FINAL.pdf",
+    "section_path": [
+      "Servicios",
+      "Otros servicios",
+      "RENDICIÓN DE CUENTAS ARCSA",
+      "Proceso de Rendición de Cuentas 2023",
+      "Proceso de Rendición de Cuentas Arcsa 2023/Coordinación Zonal 8",
+      "Files"
+    ],
+    "capture_status": "broken",
+    "exclusion_reason": "capture_status:broken"
+  }
+]

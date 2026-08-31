@@ -1,0 +1,174 @@
+{
+  "source_url": "https://www.controlsanitario.gob.ec/servicios/",
+  "root_label": "Servicios",
+  "generated_at": "2026-08-26T20:06:09.992368+00:00",
+  "expected_group_count": 3,
+  "sections": [
+    {
+      "orden": 1,
+      "seccion": "Productos y servicios",
+      "detectado_por": "posicion_dom_tabla+etiqueta_verificada_manualmente",
+      "subsecciones": [
+        {
+          "orden": 1,
+          "url": "https://www.controlsanitario.gob.ec/certificado-de-requerimiento-o-no-de-registro-sanitario-notificacion-sanitaria-obligatoria-2/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 2,
+          "url": "https://www.controlsanitario.gob.ec/alimentos-procesados/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 3,
+          "url": "https://www.controlsanitario.gob.ec/ensayos-clinicos-2/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 4,
+          "url": "https://www.controlsanitario.gob.ec/dispositivos-medicos-productos-dentales-y-reactivos-bioquimicos-de-diagnostico/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 5,
+          "url": "https://www.controlsanitario.gob.ec/medicamentos-en-general/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 6,
+          "url": "https://www.controlsanitario.gob.ec/medicamentos-biologicos/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 7,
+          "url": "https://www.controlsanitario.gob.ec/homeopaticos/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 8,
+          "url": "https://www.controlsanitario.gob.ec/medicamentos-sujetos-a-fiscalizacion/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 9,
+          "url": "https://www.controlsanitario.gob.ec/productos-naturales/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 10,
+          "url": "https://www.controlsanitario.gob.ec/notificacion-de-retiro-del-mercado-de-productos-de-uso-y-consumo-humano-sujetos-a-control-y-vigilancia-sanitaria/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 11,
+          "url": "https://www.controlsanitario.gob.ec/productos-cosmeticos/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 12,
+          "url": "https://www.controlsanitario.gob.ec/productos-higienicos-de-uso-domestico-y-absorbentes-de-higiene-personal/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 13,
+          "url": "https://www.controlsanitario.gob.ec/productos-higienicos-de-uso-industrial/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 14,
+          "url": "https://www.controlsanitario.gob.ec/plaguicidas-quimicos-de-uso-agricola-pqua/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 15,
+          "url": "https://www.controlsanitario.gob.ec/plaguicidas-de-uso-domestico-industrial-y-en-salud-publica/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 16,
+          "url": "http://permisosfuncionamiento.controlsanitario.gob.ec/",
+          "tipo": "sistema_externo"
+        },
+        {
+          "orden": 17,
+          "url": "https://www.controlsanitario.gob.ec/canales-y-tasas-de-pago/",
+          "tipo": "pagina_interna"
+        }
+      ]
+    },
+    {
+      "orden": 2,
+      "seccion": "Establecimientos",
+      "detectado_por": "posicion_dom_tabla+etiqueta_verificada_manualmente",
+      "subsecciones": [
+        {
+          "orden": 1,
+          "url": "https://www.controlsanitario.gob.ec/calificate-con-arcsa/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 2,
+          "url": "https://www.controlsanitario.gob.ec/certificados-de-capacitaciones-arcsa/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 3,
+          "url": "http://www.controlsanitario.gob.ec/certificados-de-buenas-practicas/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 4,
+          "url": "http://www.controlsanitario.gob.ec/certificado-de-manipulacion-de-alimentos/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 5,
+          "url": "http://www.controlsanitario.gob.ec/registro-de-inscripcion-para-las-companias-elaboradorasimportadoras-y-comercializadoras-al-por-mayor-de-los-productos-del-tabaco/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 6,
+          "url": "http://www.controlsanitario.gob.ec/permisos-de-funcionamiento/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 7,
+          "url": "https://aplicaciones.controlsanitario.gob.ec/permisos_transporte/autenticacion/login",
+          "tipo": "sistema_externo"
+        },
+        {
+          "orden": 8,
+          "url": "https://www.controlsanitario.gob.ec/resoluciones/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 9,
+          "url": "https://www.controlsanitario.gob.ec/atencion-a-consultas-quejas-sugerencias-y-tramites-ciudadanos/",
+          "tipo": "pagina_interna"
+        }
+      ]
+    },
+    {
+      "orden": 3,
+      "seccion": "Otros servicios",
+      "detectado_por": "posicion_dom_tabla+etiqueta_verificada_manualmente",
+      "subsecciones": [
+        {
+          "orden": 1,
+          "url": "https://www.controlsanitario.gob.ec/expertos-externos/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 2,
+          "url": "https://www.controlsanitario.gob.ec/contratacionpublica/",
+          "tipo": "pagina_interna"
+        },
+        {
+          "orden": 3,
+          "url": "https://www.controlsanitario.gob.ec/rendicion-de-cuentas-arcsa/",
+          "tipo": "pagina_interna"
+        }
+      ]
+    }
+  ]
+}

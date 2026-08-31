@@ -1,0 +1,3 @@
+# Hierarchical parent-child parsing instead of a knowledge graph
+
+We considered a knowledge graph (entities + relations) to let queries traverse cross-references between Normativas. We rejected it for v1: reliable entity/relation extraction from Spanish legal text is a hard, open-ended problem, while a hierarchical parent-child tree (child = Artículo/Numeral/Literal, parent = full Artículo/regulation) directly solves the concrete pain point — a retrieved table row or numeral needs its parent Artículo's full context — with no new infrastructure. Revisit only if a real cross-document multi-hop need appears that hierarchy lookup can't satisfy.

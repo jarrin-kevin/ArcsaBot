@@ -1,0 +1,29 @@
+{
+  "niveles": [
+    {
+      "profundidad": 1,
+      "paginas_nuevas_encontradas": 154
+    },
+    {
+      "profundidad": 2,
+      "paginas_nuevas_encontradas": 153
+    },
+    {
+      "profundidad": 3,
+      "paginas_nuevas_encontradas": 76
+    },
+    {
+      "profundidad": 4,
+      "paginas_nuevas_encontradas": 58
+    },
+    {
+      "profundidad": 5,
+      "paginas_nuevas_encontradas": 70
+    }
+  ],
+  "total_paginas_capturadas": 468,
+  "profundidad_final": 5,
+  "trampa_de_crawl_detectada": true,
+  "crawl_interrumpido_por_excepcion": false,
+  "motivo_de_detencion": "El nivel 6 tendría 70 página(s) nueva(s), más que el nivel 5 (58). No converge hacia cero como se espera de un sitio finito; posible trampa de crawl. Deteniendo de forma preventiva sin agotar --max-pages."
+}

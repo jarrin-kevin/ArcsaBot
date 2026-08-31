@@ -1,0 +1,3 @@
+# Flag outdated Tutorial citations instead of dropping them
+
+When a Tutorial cites a Normativa that has since been derogated, the obvious move is to delete or suppress that Tutorial content. We chose instead to keep it and mark it `cita_desactualizada`, surfacing a warning in the chat response ("this step may have changed, verify against current regulation") rather than silently dropping it. Rationale: the procedural steps in a Tutorial (which form to fill, which window to submit at) often remain valid even after the specific law it cites is superseded, and Normativa Vigente already wins on any conflicting legal fact — so dropping the Tutorial outright would lose real value to avoid a risk the warning already covers.

@@ -1,0 +1,6 @@
+.env
+chatbot/secrets/
+node_modules/
+.atl/
+__pycache__/
+*.pyc

@@ -1,0 +1,13 @@
+llama-index
+llama-index-llms-google-genai
+llama-index-embeddings-google-genai
+llama-index-vector-stores-vertexaivectorsearch
+google-cloud-aiplatform
+python-dotenv
+
+# Dependencias del scraper de chatbot/scraping/scrape_servicios.py
+playwright
+beautifulsoup4
+lxml
+markdownify
+pyyaml
