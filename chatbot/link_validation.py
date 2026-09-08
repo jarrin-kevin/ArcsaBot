@@ -455,12 +455,33 @@ def write_report(report: dict, output_path: Path = REPORT_PATH) -> None:
     PermissionError de Windows al abrirlo. Solo debería correr un proceso a
     la vez contra un REPORT_PATH dado, pero incluir el PID hace que un
     solape accidental sea inofensivo en vez de un crash.
+
+    El os.replace() final también se reintenta unas pocas veces: se
+    confirmó en la práctica (WinError 5 "Acceso denegado" real, con el PID
+    ya en el nombre del .tmp, así que no era el choque de arriba) que en
+    Windows, si OTRO proceso tiene el archivo destino abierto para lectura
+    en el instante exacto del rename — p.ej. un chequeo de progreso externo
+    que hace open()/json.load() sobre el mismo REPORT_PATH mientras esta
+    corrida hace un checkpoint tras CADA URL — el rename puede fallar de
+    forma transitoria (a diferencia de POSIX, donde un lector no bloquea un
+    rename). La condición se resuelve sola en milisegundos apenas el lector
+    cierra el archivo, así que un par de reintentos cortos la absorben en
+    vez de tumbar una corrida de horas por un simple `cat` del reporte.
     """
     output_path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = output_path.with_suffix(f".{os.getpid()}.tmp")
     with tmp_path.open("w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
-    os.replace(tmp_path, output_path)
+
+    last_exception: OSError | None = None
+    for attempt in range(5):
+        try:
+            os.replace(tmp_path, output_path)
+            return
+        except PermissionError as exc:
+            last_exception = exc
+            time.sleep(0.2 * (attempt + 1))
+    raise last_exception
 
 
 def _load_previous_results(output_path: Path, expected_urls: set[str]) -> dict[str, dict]:
@@ -577,6 +598,175 @@ def validate_links(chunks: list[dict] | None = None, resume: bool = True) -> dic
     summary = _build_summary(results, len(unique_urls), elapsed_seconds, partial, partial_reason)
 
     return {"summary": summary, "results": list(results.values())}
+
+
+# --------------------------------------------------------------------------
+# Etapa 4: limpieza de enlaces ya confirmados rotos, sobre el texto servido
+# --------------------------------------------------------------------------
+#
+# Lo de arriba (validate_links()/run_validation()) es de sólo lectura: audita
+# qué enlaces citados en el cuerpo del Tutorial ya no resuelven, pero no toca
+# el corpus (ver ADR 0004: flag, don't drop — aplica al AÑO desactualizado).
+# Un enlace confirmado "broken"/"timeout" es distinto: no aporta nada al
+# usuario y sólo puede llevarlo a una página muerta, así que ACÁ SÍ se
+# elimina del texto servido, conservando el texto descriptivo que lo
+# acompañaba. Los "valid"/"redirect" no se tocan: siguen resolviendo y
+# siguen siendo información útil.
+#
+# Reutilizado por chatbot/vector_ingest.py (build_tutorial_documents()) para
+# que cada corrida completa del pipeline limpie automáticamente el corpus de
+# Tutorial contra el reporte de validación más reciente en disco, y por
+# chatbot/.tools/fix_tutorial_broken_links.py (fix puntual ya aplicado sobre
+# el chatbot/data/vector_docstore.json existente, sin tener que
+# re-embeber/re-subir nada a Pinecone).
+
+
+def normalize_url_for_comparison(url: str) -> str:
+    """
+    Normaliza una URL para compararla contra el reporte de validación,
+    ignorando diferencias que no cambian el recurso real: una barra final
+    "/" de más o de menos en el path, y mayúsculas/minúsculas en
+    esquema/host. Mismo criterio que ya usa scrape_servicios.canonical_url()
+    (quita fragmento y barra final redundante) para deduplicar URLs en el
+    resto del pipeline, para no reinventar la normalización acá.
+    """
+    if not url:
+        return ""
+    parsed = urlsplit(url)
+    path = parsed.path.rstrip("/") if parsed.path not in ("", "/") else parsed.path
+    query = f"?{parsed.query}" if parsed.query else ""
+    return f"{parsed.scheme.lower()}://{parsed.netloc.lower()}{path}{query}"
+
+
+# Colapsa corridas de espacios/tabs horizontales que puede dejar sacar una
+# URL suelta de en medio de una frase. No toca saltos de línea: la
+# estructura de párrafos/tablas Markdown del cuerpo se conserva intacta.
+_MULTI_SPACE_PATTERN = re.compile(r"[ \t]{2,}")
+# Espacio colgante justo antes de puntuación de cierre de oración, típico
+# de sacar una URL pegada a un "." o ":" (p.ej. "ver aquí : ." -> "ver aquí.").
+_SPACE_BEFORE_PUNCTUATION_PATTERN = re.compile(r"[ \t]+([.,;:!?])")
+# Espacio colgante al final de una línea.
+_TRAILING_LINE_SPACE_PATTERN = re.compile(r"[ \t]+(\n|$)")
+
+
+def strip_broken_links_from_text(text: str, broken_urls: set[str]) -> tuple[str, int]:
+    """
+    Elimina de `text` todo enlace cuya URL esté en `broken_urls` (se espera
+    el conjunto de URLs "broken"/"timeout" del reporte, ver
+    load_broken_urls()). La comparación es normalizada
+    (normalize_url_for_comparison()), no exige coincidencia exacta de
+    string.
+
+    - Enlace o imagen Markdown roto ("[texto](url)" / "![alt](url)"): se
+      reemplaza por sólo el texto/alt descriptivo, sin el link muerto (no
+      se pierde la información, sólo deja de ser un hipervínculo muerto).
+      Si el texto/alt queda vacío tras recortar espacios, el enlace se
+      elimina por completo.
+    - URL suelta rota en texto plano (sin sintaxis Markdown): se elimina la
+      URL, conservando cualquier puntuación de cierre de oración que
+      hubiera quedado pegada a ella (ver _TRAILING_PUNCTUATION) y el resto
+      del texto intacto.
+
+    Enlaces "valid"/"redirect" (cualquier URL que NO esté en `broken_urls`)
+    no se tocan.
+
+    Returns:
+        (texto_limpio, cantidad_de_enlaces_rotos_eliminados). Si no se
+        eliminó ningún enlace, se devuelve el texto original sin cambios
+        (no se aplica el recorte de espacios cuando no hubo nada que
+        limpiar, para no introducir diffs irrelevantes).
+    """
+    if not text or not broken_urls:
+        return text, 0
+
+    normalized_broken = {normalize_url_for_comparison(u) for u in broken_urls if u}
+    if not normalized_broken:
+        return text, 0
+
+    removed = 0
+
+    def _is_broken(raw_url: str) -> bool:
+        cleaned = _clean_url(raw_url)
+        return bool(cleaned) and normalize_url_for_comparison(cleaned) in normalized_broken
+
+    def _replace_markdown(match: re.Match) -> str:
+        nonlocal removed
+        link_text, raw_url = match.group(1), match.group(2)
+        if _is_broken(raw_url):
+            removed += 1
+            return link_text.strip()
+        return match.group(0)
+
+    text = _MARKDOWN_LINK_PATTERN.sub(_replace_markdown, text)
+
+    def _replace_bare(match: re.Match) -> str:
+        nonlocal removed
+        raw = match.group(0)
+        if _is_broken(raw):
+            removed += 1
+            # Se conserva la puntuación de cierre de oración pegada al
+            # final de la URL (p.ej. el "." de "...ver el sitio: URL.");
+            # _clean_url() la ignora para validar, pero acá SÍ importa
+            # devolverla: es puntuación de la frase, no parte del enlace.
+            core = raw.rstrip(_TRAILING_PUNCTUATION)
+            return raw[len(core):]
+        return raw
+
+    text = _BARE_URL_PATTERN.sub(_replace_bare, text)
+
+    if removed:
+        text = _SPACE_BEFORE_PUNCTUATION_PATTERN.sub(r"\1", text)
+        text = _MULTI_SPACE_PATTERN.sub(" ", text)
+        text = _TRAILING_LINE_SPACE_PATTERN.sub(r"\1", text)
+        text = text.strip()
+
+    return text, removed
+
+
+def load_broken_urls(report_path: Path = REPORT_PATH) -> set[str]:
+    """
+    Carga, del reporte de validación de enlaces más reciente en disco
+    (chatbot/scraping/link_validation_report.json por defecto), el conjunto
+    de URLs marcadas "broken" o "timeout" (las que ameritan limpiarse del
+    corpus servido; "valid"/"redirect" quedan afuera porque siguen
+    resolviendo y son información útil).
+
+    Si el reporte todavía no existe (p.ej. checkout limpio antes de correr
+    `python -m chatbot.link_validation` una primera vez) o no se puede leer,
+    NO rompe el pipeline: devuelve un set vacío y logea una advertencia
+    clara, dejando el corpus sin limpiar en esa corrida en particular.
+    """
+    if not report_path.exists():
+        print(
+            f"[ADVERTENCIA] No se encontró el reporte de validación de enlaces en "
+            f"'{report_path}'; esta corrida NO limpiará ningún enlace roto del "
+            "corpus de Tutorial. Corré 'python -m chatbot.link_validation' al "
+            "menos una vez para generarlo."
+        )
+        return set()
+
+    try:
+        with report_path.open(encoding="utf-8") as f:
+            report = json.load(f)
+        results = report.get("results", [])
+    except (json.JSONDecodeError, OSError, AttributeError) as exc:
+        print(
+            f"[ADVERTENCIA] No se pudo leer el reporte de validación de enlaces en "
+            f"'{report_path}' ({exc}); esta corrida NO limpiará ningún enlace roto "
+            "del corpus de Tutorial."
+        )
+        return set()
+
+    broken = {
+        entry["url"]
+        for entry in results
+        if isinstance(entry, dict) and entry.get("status") in ("broken", "timeout") and entry.get("url")
+    }
+    print(
+        f"[INFO] {len(broken)} URL(s) marcada(s) broken/timeout cargada(s) desde "
+        f"'{report_path}' para limpieza del corpus de Tutorial."
+    )
+    return broken
 
 
 def run_validation() -> dict:

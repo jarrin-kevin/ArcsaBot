@@ -32,6 +32,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 import yaml
 
@@ -81,6 +82,41 @@ def _is_rendicion_cuentas_branch(section_path: list[str]) -> bool:
     return any(part == _RENDICION_CUENTAS_SECTION for part in section_path)
 
 
+def _canonical_url_ignoring_scheme(url: str | None) -> str:
+    """
+    Clave de deduplicación por URL que ignora el esquema (http/https).
+
+    Motivo: scrape_servicios.canonical_url() normaliza host/path/fragmento
+    de una URL para su set `visited` (deduplicación durante el crawl) y
+    para el hash de stable_id() (generación del "id" de cada página), pero
+    NO normaliza el esquema. Si el sitio real contiene un enlace interno
+    escrito en http:// hacia una página que en otro lugar del sitio se
+    enlaza en https://, el scraper las trata como DOS páginas DISTINTAS
+    (dos ids, dos archivos .md, dos registros en capture_summary.json)
+    aunque sea la MISMA página real (mismo contenido, mismo destino final).
+    Verificado contra la data real: 4 páginas del corpus tienen
+    exactamente este defecto (mismo texto exacto, "id" e
+    "source_url"-esquema distintos).
+
+    Ese defecto vive en scrape_servicios.py (fuera de alcance de este fix:
+    no se modifica el scraper), así que esta función existe como red de
+    seguridad en la etapa de filtrado de este módulo: si un futuro
+    re-scrape reintroduce el mismo par http/https para una página, se
+    detecta y excluye acá antes de que vuelva a producir un duplicado en
+    el corpus ingestionable, en vez de depender de una limpieza manual
+    posterior sobre el docstore ya generado.
+
+    Conserva el query string (dos páginas con distinto "?p=..." son
+    páginas DISTINTAS, no un duplicado de esquema).
+    """
+    if not url:
+        return ""
+    parsed = urlparse(url)
+    path = parsed.path.rstrip("/")
+    query = f"?{parsed.query}" if parsed.query else ""
+    return f"{parsed.netloc.lower()}{path}{query}"
+
+
 def _is_comite_expertos_bio_leaf(section_path: list[str], title: str) -> bool:
     """
     True si la página es una biografía individual dentro del Comité de
@@ -114,8 +150,16 @@ def filter_pages(records: list[dict]) -> tuple[list[dict], list[dict]]:
 
     La precedencia de reglas es: (a) capture_status inutilizable, luego
     (b) trampa de rastreo de Rendición de Cuentas, luego (c) biografía de
-    experto. Cada página excluida cae bajo UNA sola razón (la primera que
-    aplique), para que los conteos por razón no se solapen.
+    experto, luego (d) variante de esquema http/https de una URL ya
+    conservada (ver _canonical_url_ignoring_scheme). Cada página excluida
+    cae bajo UNA sola razón (la primera que aplique), para que los
+    conteos por razón no se solapen.
+
+    La regla (d) depende del ORDEN de `records` (gana la primera aparición
+    de cada URL canónica, igual que el criterio "primera vez que se
+    descubre" que ya usa el `visited` set de scrape_servicios.py), así que
+    esta función debe recibir los registros en el mismo orden en que
+    aparecen en capture_summary.json.
 
     Args:
         records: lista de diccionarios tal como vienen de capture_summary.json.
@@ -127,11 +171,13 @@ def filter_pages(records: list[dict]) -> tuple[list[dict], list[dict]]:
     """
     kept: list[dict] = []
     excluded: list[dict] = []
+    seen_canonical_urls: dict[str, str] = {}  # canónica -> id del primero conservado
 
     for record in records:
         capture_status = record.get("capture_status")
         section_path = record.get("section_path") or []
         title = record.get("title") or ""
+        canonical_url = _canonical_url_ignoring_scheme(record.get("source_url"))
 
         reason = None
 
@@ -147,10 +193,18 @@ def filter_pages(records: list[dict]) -> tuple[list[dict], list[dict]]:
         elif _is_comite_expertos_bio_leaf(section_path, title):
             reason = "personnel_directory_bio"
 
+        # (d) Ya se conservó una página con la misma URL canónica (solo
+        # difiere el esquema http/https): duplicado, no una página nueva.
+        elif canonical_url and canonical_url in seen_canonical_urls:
+            first_id = seen_canonical_urls[canonical_url]
+            reason = f"duplicate_scheme_variant_of:{first_id}"
+
         if reason is not None:
             excluded.append({**record, "exclusion_reason": reason})
         else:
             kept.append(record)
+            if canonical_url:
+                seen_canonical_urls[canonical_url] = record.get("id") or ""
 
     return kept, excluded
 
@@ -220,6 +274,43 @@ _NORMATIVA_CITATION_PATTERNS = (
 )
 
 
+# Hosts del portal de Servicios ARCSA para los que se fuerza esquema
+# https:// en source_url (ver justificación abajo en
+# _normalize_source_url_scheme). www.controlsanitario.gob.ec es el host
+# real usado por scrape_servicios.BASE_URL; controlsanitario.gob.ec (sin
+# "www.") se incluye por si algún enlace interno del sitio lo referencia
+# sin el subdominio.
+_HTTPS_ONLY_HOSTS = {"controlsanitario.gob.ec", "www.controlsanitario.gob.ec"}
+
+
+def _normalize_source_url_scheme(source_url: str | None) -> str | None:
+    """
+    Fuerza esquema https:// para URLs de controlsanitario.gob.ec.
+
+    Motivo (ver investigación de citas muertas en RagSourcesDrawer): el
+    sitio real solo sirve por HTTPS —el puerto 80 no responde
+    (ConnectTimeout confirmado)—, pero el scraper (scrape_servicios.py)
+    puede descubrir y capturar un enlace interno escrito en http:// tal
+    cual aparece en el HTML de origen, sin normalizar el esquema
+    (canonical_url() ahí normaliza host/path/fragmento pero NO esquema).
+    Si ese source_url http:// llega tal cual hasta acá, queda horneado en
+    el docstore y en chatbot/main.py._build_source_citation() se expone
+    como "officialUrl" un enlace muerto en la UI. Se corrige en esta etapa
+    (parse_tutorial) para que cualquier futuro re-scrape/re-ingest produzca
+    URLs correctas desde el origen, sin depender solo del parche defensivo
+    en tiempo de request de main.py.
+
+    No se toca el resto de la URL (path, query, fragment): solo el
+    esquema, y solo para los hosts de _HTTPS_ONLY_HOSTS.
+    """
+    if not source_url:
+        return source_url
+    parsed = urlparse(source_url)
+    if parsed.scheme == "http" and parsed.netloc.lower() in _HTTPS_ONLY_HOSTS:
+        return parsed._replace(scheme="https").geturl()
+    return source_url
+
+
 def _strip_front_matter(markdown_text: str) -> str:
     """Quita el bloque de front matter YAML inicial y deja solo el cuerpo."""
     match = _FRONT_MATTER_PATTERN.match(markdown_text)
@@ -265,7 +356,9 @@ def parse_tutorial(markdown_text: str, front_matter: dict) -> dict:
             - "id": identificador de la página.
             - "title": título de la página.
             - "text": cuerpo limpio, sin el front matter YAML.
-            - "source_url": URL original de la página.
+            - "source_url": URL original de la página, con esquema https://
+              forzado para controlsanitario.gob.ec (ver
+              _normalize_source_url_scheme).
             - "section_path": lista de secciones (breadcrumb) de la página.
             - "captured_at": timestamp de captura del scraper.
             - "normativa_citations": lista de menciones a Normativa ARCSA
@@ -280,7 +373,7 @@ def parse_tutorial(markdown_text: str, front_matter: dict) -> dict:
         "id": front_matter.get("id"),
         "title": front_matter.get("title"),
         "text": body,
-        "source_url": front_matter.get("source_url"),
+        "source_url": _normalize_source_url_scheme(front_matter.get("source_url")),
         "section_path": front_matter.get("section_path"),
         "captured_at": front_matter.get("captured_at"),
         "normativa_citations": citations,

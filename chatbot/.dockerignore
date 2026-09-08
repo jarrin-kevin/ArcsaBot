@@ -1,0 +1,27 @@
+# Secretos: nunca deben quedar horneados en una capa de la imagen. En dev
+# llegan vía bind mount (./chatbot:/app en docker-compose.yml); en prod se
+# deben montar/inyectar en runtime (Secret Manager, volumen de K8s, etc.).
+secrets/
+.env
+
+# Datos generados en runtime por los scripts de ingesta (vector_ingest.py,
+# tutorial_ingestion.py, etc.). No hacen falta para construir ni arrancar el
+# servidor (main.py los lee de forma perezosa si existen) y pesan cientos de
+# MB, así que no tiene sentido copiarlos a la imagen.
+data/
+
+# Artefactos de scraping/herramientas puntuales: logs y reportes pesados que
+# no son código de la app (incluye variantes versionadas/backup, p. ej.
+# *.log.bak-... o *_report.json.old-...).
+.tools/
+scraping/*.log*
+scraping/pages/
+scraping/*report*.json*
+
+# Basura habitual de Python / control de versiones / entornos locales.
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.venv/
+venv/

@@ -1,5 +1,17 @@
 [
   {
+    "id": "certificado-de-requerimiento-o-no-de-reg-2b3a2097",
+    "title": "Certificado de Requerimiento o No de Registro Sanitario / Notificación Sanitaria Obligatoria",
+    "source_url": "http://www.controlsanitario.gob.ec/certificado-de-requerimiento-o-no-de-registro-sanitario-notificacion-sanitaria-obligatoria-2/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Alimentos procesados"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "duplicate_scheme_variant_of:certificado-de-requerimiento-o-no-de-reg-9c50e0a1"
+  },
+  {
     "id": "",
     "title": "",
     "source_url": "http://www.controlsanitario.gob.ec/requisitos-autorizacion-para-importacion-de-alimentos-sin-valor-comercial-con-fines-de-estudio-de-mercado-investigacion-desarrollo-pruebas-de-laboratorio-y-ensayos/",
@@ -34,6 +46,30 @@
     ],
     "capture_status": "broken",
     "exclusion_reason": "capture_status:broken"
+  },
+  {
+    "id": "solicitud-para-firma-fisica-en-certifica-b30d7352",
+    "title": "Solicitud para firma física en certificado de libre venta y/o inclusión de información.",
+    "source_url": "http://www.controlsanitario.gob.ec/solicitud-para-firma-fisica-en-certificado-de-libre-venta-garantia-de-lote-informacion-de-cambios-de-notificacion-sanitaria-obligatoria-y-certificado-de-requerir-o-no-registro-sanitario-o-notificaci/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Dispositivos médicos, productos dentales y reactivos bioquímicos de diagnóstico"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "duplicate_scheme_variant_of:solicitud-para-firma-fisica-en-certifica-54d93fbd"
+  },
+  {
+    "id": "certificado-de-vigencia-del-registro-san-628af4e1",
+    "title": "Certificado de Vigencia del Registro Sanitario, Notificación Sanitaria o Notificación Sanitaria Obligatoria",
+    "source_url": "https://www.controlsanitario.gob.ec/certificado-de-vigencia-del-registro-sanitario-notificacion-sanitaria-obligatoria/",
+    "section_path": [
+      "Servicios",
+      "Productos y servicios",
+      "Medicamentos"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "duplicate_scheme_variant_of:certificado-de-vigencia-del-registro-san-cb16c132"
   },
   {
     "id": "",
@@ -1836,6 +1872,20 @@
     ],
     "capture_status": "captured",
     "exclusion_reason": "crawl_trap_rendicion_cuentas"
+  },
+  {
+    "id": "agencia-nacional-de-regulacion-control-y-15e46d84",
+    "title": "Agencia Nacional de Regulación, Control  y Vigilancia Sanitaria – Regulación de medicamentos, alimentos procesados, cosméticos y vigilancia sanitaria en establecimientos sujetos a control.",
+    "source_url": "http://www.controlsanitario.gob.ec",
+    "section_path": [
+      "Servicios",
+      "Establecimientos",
+      "FECHA",
+      "Agencia Nacional de Regulación, Control  y Vigilancia Sanitaria – Regulación de medicamentos, alimentos procesados, cosméticos y vigilancia sanitaria en establecimientos sujetos a control.",
+      "Política para el tratamiento de datos personales"
+    ],
+    "capture_status": "captured",
+    "exclusion_reason": "duplicate_scheme_variant_of:agencia-nacional-de-regulacion-control-y-589d169f"
   },
   {
     "id": "",

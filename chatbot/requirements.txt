@@ -1,9 +1,22 @@
 llama-index
 llama-index-llms-google-genai
 llama-index-embeddings-google-genai
-llama-index-vector-stores-vertexaivectorsearch
-google-cloud-aiplatform
 python-dotenv
+
+# Base vectorial (reemplaza a Vertex AI Vector Search desde 2026-09-08: se
+# deshabilitó la facturación del proyecto GCP por costo, ver
+# docs/adr/0002-vertex-ai-vector-search.md y chatbot/vector_store.py). El
+# paquete se llama "pinecone" (se renombró de "pinecone-client").
+pinecone==10.0.0
+
+# Servidor HTTP real del chatbot (chatbot/main.py), consumido por frontend/
+fastapi
+uvicorn[standard]
+
+# Autenticación real (chatbot/auth.py): hasheo de contraseñas y firma de
+# tokens de sesión. sqlite3 (almacenamiento de usuarios) es de la stdlib.
+bcrypt==5.0.0
+itsdangerous==2.2.0
 
 # Dependencias del scraper de chatbot/scraping/scrape_servicios.py
 playwright
@@ -11,3 +24,20 @@ beautifulsoup4
 lxml
 markdownify
 pyyaml
+
+# Dependencias de chatbot/link_validation.py
+requests
+
+# Dependencias de chatbot/normativa_extraction.py (extracción del Corpus
+# Documental de Normativa ARCSA) y de chatbot/ocr_extraction.py (lectura de
+# PDF para el reporte previo; el resto de ocr_extraction.py, incluido
+# paddleocr, corre en un venv externo aparte, ver docstring del módulo)
+pymupdf  # nombre de import: fitz
+openpyxl
+pywin32; sys_platform == "win32"  # win32com.client, solo para .doc legacy vía COM; sin wheel Linux, rompe el build de Docker sin este marcador
+
+# Suite de tests (chatbot/tests/): fastapi.testclient.TestClient requiere
+# httpx (ya viene como dependencia transitiva de google-genai/llama-index-core,
+# se fija acá de forma explícita porque los tests dependen de él directamente).
+pytest==9.1.1
+httpx==0.28.1

@@ -1,20 +1,33 @@
+import math
 import os
+import time
+
 from dotenv import load_dotenv
+from google.genai import types
 from llama_index.core import Settings
 from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
-from llama_index.vector_stores.vertexaivectorsearch import VertexAIVectorStore
+from pinecone import Pinecone, ServerlessSpec
 
 # Cargar variables de entorno desde un archivo .env si existe
 load_dotenv()
 
-# Variables de entorno requeridas para Vertex AI Vector Search
+# Variables de entorno requeridas para Pinecone
 REQUIRED_ENV_VARS = [
-    "GOOGLE_CLOUD_PROJECT",
-    "GOOGLE_CLOUD_LOCATION",
-    "VERTEX_INDEX_ID",
-    "VERTEX_INDEX_ENDPOINT_ID",
-    "GCS_BUCKET_NAME",
+    "PINECONE_API_KEY",
 ]
+
+# "models/text-embedding-004" ya no existe para esta cuenta de la Gemini API
+# (404 NOT_FOUND); se usa gemini-embedding-001 truncado a 768 dimensiones. El
+# índice de Pinecone se crea con esa misma dimensión fija (ver get_vector_store()).
+EMBED_MODEL_NAME = "models/gemini-embedding-001"
+EMBED_DIMENSIONS = 768
+
+# Nombre fijo del índice de Pinecone (no hace falta que sea configurable: este
+# proyecto usa un único índice). Región fija en us-east-1/aws porque es la
+# única región soportada por el plan Starter (gratuito) de Pinecone.
+PINECONE_INDEX_NAME = "arcsa-rag-index"
+PINECONE_CLOUD = "aws"
+PINECONE_REGION = "us-east-1"
 
 
 def _get_required_env_vars() -> dict:
@@ -40,25 +53,59 @@ def configure_embeddings() -> GoogleGenAIEmbedding:
 
     print("Inicializando el modelo de embeddings de Google GenAI...")
 
-    # Configurar Gemini (text-embedding-004) como el modelo de embeddings por defecto en LlamaIndex
-    embed_model = GoogleGenAIEmbedding(model_name="models/text-embedding-004", api_key=api_key)
+    # Configurar gemini-embedding-001 (output_dimensionality=768) como el
+    # modelo de embeddings por defecto en LlamaIndex.
+    embed_model = GoogleGenAIEmbedding(
+        model_name=EMBED_MODEL_NAME,
+        api_key=api_key,
+        embedding_config=types.EmbedContentConfig(output_dimensionality=EMBED_DIMENSIONS),
+    )
     Settings.embed_model = embed_model
 
     return embed_model
 
 
-def get_vector_store() -> VertexAIVectorStore:
-    """Crea y retorna una instancia configurada de VertexAIVectorStore para usar con StorageContext."""
+def normalize_embedding(vector: list[float]) -> list[float]:
+    """Normaliza un embedding a norma 1: con output_dimensionality=768,
+    gemini-embedding-001 no devuelve vectores unitarios. Pinecone con
+    metric="cosine" normaliza internamente para el cálculo de similitud, pero
+    se normaliza igual acá para mantener consistencia con el resto del
+    pipeline (p. ej. si en algún momento se compara contra `metric="dotproduct"`)."""
+    norm = math.sqrt(sum(x * x for x in vector))
+    if norm == 0:
+        return vector
+    return [x / norm for x in vector]
+
+
+def get_pinecone_client() -> Pinecone:
+    """Crea el cliente de Pinecone a partir de PINECONE_API_KEY."""
     env = _get_required_env_vars()
+    return Pinecone(api_key=env["PINECONE_API_KEY"])
 
-    print("Inicializando el vector store de Vertex AI Vector Search...")
 
-    vector_store = VertexAIVectorStore(
-        project_id=env["GOOGLE_CLOUD_PROJECT"],
-        region=env["GOOGLE_CLOUD_LOCATION"],
-        index_id=env["VERTEX_INDEX_ID"],
-        endpoint_id=env["VERTEX_INDEX_ENDPOINT_ID"],
-        gcs_bucket_name=env["GCS_BUCKET_NAME"],
-    )
+def get_vector_store():
+    """Crea (si no existe) y retorna el índice de Pinecone ya listo para usar.
 
-    return vector_store
+    Reemplaza a Vertex AI Vector Search (ver docs/adr/0002-vertex-ai-vector-search.md
+    para la decisión original, y la sección de migración en la memoria del
+    proyecto para el motivo del cambio: se deshabilitó la facturación de GCP
+    por costo). A diferencia de Vertex, Pinecone es una única entidad "índice"
+    (no hay index + endpoint + bucket de staging separados), así que esta
+    función devuelve directamente el objeto índice, listo para upsert()/query().
+    """
+    pc = get_pinecone_client()
+
+    if not pc.has_index(name=PINECONE_INDEX_NAME):
+        print(f"Creando índice de Pinecone '{PINECONE_INDEX_NAME}' (dimension={EMBED_DIMENSIONS})...")
+        pc.create_index(
+            name=PINECONE_INDEX_NAME,
+            dimension=EMBED_DIMENSIONS,
+            metric="cosine",
+            spec=ServerlessSpec(cloud=PINECONE_CLOUD, region=PINECONE_REGION),
+        )
+        # create_index() es asíncrono del lado de Pinecone; hay que esperar a
+        # que el índice quede listo antes de poder usarlo (upsert/query).
+        while not pc.describe_index(PINECONE_INDEX_NAME).status["ready"]:
+            time.sleep(1)
+
+    return pc.Index(PINECONE_INDEX_NAME)

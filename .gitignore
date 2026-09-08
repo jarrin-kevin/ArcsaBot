@@ -1,6 +1,14 @@
 .env
 chatbot/secrets/
+chatbot/data/
 node_modules/
 .atl/
 __pycache__/
 *.pyc
+.pytest_cache/
+.venv/
+*.pid
+*.log
+frontend/dist/
+chatbot/scraping/*.bak-*
+chatbot/scraping/*.old-*
