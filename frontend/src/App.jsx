@@ -6,21 +6,19 @@ import { EmailVerification } from './components/auth/EmailVerification';
 import { Sidebar } from './components/chat/Sidebar';
 import { ChatWindow } from './components/chat/ChatWindow';
 import { MessageInput } from './components/chat/MessageInput';
-import { ApiKeyBanner } from './components/chat/ApiKeyBanner';
 import { Error401Banner } from './components/chat/Error401Banner';
 import { DeleteConfirmModal } from './components/chat/DeleteConfirmModal';
 import { RenameModal } from './components/chat/RenameModal';
 import { MobileDrawer } from './components/chat/MobileDrawer';
 import { RagSourcesDrawer } from './components/chat/RagSourcesDrawer';
 import { FeedbackModal } from './components/chat/FeedbackModal';
-import { SettingsPage } from './components/settings/SettingsPage';
 import { ProfilePage } from './components/profile/ProfilePage';
 import { HelpQuiz } from './components/help/HelpQuiz';
 import { useChat } from './hooks/useChat';
-import { Loader2, Menu, Zap } from 'lucide-react';
+import { Loader2, Menu, ShieldCheck } from 'lucide-react';
 
 const Dashboard = () => {
-  const [currentView, setCurrentView] = useState('chat'); // 'chat' | 'settings' | 'profile' | 'help'
+  const [currentView, setCurrentView] = useState('chat'); // 'chat' | 'profile' | 'help'
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [feedbackModalInfo, setFeedbackModalInfo] = useState(null);
   const [prefilledInputText, setPrefilledInputText] = useState('');
@@ -31,10 +29,6 @@ const Dashboard = () => {
     messages,
     loading,
     errorDetails,
-    apiKey,
-    setApiKey,
-    provider,
-    setProvider,
     searchQuery,
     setSearchQuery,
     pinnedIds,
@@ -64,9 +58,9 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#121314] font-sans text-zinc-100 antialiased">
+    <div className="flex h-screen w-screen overflow-hidden bg-surface-100 font-sans text-ink-900 antialiased">
       {/* Sidebar Fijo en Escritorio */}
-      <aside className="hidden w-64 shrink-0 border-r border-[#303136] bg-[#17181B] lg:flex lg:flex-col">
+      <aside className="hidden w-64 shrink-0 border-r border-line bg-surface-0 lg:flex lg:flex-col">
         <Sidebar
           conversations={conversations}
           activeId={activeId}
@@ -75,7 +69,6 @@ const Dashboard = () => {
           createNewChat={createNewChat}
           currentView={currentView}
           setCurrentView={setCurrentView}
-          apiKey={apiKey}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           pinnedIds={pinnedIds}
@@ -98,58 +91,42 @@ const Dashboard = () => {
       />
 
       {/* Contenido Principal */}
-      <main className="flex min-w-0 flex-1 flex-col h-full bg-[#121314] relative">
+      <main className="flex min-w-0 flex-1 flex-col h-full bg-surface-0 relative">
         {/* Encabezado Móvil (< lg) */}
-        <header className="flex items-center justify-between border-b border-[#303136] bg-[#17181B] px-4 py-3 lg:hidden shrink-0">
+        <header className="flex items-center justify-between border-b border-line bg-surface-0 px-4 py-3 lg:hidden shrink-0">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileDrawerOpen(true)}
               aria-label="Abrir menú"
-              className="text-zinc-300 hover:text-zinc-100 p-1"
+              className="text-ink-700 hover:text-ink-900 p-1"
             >
               <Menu className="h-5 w-5" />
             </button>
 
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1E3A6D]/50 text-[#2F6FED]">
-                <Zap className="h-4 w-4" />
+              <div className="flex h-6 w-6 items-center justify-center rounded bg-ink-900 text-accent">
+                <ShieldCheck className="h-4 w-4" />
               </div>
-              <span className="text-sm font-semibold text-zinc-100">Arcsa</span>
+              <span className="text-sm font-semibold font-display text-ink-900">Arcsa</span>
             </div>
           </div>
-
-          <button
-            onClick={() => setCurrentView(currentView === 'settings' ? 'chat' : 'settings')}
-            className="text-xs text-[#2F6FED] font-medium hover:underline"
-          >
-            {currentView === 'settings' ? 'Ver Chat' : 'Configuración'}
-          </button>
         </header>
 
         {/* Muestra ÚNICA de Alerta Superior */}
         {errorDetails && currentView === 'chat' ? (
           <Error401Banner
             errorDetails={errorDetails}
-            onGoToSettings={() => setCurrentView('settings')}
-            onRetry={() => sendMessage(messages[messages.length - 1]?.content || '')}
+            onRetry={() => {
+              const lastMessage = messages[messages.length - 1];
+              const lastMessageText = lastMessage?.content || (lastMessage?.parts && lastMessage.parts[0]?.text) || '';
+              sendMessage(lastMessageText);
+            }}
           />
-        ) : !apiKey && currentView === 'chat' ? (
-          <ApiKeyBanner onGoToSettings={() => setCurrentView('settings')} />
         ) : null}
 
         {/* Renderizado de Vistas */}
-        {currentView === 'settings' ? (
-          <SettingsPage
-            apiKey={apiKey}
-            setApiKey={setApiKey}
-            provider={provider}
-            setProvider={setProvider}
-            onBackToChat={() => setCurrentView('chat')}
-          />
-        ) : currentView === 'profile' ? (
+        {currentView === 'profile' ? (
           <ProfilePage
-            apiKey={apiKey}
-            setApiKey={setApiKey}
             onBackToChat={() => setCurrentView('chat')}
             onClearHistory={clearLocalHistory}
           />
@@ -222,10 +199,10 @@ const AuthGate = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#121314]">
+      <div className="min-h-screen flex items-center justify-center bg-surface-100">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="animate-spin text-[#2F6FED]" size={36} />
-          <p className="text-xs text-zinc-400 font-medium">Cargando tu asistente…</p>
+          <Loader2 className="animate-spin text-ink-700" size={36} />
+          <p className="text-xs text-ink-500 font-medium">Cargando tu asistente…</p>
         </div>
       </div>
     );

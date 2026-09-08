@@ -18,24 +18,18 @@ export class HttpChatTransport extends ChatTransport {
   /**
    * Ejecuta una petición HTTP POST con reintentos automáticos en caso de errores de red o rate limit (429).
    */
-  async sendMessages({ messages, apiKey, provider, abortSignal, customBody = {} }) {
+  async sendMessages({ messages, abortSignal, customBody = {} }) {
     const endpoint = `${this.api}/api/chat`;
 
     const headers = {
       'Content-Type': 'application/json',
     };
 
-    if (apiKey) {
-      headers['X-API-Key'] = apiKey;
-      headers['X-LLM-Provider'] = provider || 'OpenRouter';
-    }
-
     const lastMessage = messages[messages.length - 1];
     const userPrompt = lastMessage ? (lastMessage.content || (lastMessage.parts && lastMessage.parts[0]?.text) || '') : '';
 
     const body = JSON.stringify({
       message: userPrompt,
-      provider: provider || 'OpenRouter',
       messages,
       ...customBody
     });

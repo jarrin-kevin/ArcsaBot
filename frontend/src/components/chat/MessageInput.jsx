@@ -38,10 +38,10 @@ export const MessageInput = ({ onSendMessage, loading, prefilledText, setPrefill
   };
 
   return (
-    <div className="border-t border-[#303136] bg-[#121314] px-4 pb-4 pt-3 shrink-0">
+    <div className="border-t border-line bg-surface-0 px-4 pb-4 pt-3 shrink-0">
       <div className="mx-auto max-w-4xl">
         <form onSubmit={handleSubmit} className="relative">
-          <div className="flex items-end gap-2 rounded-xl border border-[#303136] bg-[#1C1D20] p-2 focus-within:border-[#2F6FED] transition-colors">
+          <div className="flex items-end gap-2 border border-line bg-surface-0 p-2 focus-within:border-accent transition-colors">
             <textarea
               ref={textareaRef}
               rows={1}
@@ -50,21 +50,21 @@ export const MessageInput = ({ onSendMessage, loading, prefilledText, setPrefill
               onKeyDown={handleKeyDown}
               placeholder="Pregunta lo que no sepas sobre normativas y trámites del ARCSA..."
               disabled={loading}
-              className="max-h-40 min-h-[40px] flex-1 resize-none bg-transparent px-3 py-2 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 disabled:opacity-50"
+              className="max-h-40 min-h-[40px] flex-1 resize-none bg-transparent px-3 py-2 text-sm text-ink-900 outline-none placeholder:text-ink-500 disabled:opacity-50"
             />
 
             <button
               type="submit"
               disabled={!text.trim() || loading}
               aria-label="Enviar consulta"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2F6FED] text-white transition hover:bg-[#255CC7] active:scale-95 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-600 disabled:scale-100"
+              className="flex h-9 w-9 shrink-0 items-center justify-center bg-accent text-white transition hover:bg-accent-hover active:scale-95 disabled:cursor-not-allowed disabled:bg-surface-200 disabled:text-ink-500 disabled:scale-100"
             >
               <ArrowUp className="h-4 w-4" />
             </button>
           </div>
         </form>
 
-        <p className="mt-2 text-center text-[11px] text-zinc-500">
+        <p className="mt-2 text-center text-[11px] text-ink-500">
           La información generada por IA puede contener errores. Verifica siempre la normativa y los trámites en fuentes oficiales de ARCSA.
         </p>
       </div>

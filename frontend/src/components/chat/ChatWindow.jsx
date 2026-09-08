@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Zap, Loader2, Copy, Check, FileText, RotateCcw, ThumbsUp, ThumbsDown, Square } from 'lucide-react';
+import { ShieldCheck, Loader2, Copy, Check, FileText, RotateCcw, ThumbsUp, ThumbsDown, Square } from 'lucide-react';
 import { SuggestionCards } from './SuggestionCards';
 import { MessageTextPart } from './parts/MessageTextPart';
 import { MessageReasoningPart } from './parts/MessageReasoningPart';
@@ -39,8 +39,8 @@ export const ChatWindow = ({
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-6 md:px-8 space-y-6 bg-[#121314] font-sans">
-      <div className="mx-auto w-full max-w-4xl space-y-6">
+    <div className="flex-1 overflow-y-auto px-4 py-8 md:px-8 space-y-8 bg-surface-0 font-sans">
+      <div className="mx-auto w-full max-w-4xl space-y-8">
         {messages.map((message, index) => {
           const isBot = message.role === 'assistant';
           const isLastMessage = index === messages.length - 1;
@@ -78,14 +78,14 @@ export const ChatWindow = ({
                 }`}
               >
                 {/* Header Asistente ARCSA */}
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-y-2">
                   <div className="flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1E3A6D]/50 text-[#2F6FED] border border-[#2F6FED]/30">
-                      <Zap className="h-3.5 w-3.5" />
+                    <div className="flex h-6 w-6 items-center justify-center bg-ink-900 text-accent">
+                      <ShieldCheck className="h-3.5 w-3.5" />
                     </div>
-                    <span className="text-xs font-semibold text-zinc-200">Asistente ARCSA</span>
+                    <span className="text-xs font-semibold text-ink-900">Asistente ARCSA</span>
                     {isSending && (
-                      <span className="text-[10px] bg-[#1E3A6D]/40 text-[#2F6FED] px-2 py-0.5 rounded-full border border-[#2F6FED]/20 animate-pulse">
+                      <span className="text-[10px] bg-ink-900/10 text-ink-700 px-2 py-0.5 rounded-full border border-ink-900/20 animate-pulse">
                         Enviando...
                       </span>
                     )}
@@ -93,49 +93,51 @@ export const ChatWindow = ({
 
                   {/* Acciones del mensaje */}
                   {!isError && !isSending && (
-                    <div className="flex items-center gap-1 text-xs text-zinc-400">
-                      <button
-                        onClick={() => handleCopy(message.id, messageText)}
-                        className="flex items-center gap-1 px-2 py-1 rounded hover:bg-[#202124] hover:text-zinc-200 transition"
-                        title="Copiar respuesta"
-                      >
-                        {copiedId === message.id ? <Check className="h-3.5 w-3.5 text-green-400" /> : <Copy className="h-3.5 w-3.5" />}
-                        <span>{copiedId === message.id ? 'Copiado' : 'Copiar'}</span>
-                      </button>
-
+                    <div className="flex items-center gap-2 text-xs text-ink-500">
                       {sourcesList && sourcesList.length > 0 && (
                         <button
                           onClick={() => onOpenSources(sourcesList)}
-                          className="flex items-center gap-1 px-2 py-1 rounded bg-[#1E3A6D]/30 border border-[#2F6FED]/40 text-[#2F6FED] hover:bg-[#1E3A6D]/60 transition"
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 border border-line bg-surface-0 text-ink-700 hover:bg-surface-100 transition font-semibold"
                         >
                           <FileText className="h-3.5 w-3.5" />
-                          <span className="font-semibold">Ver fuentes ({sourcesList.length})</span>
+                          <span>Ver fuentes ({sourcesList.length})</span>
                         </button>
                       )}
 
-                      <button
-                        onClick={() => onSendMessage(userPreviousQuery || messageText)}
-                        className="flex items-center gap-1 px-2 py-1 rounded hover:bg-[#202124] hover:text-zinc-200 transition"
-                        title="Regenerar respuesta"
-                      >
-                        <RotateCcw className="h-3.5 w-3.5" />
-                        <span>Regenerar</span>
-                      </button>
+                      <div className="flex items-center gap-0.5 border border-line bg-surface-100 p-0.5">
+                        <button
+                          onClick={() => handleCopy(message.id, messageText)}
+                          className="flex items-center gap-1 px-2 py-1.5 hover:bg-surface-200 hover:text-ink-900 transition"
+                          title="Copiar respuesta"
+                        >
+                          {copiedId === message.id ? <Check className="h-3.5 w-3.5 text-good" /> : <Copy className="h-3.5 w-3.5" />}
+                        </button>
 
-                      <button
-                        onClick={() => onOpenFeedback(message.id, 'up')}
-                        className="p-1 rounded hover:bg-[#202124] hover:text-green-400 transition"
-                        title="Útil"
-                      >
-                        <ThumbsUp className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        onClick={() => onOpenFeedback(message.id, 'down')}
-                        className="p-1 rounded hover:bg-[#202124] hover:text-red-400 transition"
-                        title="No útil"
-                      >
-                        <ThumbsDown className="h-3.5 w-3.5" />
-                      </button>
+                        <button
+                          onClick={() => onSendMessage(userPreviousQuery || messageText)}
+                          className="flex items-center gap-1 px-2 py-1.5 hover:bg-surface-200 hover:text-ink-900 transition"
+                          title="Regenerar respuesta"
+                        >
+                          <RotateCcw className="h-3.5 w-3.5" />
+                        </button>
+
+                        <div className="mx-0.5 h-4 w-px bg-line" />
+
+                        <button
+                          onClick={() => onOpenFeedback(message.id, 'up')}
+                          className="p-1.5 hover:bg-surface-200 hover:text-good transition"
+                          title="Útil"
+                        >
+                          <ThumbsUp className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          onClick={() => onOpenFeedback(message.id, 'down')}
+                          className="p-1.5 hover:bg-surface-200 hover:text-bad transition"
+                          title="No útil"
+                        >
+                          <ThumbsDown className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -157,7 +159,7 @@ export const ChatWindow = ({
                 {/* Chips de seguimiento */}
                 {isLastMessage && !loading && !isError && !isSending && (
                   <div className="pt-2">
-                    <p className="mb-2 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+                    <p className="mb-2 text-[11px] font-semibold text-ink-500 uppercase tracking-wider">
                       Consultas relacionadas:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -165,7 +167,7 @@ export const ChatWindow = ({
                         <button
                           key={idx}
                           onClick={() => onSendMessage(chip.query || chip.label)}
-                          className="rounded-lg border border-[#303136] bg-[#202124] px-3 py-1.5 text-xs text-zinc-300 transition hover:border-[#2F6FED] hover:bg-[#2A2C31] hover:text-zinc-100"
+                          className="border border-line bg-surface-0 px-3 py-1.5 text-xs text-ink-700 transition hover:border-ink-500 hover:bg-surface-100 hover:text-ink-900"
                         >
                           {chip.label}
                         </button>
@@ -180,8 +182,8 @@ export const ChatWindow = ({
           {/* Mensaje del Usuario */}
           return (
             <div key={message.id || index} className="flex justify-end animate-in fade-in duration-150">
-              <div className="ml-auto max-w-[80%] rounded-xl border border-[#303136] bg-[#202124] px-4 py-3 text-sm leading-6 text-zinc-100 shadow-sm">
-                <MessageTextPart text={messageText} isError={false} />
+              <div className="ml-auto max-w-[80%] bg-ink-900 px-4 py-3 text-sm leading-6 text-surface-0 shadow-sm">
+                <MessageTextPart text={messageText} isError={false} bare />
               </div>
             </div>
           );
@@ -191,24 +193,24 @@ export const ChatWindow = ({
         {loading && (
           <article className="max-w-3xl space-y-2">
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1E3A6D]/50 text-[#2F6FED]">
-                <Zap className="h-3.5 w-3.5" />
+              <div className="flex h-6 w-6 items-center justify-center bg-ink-900 text-accent">
+                <ShieldCheck className="h-3.5 w-3.5" />
               </div>
-              <span className="text-xs font-semibold text-zinc-200">Asistente ARCSA</span>
+              <span className="text-xs font-semibold text-ink-900">Asistente ARCSA</span>
             </div>
 
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#303136] bg-[#1C1D20] px-4 py-3 text-xs text-zinc-400">
+            <div className="flex items-center justify-between gap-3 border border-line bg-surface-100 px-4 py-3 text-xs text-ink-500 shadow-sm">
               <div className="flex items-center gap-2.5">
-                <Loader2 className="h-4 w-4 animate-spin text-[#2F6FED]" />
+                <Loader2 className="h-4 w-4 animate-spin text-ink-700" />
                 <span>La IA está procesando tu consulta...</span>
               </div>
 
               {onStopResponse && (
                 <button
                   onClick={onStopResponse}
-                  className="flex items-center gap-1 rounded border border-[#303136] bg-[#202124] px-2.5 py-1 text-xs font-medium text-zinc-300 hover:bg-[#2A2C31] hover:text-red-400 transition"
+                  className="flex items-center gap-1 border border-line bg-surface-0 px-2.5 py-1 text-xs font-medium text-ink-700 hover:bg-surface-100 hover:text-bad transition"
                 >
-                  <Square className="h-3 w-3 fill-current text-red-400" />
+                  <Square className="h-3 w-3 fill-current text-bad" />
                   <span>Detener respuesta</span>
                 </button>
               )}

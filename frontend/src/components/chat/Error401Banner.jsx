@@ -1,39 +1,32 @@
 import React from 'react';
-import { AlertCircle, RefreshCw, Edit3, ExternalLink } from 'lucide-react';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 
-export const Error401Banner = ({ errorDetails, onGoToSettings, onRetry }) => {
+export const Error401Banner = ({ errorDetails, onRetry }) => {
   if (!errorDetails) return null;
 
   const { code, message } = errorDetails;
 
   let title = 'Error de Conexión';
   let desc = message || 'Ocurrió un problema con el servicio de IA.';
-  let buttonLabel = 'Ir a Configuración';
-  let buttonIcon = <Edit3 className="h-3.5 w-3.5" />;
-  let actionFn = onGoToSettings;
+  let buttonLabel = 'Reintentar';
+  let buttonIcon = <RefreshCw className="h-3.5 w-3.5" />;
+  let actionFn = onRetry;
 
   if (code === 'INVALID_KEY') {
-    title = 'API Key no válida';
-    desc = 'La clave ingresada fue rechazada por el proveedor. Por favor edítala.';
-    buttonLabel = 'Editar API Key';
+    title = 'Error de autenticación con el proveedor de IA';
+    desc = 'El servidor no pudo autenticarse con el proveedor de IA. Contacta al administrador.';
   } else if (code === 'QUOTA_EXCEEDED') {
     title = 'Sin créditos / Cuota agotada';
-    desc = 'Tu cuenta en el proveedor de LLM se ha quedado sin saldo o créditos.';
-    buttonLabel = 'Revisar proveedor';
-    actionFn = () => window.open('https://openrouter.ai/credits', '_blank');
-    buttonIcon = <ExternalLink className="h-3.5 w-3.5" />;
+    desc = 'La cuenta del proveedor de IA configurada en el servidor se ha quedado sin saldo o créditos.';
+    buttonLabel = 'Reintentar más tarde';
   } else if (code === 'RATE_LIMIT') {
     title = 'Límite de solicitudes (Rate Limit 429)';
     desc = 'Se enviaron demasiadas peticiones seguidas. Espera unos segundos.';
     buttonLabel = 'Reintentar en unos segundos';
-    buttonIcon = <RefreshCw className="h-3.5 w-3.5" />;
-    actionFn = onRetry || onGoToSettings;
   } else if (code === 'NETWORK_ERROR') {
     title = 'Error de Red / Servidor';
     desc = 'No se pudo establecer conexión con el backend del chatbot.';
     buttonLabel = 'Reintentar';
-    buttonIcon = <RefreshCw className="h-3.5 w-3.5" />;
-    actionFn = onRetry || onGoToSettings;
   }
 
   return (

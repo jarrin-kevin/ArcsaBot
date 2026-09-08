@@ -16,15 +16,11 @@ export const useChat = () => {
   // useRef para mantener callbacks siempre frescos sin re-suscribir
   const callbacksRef = useRef({});
   callbacksRef.current = {
-    apiKey: storeSnapshot.apiKey,
-    provider: storeSnapshot.provider,
     activeId: storeSnapshot.activeId
   };
 
   return {
     ...storeSnapshot,
-    setApiKey: (key) => globalChatStore.setApiKey(key),
-    setProvider: (prov) => globalChatStore.setProvider(prov),
     setSearchQuery: (q) => globalChatStore.setSearchQuery(q),
     setRenameModalId: (id) => globalChatStore.setRenameModalId(id),
     setActiveSources: (s) => globalChatStore.setActiveSources(s),

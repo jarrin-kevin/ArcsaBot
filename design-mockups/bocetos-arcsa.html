@@ -1,0 +1,603 @@
+<title>Bocetos ARCSA</title>
+<style>
+  /* ============================================================
+     BOCETOS ARCSA — tres direcciones visuales completas, sobre
+     contenido real del proyecto (Notificación Sanitaria, VUE,
+     Resolución ARCSA-DE-2025-047-DASP, Art. 47/50).
+     Cada dirección es un mundo visual cerrado y deliberado — no
+     se adapta al tema claro/oscuro del visor, pinta sus propios
+     colores explícitamente en los tres casos.
+     ============================================================ */
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  :root,
+  :root[data-direction="a"] {
+    --ink-900: #0E2340;
+    --ink-700: #2C4A72;
+    --ink-500: #5C7699;
+    --surface-000: #F8F9F8;
+    --surface-100: #EEF0EF;
+    --surface-200: #E1E4E1;
+    --line: #CDD2CD;
+    --accent: #9C7A34;
+    --accent-ink: #FFFFFF;
+    --good: #3E7A4F;
+    --warn: #A9762B;
+    --bad: #A6402F;
+    --radius-s: 2px;
+    --radius-m: 3px;
+    --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+    --font-body: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-data: var(--font-body);
+  }
+
+  :root[data-direction="b"] {
+    --ink-900: #05201D;
+    --ink-700: #0E4B44;
+    --ink-500: #3E7A70;
+    --surface-000: #F1F5F4;
+    --surface-100: #E6ECEA;
+    --surface-200: #D8E1DE;
+    --line: #C3CFCC;
+    --accent: #157F70;
+    --accent-ink: #FFFFFF;
+    --good: #1C8C4E;
+    --warn: #B9832A;
+    --bad: #B4402E;
+    --radius-s: 0px;
+    --radius-m: 0px;
+    --font-display: "Segoe UI Semibold", -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-body: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-data: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+
+  :root[data-direction="c"] {
+    --ink-900: #3A2145;
+    --ink-700: #5B3A69;
+    --ink-500: #8A6C96;
+    --surface-000: #F6F3ED;
+    --surface-100: #EFEAE1;
+    --surface-200: #E4DED4;
+    --line: #DAD2C4;
+    --accent: #B6552F;
+    --accent-ink: #FFFFFF;
+    --good: #3F7D52;
+    --warn: #B08327;
+    --bad: #B23B3B;
+    --radius-s: 8px;
+    --radius-m: 12px;
+    --font-display: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-body: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --font-data: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  body {
+    background: var(--surface-100);
+    color: var(--ink-900);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- switcher ---------- */
+  .switcher-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem;
+    background: var(--ink-900);
+    color: var(--surface-000);
+    font-family: var(--font-body);
+  }
+  .switcher-bar .label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    opacity: 0.65;
+    margin-right: 0.25rem;
+  }
+  .switcher-bar .opts { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .switcher-bar button {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.28);
+    background: transparent;
+    color: var(--surface-000);
+    cursor: pointer;
+  }
+  .switcher-bar button[aria-pressed="true"] {
+    background: var(--surface-000);
+    color: var(--ink-900);
+    border-color: var(--surface-000);
+    font-weight: 600;
+  }
+  .switcher-bar button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .direction-name {
+    margin-left: auto;
+    font-size: 0.78rem;
+    opacity: 0.75;
+    font-style: italic;
+  }
+
+  /* ---------- app shell ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) 340px;
+    gap: 1px;
+    background: var(--line);
+    min-height: 100vh;
+  }
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar, .sources { display: none; }
+  }
+
+  .sidebar, .main, .sources { background: var(--surface-000); }
+
+  .sidebar { padding: 1.1rem 0.9rem; }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 1.4rem;
+  }
+  .brand .mark {
+    width: 30px; height: 30px;
+    border-radius: var(--radius-s);
+    background: var(--ink-900);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .brand .name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.15;
+    color: var(--ink-900);
+  }
+  .brand .sub {
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-500);
+  }
+
+  .new-chat {
+    width: 100%;
+    padding: 0.55rem 0.8rem;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    border-radius: var(--radius-m);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-bottom: 1.2rem;
+  }
+
+  .sidebar h3 {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-500);
+    margin: 0 0 0.5rem 0.1rem;
+    font-weight: 600;
+  }
+  .thread {
+    padding: 0.5rem 0.6rem;
+    border-radius: var(--radius-m);
+    font-size: 0.82rem;
+    color: var(--ink-700);
+    margin-bottom: 0.15rem;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+  .thread.active { background: var(--surface-200); color: var(--ink-900); font-weight: 600; }
+  .thread:hover:not(.active) { background: var(--surface-100); }
+
+  /* ---------- main column ---------- */
+  .main { display: flex; flex-direction: column; }
+  .main-header {
+    padding: 1rem 1.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .main-header .eyebrow {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+  .main-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    margin: 0;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+
+  .thread-body { padding: 1.4rem 1.6rem; flex: 1; }
+
+  .msg { max-width: 640px; margin-bottom: 1.1rem; }
+  .msg.user { margin-left: auto; }
+  .msg .bubble {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-m);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .msg.user .bubble {
+    background: var(--ink-900);
+    color: var(--surface-000);
+  }
+  .msg.bot .bubble {
+    background: var(--surface-100);
+    border: 1px solid var(--line);
+    color: var(--ink-900);
+  }
+  .msg.bot .bubble p { margin: 0 0 0.65rem 0; }
+  .msg.bot .bubble p:last-child { margin-bottom: 0; }
+  .msg.bot .bubble ul { margin: 0.4rem 0 0.65rem 1.1rem; padding: 0; }
+  .msg.bot .bubble li { margin-bottom: 0.25rem; }
+
+  .cite-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem; height: 1.2rem;
+    font-size: 0.62rem;
+    font-family: var(--font-data);
+    font-variant-numeric: tabular-nums;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    margin-left: 0.15rem;
+    position: relative;
+    top: -1px;
+  }
+
+  .sources-toggle {
+    margin-top: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-700);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 0.35rem 0.7rem;
+    background: var(--surface-000);
+    cursor: pointer;
+  }
+
+  .composer {
+    padding: 1rem 1.6rem 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+  .composer .row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 0.55rem 0.7rem;
+    background: var(--surface-000);
+  }
+  .composer input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+    background: transparent;
+    color: var(--ink-900);
+  }
+  .composer button {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    border-radius: var(--radius-s);
+    padding: 0.4rem 0.9rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .composer .hint {
+    font-size: 0.68rem;
+    color: var(--ink-500);
+    margin-top: 0.45rem;
+  }
+
+  /* ---------- low-confidence strip ---------- */
+  .lowconf {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    max-width: 640px;
+    margin: 0 0 1.1rem 0;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-m);
+    border: 1px solid var(--warn);
+    background: color-mix(in srgb, var(--warn) 12%, var(--surface-000));
+    font-size: 0.8rem;
+    color: var(--ink-900);
+  }
+  .lowconf .dot {
+    width: 0.5rem; height: 0.5rem;
+    border-radius: 50%;
+    background: var(--warn);
+    margin-top: 0.35rem;
+    flex: none;
+  }
+
+  /* ---------- sources panel ---------- */
+  .sources { padding: 1.2rem 1.1rem; }
+  .sources-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+  }
+  .sources-head h2 {
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    margin: 0;
+    color: var(--ink-900);
+  }
+  .sources-head .count {
+    font-family: var(--font-data);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.75rem;
+    color: var(--ink-500);
+  }
+
+  .source-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 0.85rem;
+    margin-bottom: 0.75rem;
+    background: var(--surface-000);
+  }
+  .source-card .top {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    margin-bottom: 0.45rem;
+  }
+  .source-card .badge {
+    flex: none;
+    width: 1.35rem; height: 1.35rem;
+    border-radius: 50%;
+    background: var(--ink-900);
+    color: var(--surface-000);
+    font-family: var(--font-data);
+    font-size: 0.7rem;
+    display: flex; align-items: center; justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .source-card .title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.86rem;
+    line-height: 1.3;
+    color: var(--ink-900);
+  }
+  .source-card .entity {
+    font-size: 0.72rem;
+    color: var(--ink-500);
+    margin-top: 0.1rem;
+  }
+  .pill {
+    display: inline-block;
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    padding: 0.12rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--good) 16%, var(--surface-000));
+    color: var(--good);
+    margin: 0.3rem 0 0.5rem;
+  }
+  .source-card blockquote {
+    margin: 0 0 0.55rem;
+    padding-left: 0.6rem;
+    border-left: 2px solid var(--accent);
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--ink-700);
+    line-height: 1.45;
+  }
+  .source-card a {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-card a:hover { text-decoration: underline; }
+
+  .plan-note {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 3rem;
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    color: var(--ink-700);
+    line-height: 1.6;
+  }
+  .plan-note h2 {
+    font-family: var(--font-display);
+    color: var(--ink-900);
+    font-size: 1.05rem;
+  }
+  .plan-note code {
+    font-family: var(--font-data);
+    background: var(--surface-200);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.82rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .thread, .switcher-bar button, .new-chat, .composer button { transition: background-color 120ms ease, color 120ms ease; }
+  }
+</style>
+
+<div class="switcher-bar">
+  <span class="label">Dirección visual</span>
+  <div class="opts" role="group" aria-label="Elegir dirección visual">
+    <button type="button" data-dir="a" aria-pressed="true">A · Sello Oficial</button>
+    <button type="button" data-dir="b" aria-pressed="false">B · Terminal Sanitario</button>
+    <button type="button" data-dir="c" aria-pressed="false">C · Mesa de Atención</button>
+  </div>
+  <span class="direction-name" id="direction-caption">Registro Oficial: navy institucional, serif de archivo, acento dorado de sello.</span>
+</div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">A</div>
+      <div>
+        <div class="name">Asistente ARCSA</div>
+        <div class="sub">Consultas normativas</div>
+      </div>
+    </div>
+    <button class="new-chat" type="button">+ Nueva consulta</button>
+    <h3>Recientes</h3>
+    <div class="thread active">Notificación Sanitaria — dispositivos médicos VUE</div>
+    <div class="thread">Certificado BPM productos cosméticos</div>
+    <div class="thread">Plazo de reinscripción — registro sanitario</div>
+    <div class="thread">Tarifa NS-Simplificada, microempresa</div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <div class="eyebrow">Consulta normativa</div>
+      <h1>Notificación Sanitaria Obligatoria — dispositivos médicos</h1>
+    </div>
+
+    <div class="thread-body">
+      <div class="msg user">
+        <div class="bubble">¿Cuáles son los requisitos para obtener la Notificación Sanitaria Obligatoria de un dispositivo médico a través de la Ventanilla Única Ecuatoriana?</div>
+      </div>
+
+      <div class="msg bot">
+        <div class="bubble">
+          <p>Para la Notificación Sanitaria Obligatoria de un dispositivo médico vía VUE, la Resolución ARCSA-DE-2025-047-DASP establece el procedimiento vigente<span class="cite-chip">1</span>:</p>
+          <ul>
+            <li>Formulario de solicitud con la información técnica del dispositivo<span class="cite-chip">2</span></li>
+            <li>Certificado de Buenas Prácticas de Manufactura del fabricante<span class="cite-chip">3</span></li>
+            <li>Certificado de Requerimiento o No de Registro Sanitario, cuando aplique<span class="cite-chip">4</span></li>
+          </ul>
+          <p>El trámite se presenta directamente en la VUE; ARCSA no exige presentación física adicional del expediente.</p>
+          <button class="sources-toggle" type="button">📄 Ver fuentes (4)</button>
+        </div>
+      </div>
+
+      <div class="lowconf">
+        <div class="dot"></div>
+        <div><strong>Confianza baja:</strong> la normativa indexada no cubre este caso específico con precisión. Verificá directamente con ARCSA antes de proceder.</div>
+      </div>
+    </div>
+
+    <div class="composer">
+      <div class="row">
+        <input type="text" placeholder="Preguntá sobre un trámite, artículo o resolución de ARCSA…" />
+        <button type="button">Enviar</button>
+      </div>
+      <div class="hint">Las respuestas citan Artículos y Resoluciones vigentes. Verificá siempre contra la fuente oficial.</div>
+    </div>
+  </main>
+
+  <aside class="sources">
+    <div class="sources-head">
+      <h2>Fuentes citadas</h2>
+      <span class="count">4 documentos</span>
+    </div>
+
+    <div class="source-card">
+      <div class="top">
+        <div class="badge">1</div>
+        <div>
+          <div class="title">Resolución ARCSA-DE-2025-047-DASP</div>
+          <div class="entity">Agencia Nacional de Regulación, Control y Vigilancia Sanitaria</div>
+        </div>
+      </div>
+      <span class="pill">Vigente</span>
+      <blockquote>"Art. 5.- Sustitúyase del Capítulo IV 'Del Procedimiento', el artículo 8, por el siguiente…"</blockquote>
+      <a href="#">Ver fuente oficial en ARCSA →</a>
+    </div>
+
+    <div class="source-card">
+      <div class="top">
+        <div class="badge">2</div>
+        <div>
+          <div class="title">Art. 47 — Requisitos técnicos del dispositivo</div>
+          <div class="entity">Normativa de Dispositivos Médicos</div>
+        </div>
+      </div>
+      <span class="pill">Vigente</span>
+      <blockquote>"…el solicitante deberá adjuntar la ficha técnica completa del dispositivo médico, incluyendo…"</blockquote>
+      <a href="#">Ver fuente oficial en ARCSA →</a>
+    </div>
+
+    <div class="source-card">
+      <div class="top">
+        <div class="badge">3</div>
+        <div>
+          <div class="title">Certificado de Buenas Prácticas de Manufactura</div>
+          <div class="entity">Productos Cosméticos y Dispositivos Médicos</div>
+        </div>
+      </div>
+      <span class="pill">Vigente</span>
+      <blockquote>"El certificado BPM del fabricante extranjero debe estar apostillado o legalizado…"</blockquote>
+      <a href="#">Ver fuente oficial en ARCSA →</a>
+    </div>
+  </aside>
+</div>
+
+<div class="plan-note">
+  <h2>Cómo leer estos tres bocetos</h2>
+  <p><strong>A · Sello Oficial</strong> — navy institucional (<code>#0E2340</code>) sobre papel frío, serif de archivo para títulos, acento dorado de sello (<code>#9C7A34</code>), esquinas casi rectas. Evoca el Registro Oficial: formal, permanente, de fiar.</p>
+  <p><strong>B · Terminal Sanitario</strong> — verde-azulado profundo (<code>#05201D</code>), tipografía técnica y datos en monoespaciada (fechas, números de resolución, códigos), esquinas a 90°, densidad de panel de laboratorio. Se siente preciso y auditable.</p>
+  <p><strong>C · Mesa de Atención</strong> — ciruela cálido (<code>#3A2145</code>) sobre piedra clara, sans geométrica en títulos + serif humanista en el cuerpo (invierte el par habitual), esquinas más suaves solo en botones y chips. Se siente como hablar con un funcionario que te ayuda, no con una terminal.</p>
+  <p>El contenido (la pregunta, la respuesta, las 3 fuentes) es el mismo en las tres — lo que cambia es exclusivamente el sistema visual. Elegí una dirección, o pedime mezclar elementos puntuales de más de una antes de llevarlo al frontend real.</p>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var buttons = document.querySelectorAll(".switcher-bar button[data-dir]");
+    var caption = document.getElementById("direction-caption");
+    var captions = {
+      a: "Registro Oficial: navy institucional, serif de archivo, acento dorado de sello.",
+      b: "Terminal Sanitario: verde-azulado técnico, datos en monoespaciada, esquinas rectas.",
+      c: "Mesa de Atención: ciruela cálido, sans geométrica + serif humanista, tono cercano."
+    };
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var dir = btn.getAttribute("data-dir");
+        root.setAttribute("data-direction", dir);
+        buttons.forEach(function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+        caption.textContent = captions[dir];
+        var mark = document.querySelector(".brand .mark");
+        if (mark) { mark.textContent = dir.toUpperCase(); }
+      });
+    });
+  })();
+</script>
