@@ -12,3 +12,6 @@ __pycache__/
 frontend/dist/
 chatbot/scraping/*.bak-*
 chatbot/scraping/*.old-*
+chatbot/scraping/*report*.json*
+chatbot/scraping/capture_summary.json
+chatbot/scraping/excluded_pages.json
