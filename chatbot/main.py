@@ -272,6 +272,90 @@ def _is_low_confidence(chunks: list[dict]) -> bool:
 
 
 # ---------------------------------------------------------------------------
+# Filtrado de fuentes citadas por relevancia INDIVIDUAL (por chunk)
+# ---------------------------------------------------------------------------
+# Bug real, medido empíricamente (evaluación documentada en
+# chatbot/eval/RESULTADOS.md, tag `tfe-evaluacion`): antes de este cambio,
+# TODOS los chunks recuperados (top_k=5 de Pinecone) se convertían en fuente
+# citada en /api/chat sin excepción — `_is_low_confidence()` ya calculaba una
+# señal de similitud, pero sólo la del MEJOR vecino, para decidir un flag
+# GLOBAL (isLowConfidence); nunca se usó para decidir, chunk por chunk, cuáles
+# de los 5 merecían citarse. Resultado medido en chatbot/eval/exactitud_cita.json:
+# de 120 fuentes citadas evaluadas, sólo 34.2% respaldaba de verdad la
+# afirmación (criterio 2) y sólo 45% aplicaba de verdad al caso consultado
+# (criterio 5) — el patrón típico era citar 5 fuentes en bloque cuando en
+# realidad sólo 1-2 eran relevantes.
+#
+# Umbral elegido: se reutiliza el mismo SIMILARITY_THRESHOLD (0.70) ya
+# calibrado más arriba, en vez de inventar un segundo número, aplicándolo por
+# chunk en lugar de sólo al máximo. Esto SÍ es una mejora real y segura
+# (nunca cita más fuentes que antes, nunca calla una que ya pasaba el propio
+# umbral de confianza del sistema) pero es importante ser honestos sobre su
+# alcance real, verificado con los datos de la propia evaluación:
+#
+#   Se cruzaron los veredictos de criterio_2/criterio_5 de
+#   chatbot/eval/exactitud_cita.json (120 fuentes, 24 casos) contra la
+#   `distance` real de cada una en chatbot/eval/traces.jsonl. Resultado:
+#     - Fuentes REALMENTE relevantes (criterio_2 Y criterio_5 = true, n=35):
+#       distance mínima 0.7250, máxima 0.8461, media 0.7668.
+#     - Fuentes NO relevantes (n=85): distance mínima 0.7243, máxima 0.8203,
+#       media 0.7584.
+#   Es decir, dentro de una recuperación EN DOMINIO (una pregunta real de
+#   ARCSA, no una completamente ajena tipo "receta de ceviche"), la similitud
+#   coseno de un chunk individual casi no separa lo relevante de lo que no lo
+#   es: los rangos se solapan casi por completo y la diferencia de medias
+#   (0.0084) es ínfima frente a esa dispersión. Confirmado también sobre los
+#   40 casos completos de golden_set.json: de los 32 casos "en dominio"
+#   (ejes producto/tramite/establecimiento/codigo), NINGUNO tiene un chunk
+#   individual por debajo de 0.70 en su top-5 — este filtro no cambia nada
+#   en esos casos. Donde sí actúa (y evita citas que antes eran una
+#   contradicción lógica del propio sistema) es en preguntas fuera de
+#   dominio o de confianza ya baja en conjunto: ahí, con este cambio, deja
+#   de citarse como "fuente" un chunk que ni siquiera el propio sistema
+#   consideraría creíble si fuera el único candidato.
+#
+#   Conclusión honesta: este filtro por umbral de similitud NO resuelve por
+#   sí solo el hallazgo del 34.2%/45% para preguntas en dominio (para eso
+#   haría falta un mecanismo que sí pueda distinguir "relevante" de "sólo
+#   temáticamente parecido" a nivel de contenido, p. ej. un juez LLM o un
+#   reranker por cada chunk contra la pregunta — no una similitud coseno
+#   global de embeddings, que estructuralmente no tiene esa resolución en
+#   este corpus). Sí es una mejora real, acotada y sin riesgo de regresión
+#   dentro de su alcance (preguntas fuera de dominio / de baja confianza
+#   agregada), que es exactamente el mismo terreno donde ya opera
+#   SIMILARITY_THRESHOLD para is_low_confidence.
+def _filter_citable_sources(chunks: list[dict]) -> list[tuple[int, dict]]:
+    """Devuelve pares (índice_original_1-based, chunk) sólo para los chunks
+    cuya `distance` individual alcanza SIMILARITY_THRESHOLD.
+
+    Se preserva el índice ORIGINAL (posición dentro de los `chunks` pasados
+    a `_build_grounded_prompt`, no una renumeración 1..n del subconjunto)
+    porque ese mismo número es el que ve Gemini como "Fuente N" en el
+    CONTEXTO del prompt: si el modelo dice "según la Fuente 3", ese 3 debe
+    seguir señalando al mismo chunk en la lista de `sources` que recibe el
+    frontend.
+
+    Si NINGÚN chunk supera el umbral se devuelve una lista vacía a
+    propósito, sin forzar "el mejor de los 5" como fallback: ese escenario
+    equivale exactamente a `_is_low_confidence()=True` (el máximo de las
+    distancias —que es la de este mismo "mejor" chunk— también quedaría por
+    debajo del mismo umbral), caso en el que el prompt ya le agrega a Gemini
+    la advertencia de baja confianza para que responda con cautela o
+    directamente indique que no tiene información suficiente. Citar ahí una
+    fuente que no pasó ni su propio umbral de relevancia repetiría el mismo
+    bug que se está arreglando (presentar como evidencia validada algo que
+    el propio sistema ya no considera confiable); es más coherente devolver
+    0 fuentes, igual que ya hace el camino de "0 chunks recuperados" en
+    chat() más abajo.
+    """
+    return [
+        (i, chunk)
+        for i, chunk in enumerate(chunks, start=1)
+        if chunk.get("distance", 0.0) >= SIMILARITY_THRESHOLD
+    ]
+
+
+# ---------------------------------------------------------------------------
 # Construcción del prompt "grounded" y de las fuentes citadas
 # ---------------------------------------------------------------------------
 
@@ -492,7 +576,15 @@ def chat(payload: ChatRequest):
             "officialUrl": OFFICIAL_ARCSA_URL,
         }
 
-    sources = [_build_source_citation(chunk, i) for i, chunk in enumerate(chunks, start=1)]
+    citable_sources = _filter_citable_sources(chunks)
+    sources = [_build_source_citation(chunk, i) for i, chunk in citable_sources]
+    if len(sources) < len(chunks):
+        logger.info(
+            f"Se citan {len(sources)}/{len(chunks)} chunks recuperados como fuente "
+            f"(el resto no alcanzó SIMILARITY_THRESHOLD={SIMILARITY_THRESHOLD} de "
+            f"relevancia individual, ver _filter_citable_sources) para la consulta "
+            f"{question!r}."
+        )
     is_low_confidence = _is_low_confidence(chunks)
     if is_low_confidence:
         best_distance = max(chunk.get("distance", 0.0) for chunk in chunks)
