@@ -47,11 +47,9 @@ async function apiRequest(path, options = {}) {
 }
 
 /**
- * Convierte el resumen de conversación que devuelve GET /api/conversations
- * en el "stub" que maneja el store. `messages: null` es el centinela de
- * "todavía no se cargaron los mensajes de esta conversación" (se cargan
- * recién al seleccionarla, ver _ensureMessagesLoaded) — a diferencia de
- * `messages: []`, que sí significa "cargados, y no tiene ninguno".
+ * Convierte el resumen de GET /api/conversations al stub del store.
+ * `messages: null` = "aún no cargados" (ver _ensureMessagesLoaded);
+ * `messages: []` = "cargados, sin ninguno".
  */
 function backendSummaryToConversationStub(c) {
   return {
@@ -82,31 +80,21 @@ function backendMessageToUiMessage(msg) {
 
 /**
  * ChatStore.js
- * Controlador de estado agnóstico fuera de React.
- * Aplica patrones Senior Frontend:
- * - Inyección de dependencias para el transporte
- * - Snapshot memoizado para suscripción eficiente en React 18 (useSyncExternalStore)
+ * Controlador de estado agnóstico fuera de React (inyección de dependencias
+ * para el transporte + snapshot memoizado para useSyncExternalStore de
+ * React 18).
  *
- * Persistencia de historial (backend real, atada al usuario logueado):
- * ----------------------------------------------------------------------
- * - Con sesión iniciada (hay 'chat_token' en localStorage, ver AuthContext):
- *   el historial vive en chatbot/data/users.db vía chatbot/conversations.py
- *   (GET/POST /api/conversations, GET/DELETE /api/conversations/{id},
- *   POST /api/conversations/{id}/messages). Una conversación nueva
- *   (createNewChat) es sólo local hasta que se envía su primer mensaje: ahí
- *   recién se crea en el backend (_ensurePersistedConversation), para no
- *   ensuciar el historial real con conversaciones vacías por cada click en
- *   "Nueva Consulta" que el usuario nunca llega a usar.
- * - Sin sesión iniciada: no hay a qué usuario atar el historial, así que se
- *   sigue permitiendo chatear con normalidad pero SIN persistencia real —
- *   sólo en memoria de este ChatStore (se pierde al recargar la página).
- *   Deliberadamente NO se usa localStorage/sessionStorage como respaldo acá:
- *   simular persistencia para un usuario anónimo confundiría con el
- *   historial real de un usuario logueado (ver `_persisted` más abajo).
- * - Si una llamada de persistencia falla (backend caído, red, etc.) se
- *   registra un warning en consola pero la conversación sigue funcionando
- *   con normalidad en memoria para esa sesión del navegador: la
- *   persistencia nunca debe romper la experiencia de chat.
+ * Persistencia de historial, atada al usuario logueado:
+ * - Con sesión ('chat_token' en localStorage, ver AuthContext): el
+ *   historial vive en chatbot/data/users.db vía chatbot/conversations.py.
+ *   Un chat nuevo es sólo local hasta el primer mensaje real (ver
+ *   _ensurePersistedConversation), para no crear conversaciones vacías.
+ * - Sin sesión: se sigue chateando con normalidad pero sólo en memoria
+ *   (sin respaldo en localStorage, para no confundirse con el historial
+ *   real de un usuario logueado — ver `_persisted`).
+ * - Si falla una llamada de persistencia, se loguea un warning pero el
+ *   chat sigue funcionando en memoria: la persistencia nunca debe romper
+ *   la experiencia de usuario.
  */
 export class ChatStore {
   constructor(options = {}) {
@@ -178,11 +166,9 @@ export class ChatStore {
   }
 
   /**
-   * Carga inicial del historial. Con sesión iniciada, trae la lista real de
-   * conversaciones del usuario desde el backend (chatbot/conversations.py) y
-   * precarga los mensajes de la más reciente. Sin sesión, o si el backend no
-   * responde, arranca con un chat nuevo en memoria (ver docstring de la
-   * clase para la justificación de este fallback).
+   * Carga inicial: con sesión trae conversaciones reales del backend y
+   * precarga la más reciente; sin sesión o si el backend falla, arranca
+   * con un chat nuevo en memoria (ver docstring de la clase).
    */
   async init() {
     this.loading = true;
@@ -219,10 +205,9 @@ export class ChatStore {
   }
 
   /**
-   * Carga perezosa de los mensajes de una conversación ya persistida (sólo
-   * la primera vez que se selecciona/activa; luego queda cacheada en
-   * memoria). No hace nada para chats locales todavía no persistidos ni
-   * para conversaciones cuyos mensajes ya se cargaron antes.
+   * Carga perezosa de mensajes de una conversación persistida (sólo la
+   * primera vez; luego queda cacheada). No hace nada para chats locales
+   * ni para conversaciones ya cargadas.
    */
   async _ensureMessagesLoaded(id) {
     const chat = this.conversations.find(c => c.id === id);
@@ -240,11 +225,9 @@ export class ChatStore {
   }
 
   /**
-   * Crea la conversación activa en el backend si todavía no existe ahí
-   * (primer mensaje real que envía, ver docstring de la clase). Devuelve el
-   * id real (backend) a usar para persistir mensajes, o `null` si no hay
-   * sesión iniciada o si la creación falló (en ambos casos el chat sigue
-   * funcionando normalmente, sólo que en memoria).
+   * Crea la conversación activa en el backend si aún no existe (primer
+   * mensaje real, ver docstring de la clase). Devuelve el id real, o
+   * `null` si no hay sesión o la creación falló (el chat sigue en memoria).
    */
   async _ensurePersistedConversation(title) {
     const chat = this.conversations.find(c => c.id === this.activeId);
@@ -312,16 +295,11 @@ export class ChatStore {
   }
 
   /**
-   * `globalChatStore` es un singleton construido una sola vez al cargar el
-   * módulo (ver el final de este archivo), momento en el que init() ya leyó
-   * el 'chat_token' que hubiera en localStorage en ese instante. Eso alcanza
-   * para el caso de "recargar la página con una sesión ya guardada", pero NO
-   * para un login/signup/logout hecho en caliente dentro de la misma SPA sin
-   * recargar: frontend/src/context/AuthContext.jsx llama a este método justo
-   * después de escribir/borrar 'chat_token' en esos 3 casos, para que el
-   * store vuelva a resolver "de quién es este historial" con el token
-   * actualizado. Sin esto, el historial de un usuario podría seguir
-   * visible después de que otro usuario inicia sesión en la misma pestaña.
+   * `globalChatStore` es un singleton que sólo lee 'chat_token' una vez, al
+   * cargar el módulo. AuthContext.jsx llama a este método tras cada
+   * login/signup/logout en caliente para que el store vuelva a resolver el
+   * historial con el token actualizado — si no, el historial de un usuario
+   * podría seguir visible tras el login de otro en la misma pestaña.
    */
   resetForAuthChange() {
     if (this.abortController) {
@@ -356,10 +334,9 @@ export class ChatStore {
   }
 
   /**
-   * Crea un chat nuevo SOLO en memoria (con id temporal `local-...`); recién
-   * se crea en el backend cuando se envía su primer mensaje (ver
-   * _ensurePersistedConversation), para no ensuciar el historial real con
-   * conversaciones vacías.
+   * Crea un chat nuevo sólo en memoria (id temporal `local-...`); recién se
+   * persiste en el backend al enviar el primer mensaje real (ver
+   * _ensurePersistedConversation), para no crear conversaciones vacías.
    */
   createNewChat() {
     const newChat = {
@@ -390,10 +367,8 @@ export class ChatStore {
     this.notify();
   }
 
-  // NOTA: el renombre de una conversación sólo se aplica en memoria — no hay
-  // un endpoint de backend para persistir el título (fuera del alcance
-  // acordado, ver informe final de la tarea). Un refresh de página vuelve a
-  // mostrar el título original con el que se creó la conversación.
+  // El renombre sólo se aplica en memoria: no hay endpoint de backend para
+  // persistir el título, así que un refresh muestra el título original.
   renameConversation(id, newTitle) {
     this.conversations = this.conversations.map(c =>
       c.id === id ? { ...c, title: newTitle } : c
@@ -439,10 +414,9 @@ export class ChatStore {
   }
 
   /**
-   * Borra TODO el historial de conversaciones del usuario actual, tanto en
-   * el backend (una llamada DELETE por conversación persistida) como en
-   * memoria, y arranca un chat nuevo. Ver ProfilePage.jsx ("Borrar historial
-   * local de consultas"), que es el único lugar que la invoca.
+   * Borra todo el historial del usuario actual (backend y memoria) y
+   * arranca un chat nuevo. Invocado desde ProfilePage.jsx ("Borrar
+   * historial local de consultas").
    */
   async clearLocalHistory() {
     const persistedIds = this.conversations.filter(c => c._persisted).map(c => c.id);

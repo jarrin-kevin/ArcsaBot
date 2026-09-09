@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Mail, Lock, Loader2, ArrowRight, ShieldCheck } from 'lucide-react';
 
-export const LoginForm = ({ onForgotPassword, onNeedVerification }) => {
+export const LoginForm = ({ onForgotPassword }) => {
   const { login, signup } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -19,10 +19,10 @@ export const LoginForm = ({ onForgotPassword, onNeedVerification }) => {
       if (isLogin) {
         await login(email, password);
       } else {
+        // signup() ya deja al usuario logueado (chatbot/auth.py entrega la
+        // sesión en el mismo POST /api/auth/signup, sin verificación de
+        // correo) — no hay ningún paso adicional que disparar acá.
         await signup(email, password);
-        if (onNeedVerification) {
-          onNeedVerification(email);
-        }
       }
     } catch (err) {
       setError(err.message || 'Ocurrió un error. Inténtalo de nuevo.');
@@ -126,7 +126,10 @@ export const LoginForm = ({ onForgotPassword, onNeedVerification }) => {
           <p className="text-ink-500 text-xs">
             {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes una cuenta?'}
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError('');
+              }}
               className="text-accent hover:underline ml-1.5 font-medium transition-colors"
             >
               {isLogin ? 'Regístrate aquí' : 'Inicia sesión'}

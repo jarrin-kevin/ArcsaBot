@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LoginForm } from './components/auth/LoginForm';
 import { ForgotPassword } from './components/auth/ForgotPassword';
-import { EmailVerification } from './components/auth/EmailVerification';
 import { Sidebar } from './components/chat/Sidebar';
 import { ChatWindow } from './components/chat/ChatWindow';
 import { MessageInput } from './components/chat/MessageInput';
@@ -195,7 +194,16 @@ const Dashboard = () => {
 const AuthGate = () => {
   const { user, loading } = useAuth();
   const [authState, setAuthState] = useState('login');
-  const [verifyEmail, setVerifyEmail] = useState('');
+
+  // authState vive en este componente, que nunca se desmonta entre login y
+  // logout: sin este reset, un logout heredaría cualquier pantalla auxiliar
+  // (p.ej. "forgot") en la que el usuario haya quedado antes de autenticarse,
+  // en vez de ir siempre directo a login en un solo click.
+  useEffect(() => {
+    if (!user) {
+      setAuthState('login');
+    }
+  }, [user]);
 
   if (loading) {
     return (
@@ -212,18 +220,14 @@ const AuthGate = () => {
     if (authState === 'forgot') {
       return <ForgotPassword onBackToLogin={() => setAuthState('login')} />;
     }
-    if (authState === 'verify') {
-      return <EmailVerification email={verifyEmail} onBackToLogin={() => setAuthState('login')} />;
-    }
-    return (
-      <LoginForm
-        onForgotPassword={() => setAuthState('forgot')}
-        onNeedVerification={(email) => {
-          setVerifyEmail(email);
-          setAuthState('verify');
-        }}
-      />
-    );
+    // No hay un paso de "verificar tu correo" real: chatbot/auth.py crea la
+    // cuenta y entrega la sesión en el mismo POST /api/auth/signup, sin
+    // ningún flag de verificación ni envío de email. Antes había acá una
+    // pantalla EmailVerification que afirmaba "hemos enviado un enlace de
+    // confirmación" sin que nunca se enviara nada (mock heredado del
+    // sistema 100% client-side previo) — se quitó para no mentirle al
+    // usuario sobre un correo que jamás existió.
+    return <LoginForm onForgotPassword={() => setAuthState('forgot')} />;
   }
 
   return <Dashboard />;

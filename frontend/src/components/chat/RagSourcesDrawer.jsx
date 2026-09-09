@@ -71,7 +71,7 @@ export const RagSourcesDrawer = ({ sources, onClose }) => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Calendar className="h-3.5 w-3.5 text-ink-500 shrink-0" />
-                      <span className="break-words">{src.validityDate}</span>
+                      <span className="break-words">{src.validityStatus}</span>
                     </div>
                     {src.section && (
                       <div className="flex items-start gap-2 pt-1.5 border-t border-line/70">

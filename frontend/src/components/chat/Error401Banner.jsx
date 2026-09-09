@@ -31,18 +31,18 @@ export const Error401Banner = ({ errorDetails, onRetry }) => {
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 pt-4 shrink-0">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-red-900/80 bg-[#3A1B1B] p-4 shadow-lg">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-bad/40 bg-bad/10 p-4 shadow-sm">
         <div className="flex items-start gap-3">
-          <AlertCircle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
+          <AlertCircle className="h-5 w-5 text-bad shrink-0 mt-0.5" />
           <div>
-            <h2 className="text-sm font-semibold text-red-200">{title}</h2>
-            <p className="mt-0.5 text-xs text-red-100/80">{desc}</p>
+            <h2 className="text-sm font-semibold text-bad">{title}</h2>
+            <p className="mt-0.5 text-xs text-ink-700">{desc}</p>
           </div>
         </div>
 
         <button
           onClick={actionFn}
-          className="flex items-center gap-1.5 rounded-lg bg-red-500 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-red-600 shrink-0 shadow-sm"
+          className="flex items-center gap-1.5 rounded-lg bg-bad px-3.5 py-2 text-xs font-medium text-white transition hover:bg-bad/90 shrink-0 shadow-sm"
         >
           {buttonIcon}
           <span>{buttonLabel}</span>
