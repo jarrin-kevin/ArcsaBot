@@ -26,17 +26,6 @@ USER appuser
 # (chatbot/secrets/, chatbot/data/) para que no queden horneados en la imagen.
 COPY --chown=appuser:appuser . .
 
-# Copia aparte de los datos de referencia del RAG a una ruta que el Volume de
-# Railway no toca (/app/data_seed, distinto de /app/data). Ver
-# docker-entrypoint.sh para el porqué: un Volume de Railway montado en
-# /app/data arranca vacío y tapa lo que el COPY de arriba ya puso ahí, así
-# que se necesita esta copia de respaldo para poder "sembrarla" en el primer
-# arranque del contenedor.
-COPY --chown=appuser:appuser data/vector_docstore.json data/normativa /app/data_seed/
-
-COPY --chown=appuser:appuser docker-entrypoint.sh /app/docker-entrypoint.sh
-RUN chmod +x /app/docker-entrypoint.sh
-
 # main.py es un servidor FastAPI real que se ejecuta con uvicorn. Este CMD
 # NO usa --reload: es el comando "de producción", pensado para que la imagen
 # arranque sola (sin bind mount) y responda /health tal cual, por ejemplo en
@@ -64,5 +53,4 @@ RUN chmod +x /app/docker-entrypoint.sh
 # de cómo Railway resuelve el puerto público de este servicio.
 EXPOSE 8001
 
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--forwarded-allow-ips="]

@@ -7,22 +7,14 @@ secrets/
 # Datos generados en runtime por los scripts de ingesta (vector_ingest.py,
 # tutorial_ingestion.py, etc.). No hacen falta para construir ni arrancar el
 # servidor (main.py los lee de forma perezosa si existen) y pesan cientos de
-# MB, así que no tiene sentido copiarlos a la imagen.
-#
-# EXCEPCIÓN TEMPORAL (ver DEPLOY.md, sección 1.6, Opción A): se destapan acá
-# solo vector_docstore.json y normativa/ (los ~59MB que el RAG necesita para
-# resolver texto real a partir de los IDs que devuelve Pinecone) para que el
-# primer deploy en Railway los "siembre" en el Volume vacío de /app/data (un
-# Volume vacío hereda el contenido que la imagen ya tenía en ese path la
-# primera vez que se monta). Todo lo demás de data/ sigue afuera: users.db
-# (base local, no debe ir a producción), vector_ingest_delta.json (76MB de
-# basura de la migración) y los .bak-* (backups viejos). Una vez confirmado
-# que el Volume en Railway ya tiene los datos (ver checklist del DEPLOY.md),
-# hay que volver a excluir data/ por completo acá — el Volume ya los
-# conserva solo, no hace falta seguir horneándolos en cada build.
-data/*
-!data/vector_docstore.json
-!data/normativa/
+# MB, así que no tiene sentido copiarlos a la imagen. Además, chatbot/data/
+# está en .gitignore: en un build desde GitHub (Railway) estos archivos ni
+# siquiera existen en el código fuente que se clona, así que una excepción
+# acá para "hornearlos" no puede funcionar nunca (probado en Railway: la
+# imagen se rompe con "file not found" al referenciarlos por nombre). El
+# Volume de /app/data se puebla aparte, subiendo los archivos directo desde
+# la máquina local vía la CLI de Railway — ver DEPLOY.md sección 1.6.
+data/
 
 # Artefactos de scraping/herramientas puntuales: logs y reportes pesados que
 # no son código de la app (incluye variantes versionadas/backup, p. ej.
