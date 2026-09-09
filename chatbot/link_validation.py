@@ -1,41 +1,20 @@
 """
-Módulo de validación de enlaces DENTRO del cuerpo de las páginas de Tutorial
-que sobreviven el pipeline de limpieza de chatbot/tutorial_ingestion.py.
+Valida los enlaces citados DENTRO del cuerpo de las páginas de Tutorial que
+sobreviven el pipeline de chatbot/tutorial_ingestion.py.
 
-Esto es DISTINTO de la validación de página completa que ya hace
-capture_summary.json (http_status/capture_status de la página en sí): aquí
-no se valida si la página cargó, sino si los ENLACES QUE ESA PÁGINA
-CONTIENE en su cuerpo (a pasarelas de pago, otros trámites relacionados,
-recursos externos, PDFs, etc.) siguen resolviendo. Una página puede estar
-perfectamente "captured" (HTTP 200) y aun así citar en su texto un enlace
-roto o desactualizado.
+Distinto de capture_summary.json (que valida si la página en sí cargó): acá
+se valida si los enlaces que esa página CITA en su texto (pasarelas de pago,
+trámites relacionados, PDFs, etc.) siguen resolviendo. Sigue el principio de
+ADR 0004 ("flag, don't drop"): un enlace roto o con año desactualizado se
+reporta, no se borra del contenido.
 
-Seguimos el mismo principio del ADR 0004 ("flag, don't drop"): un enlace
-roto o con año desactualizado se REPORTA, no se elimina del contenido del
-Tutorial — el resto del procedimiento sigue siendo útil aunque un enlace
-puntual ya no resuelva.
+Pasos: reutiliza run_pipeline() para los chunks sobrevivientes, extrae toda
+URL de su cuerpo Markdown, deduplica y verifica cada una por HTTP (HEAD con
+fallback a GET), y escribe un reporte JSON con el estado de cada URL, qué
+página(s) la referencian, y si su path/query contiene un año desactualizado.
 
-Este módulo:
-  1. reutiliza chatbot.tutorial_ingestion.run_pipeline() para obtener los
-     chunks de páginas sobrevivientes (NO vuelve a derivar qué páginas
-     sobreviven al filtro: eso ya lo decide filter_pages()/parse_tutorial());
-  2. extrae toda URL referenciada en el campo "text" (cuerpo Markdown) de
-     cada chunk: enlaces Markdown [texto](url) e imágenes ![alt](url), más
-     URLs sueltas en texto plano;
-  3. deduplica esas URLs (una URL vista en varias páginas se revisa UNA
-     sola vez) y les hace una petición HTTP real (HEAD con fallback a GET,
-     con reintentos acotados y una pausa entre peticiones distintas para
-     ser respetuosos con el sitio real y con sitios externos enlazados);
-  4. escribe un reporte JSON con el resultado de cada URL (valid/broken/
-     timeout/redirect), qué página(s) la referencian, el texto del enlace
-     si está disponible, y marca aparte cualquier URL cuyo path/query
-     contenga un año claramente desactualizado (aunque la URL todavía
-     resuelva: una página viva puede seguir citando la tarifa o el portal
-     de pago del año pasado).
-
-NO modifica chatbot/tutorial_ingestion.py, chatbot/ingestion.py, el scraper,
-ni ningún código de GCP/vector store: es un pase de validación nuevo y
-separado sobre el mismo corpus.
+No modifica tutorial_ingestion.py, ingestion.py, el scraper ni el vector
+store: es un pase de validación separado sobre el mismo corpus.
 """
 
 from __future__ import annotations
@@ -51,23 +30,17 @@ from urllib.parse import urljoin, urlsplit
 
 import requests
 
-# Algunas URLs/títulos reales del corpus traen caracteres Unicode que la
-# consola de Windows (cp1252) no puede codificar (incluso alguna marca
-# diacrítica combinante suelta, verificada en el dato real), lo que
-# tumbaría un proceso largo a mitad de camino solo por un print(). Se
-# reconfigura stdout/stderr a UTF-8 con reemplazo de caracteres no
-# soportados para que una corrida de horas contra el sitio real no se
-# pierda por un error de consola.
+# Algunas URLs/títulos del corpus traen Unicode que la consola de Windows
+# (cp1252) no puede codificar, lo que cortaría una corrida larga por un
+# simple print(). Se reconfigura stdout/stderr a UTF-8 con reemplazo.
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 except (AttributeError, ValueError):
     pass  # stdout/stderr no soporta reconfigure (p.ej. ya redirigido); no es crítico
 
-# Soporta tanto "python chatbot/link_validation.py" (script suelto, sin
-# paquete) como "python -m chatbot.link_validation" (import de paquete)
-# desde la raíz del repo, igual que tutorial_ingestion.py permite ambos
-# estilos de invocación.
+# Soporta tanto "python chatbot/link_validation.py" como
+# "python -m chatbot.link_validation", igual que tutorial_ingestion.py.
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from tutorial_ingestion import run_pipeline
@@ -91,21 +64,12 @@ FALLBACK_DELAY_SECONDS = 0.3  # pausa extra entre el intento HEAD y el GET de re
 MAX_RETRIES = 2
 RETRY_BACKOFF_SECONDS = 2.0
 
-# Tope de tiempo total de la corrida (ver incidente real: una corrida previa
-# sin este tope quedó corriendo sin escribir el reporte hasta que el proceso
-# fue terminado externamente, perdiendo todo el progreso). Si se excede, la
-# corrida se corta limpio, escribe lo que alcanzó a revisar como reporte
-# PARCIAL, y termina — nunca queda colgada indefinidamente.
-MAX_RUNTIME_SECONDS = 3 * 60 * 60  # 3 horas (estimado real: ~189 enlaces http://
-# a www.controlsanitario.gob.ec necesitan el respaldo a https descrito en
-# check_url, a ~11-12s cada uno, más ~1800 enlaces https a ~1-2s cada uno:
-# la corrida completa debería tomar entre 1.5 y 2.5 horas; se deja margen).
+# Tope de tiempo total de la corrida: si se excede, corta limpio, escribe lo
+# revisado hasta ahí como reporte PARCIAL, y termina en vez de quedar colgada.
+MAX_RUNTIME_SECONDS = 3 * 60 * 60  # 3 horas, con margen sobre el corpus real
 
-# Cada cuántas URLs revisadas se vuelve a escribir el reporte a disco como
-# checkpoint (ver mismo incidente: el reporte solo se escribía al final, así
-# que un crash a la URL 121/2016 no dejó ningún artefacto en disco). 1 =
-# checkpoint tras cada URL; es barato porque escribir el JSON acumulado es
-# mucho más rápido que la pausa de red entre peticiones.
+# Cada cuántas URLs revisadas se reescribe el reporte a disco como checkpoint,
+# para no perder el progreso si la corrida se corta a mitad de camino.
 CHECKPOINT_EVERY = 1
 
 # User-Agent descriptivo: identifica el bot, su propósito (auditoría interna
@@ -147,10 +111,8 @@ _TRAILING_PUNCTUATION = ".,;:!?)]}’”\"'"
 def _clean_url(raw_url: str) -> str | None:
     """
     Normaliza una URL cruda extraída del cuerpo Markdown: quita puntuación
-    de cierre pegada por accidente, descarta pseudo-URLs (mailto:, tel:,
-    anclas locales "#..."), resuelve enlaces relativos del propio sitio
-    contra BASE_SITE_URL, y quita el fragmento "#..." (no cambia qué
-    recurso del servidor se está pidiendo).
+    de cierre pegada, descarta pseudo-URLs (mailto:, tel:, anclas "#..."),
+    resuelve enlaces relativos contra BASE_SITE_URL y quita el fragmento.
 
     Returns:
         La URL limpia, o None si no es un enlace web válido para revisar.
@@ -173,14 +135,9 @@ def _clean_url(raw_url: str) -> str | None:
     if not url:
         return None
 
-    # Saneamiento contra basura de scraping: se encontraron casos reales en
-    # el corpus donde un enlace Markdown mal formado en el HTML original
-    # (p.ej. "[texto](http://Informe resumen ...)", sin URL real dentro del
-    # paréntesis) hace que el regex de URL suelta capture solo la primera
-    # palabra antes del espacio ("http://Informe"). Un hostname real
-    # siempre tiene un punto (dominio.tld); si no lo tiene, no es una URL
-    # verificable y se descarta aquí en vez de reportarla como "enlace
-    # roto" (sería un falso positivo: nunca fue un enlace real).
+    # Un hostname real siempre tiene un punto (dominio.tld). Sin uno, no es
+    # una URL verificable (p.ej. un enlace Markdown mal formado en el HTML
+    # original) y se descarta acá en vez de reportarse como "roto".
     if "." not in urlsplit(url).netloc:
         return None
 
@@ -191,9 +148,8 @@ def extract_links_from_text(markdown_body: str) -> list[dict]:
     """
     Extrae toda URL referenciada en el cuerpo Markdown de una página.
 
-    Devuelve una lista de diccionarios {"url": ..., "link_text": ...} en
-    orden de aparición, SIN deduplicar (la deduplicación global entre
-    páginas se hace en build_link_index()).
+    Devuelve una lista de {"url": ..., "link_text": ...} en orden de
+    aparición, sin deduplicar (eso lo hace build_link_index()).
     """
     found: list[dict] = []
     covered_spans: list[tuple[int, int]] = []
@@ -205,9 +161,8 @@ def extract_links_from_text(markdown_body: str) -> list[dict]:
         if cleaned:
             found.append({"url": cleaned, "link_text": link_text.strip() or None})
 
-    # Para las URLs sueltas, evitamos volver a capturar lo que ya vino de un
-    # enlace Markdown (ya cubierto arriba) borrando esos tramos del texto
-    # antes de aplicar el segundo regex.
+    # Evita recapturar como URL suelta lo que ya vino de un enlace Markdown,
+    # borrando esos tramos del texto antes de aplicar el segundo regex.
     remainder = list(markdown_body)
     for start, end in covered_spans:
         for i in range(start, end):
@@ -224,13 +179,9 @@ def extract_links_from_text(markdown_body: str) -> list[dict]:
 
 def build_link_index(chunks: list[dict]) -> dict[str, dict]:
     """
-    Agrega, para cada URL única encontrada en el corpus, qué página(s) del
-    Tutorial la referencian y con qué texto de enlace (si lo hay).
-
-    Si la misma URL aparece más de una vez en la MISMA página, esa página
-    solo se lista una vez en "referenced_by" (pero la URL igual se revisa
-    una sola vez a nivel global, que es lo que importa para ser
-    respetuosos con el sitio).
+    Agrega, para cada URL única del corpus, qué página(s) la referencian y
+    con qué texto de enlace. Una URL repetida en la misma página se lista
+    una sola vez en "referenced_by" (y se revisa una sola vez a nivel global).
     """
     index: dict[str, dict] = {}
     for chunk in chunks:
@@ -257,12 +208,9 @@ def build_link_index(chunks: list[dict]) -> dict[str, dict]:
 def _flagged_for_stale_year(url: str) -> str | None:
     """
     Devuelve el año detectado si la URL contiene, en su path o query, un
-    año de 4 dígitos anterior al año actual (p.ej. ".../2023/" o
-    "?anio=2024"). None si no aplica.
-
-    Esto es independiente de si la URL todavía resuelve: una página viva
-    puede seguir citando la tarifa o el portal de pago del año pasado, y
-    eso también merece una advertencia (ver ADR 0004: flag, don't drop).
+    año de 4 dígitos anterior al actual (p.ej. ".../2023/"). None si no
+    aplica. Independiente de si la URL resuelve: una página viva puede
+    seguir citando la tarifa del año pasado (ADR 0004: flag, don't drop).
     """
     parsed = urlsplit(url)
     path_and_query = f"{parsed.path}?{parsed.query}"
@@ -284,15 +232,12 @@ def _make_session() -> requests.Session:
 
 def _request_with_fallback(session: requests.Session, url: str) -> requests.Response:
     """
-    Intenta primero HEAD (más liviano, no descarga el cuerpo). Si el
-    servidor no lo soporta bien (403/404/405/5xx, o de plano rechaza la
-    conexión — algunos sitios cierran la conexión ante HEAD aunque el
-    recurso exista) reintenta con GET, que casi cualquier servidor soporta.
+    Intenta primero HEAD (más liviano). Si el servidor no lo soporta bien
+    (403/404/405/5xx, o rechaza la conexión) reintenta con GET.
 
-    Si HEAD directamente se agota por timeout, NO se reintenta con GET en
-    el mismo intento (para no duplicar el tiempo de espera por URL): se
-    deja que el bucle de reintentos de check_url() decida si vale la pena
-    reintentar desde cero.
+    Si HEAD se agota por timeout, no se reintenta con GET en el mismo
+    intento (evita duplicar la espera); el bucle de check_url() decide si
+    vale la pena reintentar desde cero.
     """
     response: requests.Response | None = None
     try:
@@ -314,10 +259,8 @@ def _request_with_fallback(session: requests.Session, url: str) -> requests.Resp
 def _classify_response(response: requests.Response) -> dict:
     result: dict = {"http_status": response.status_code}
     if response.history:
-        # Hubo al menos una redirección: se reporta como "redirect" en vez
-        # de "valid" aunque el destino final sí resuelva, porque un enlace
-        # que redirige suele ser señal de una URL vieja movida de lugar
-        # (p.ej. el portal de pago de un año anterior).
+        # Se reporta "redirect" en vez de "valid" aunque el destino final
+        # resuelva: suele ser señal de una URL vieja movida de lugar.
         result["status"] = "redirect"
         result["redirect_target"] = response.url
         result["redirect_final_status"] = response.status_code
@@ -334,29 +277,22 @@ def check_url(session: requests.Session, url: str) -> dict:
     """
     Verifica una URL con reintentos acotados y clasifica el resultado.
 
-    Incluye un respaldo de esquema (http -> https): se confirmó contra el
-    sitio real que el vhost principal de controlsanitario.gob.ec NO
-    responde en el puerto 80 (cuelga hasta agotar el timeout en el 100% de
-    los casos probados, incluida la raíz "/"), mientras que https sí
-    funciona con normalidad. Muchos enlaces del cuerpo del Tutorial usan
-    "http://" porque son de antes de la migración del sitio a HTTPS. Sin
-    este respaldo, cada uno de esos enlaces gastaba TODO el presupuesto de
-    reintentos (hasta ~36s) en un esquema que nunca iba a responder, y
-    encima se reportaba como "broken"/"timeout" aunque el recurso sí
-    existiera vía https — un falso positivo que además hacía la corrida
-    completa (2016 URLs) impracticablemente lenta.
+    Incluye un respaldo de esquema (http -> https): el vhost principal de
+    controlsanitario.gob.ec no responde en el puerto 80, y buena parte de
+    los enlaces del Tutorial usan "http://" por ser previos a la migración
+    del sitio a HTTPS. Sin este respaldo, esos enlaces agotaban todo el
+    presupuesto de reintentos sobre un esquema que nunca iba a responder y
+    se reportaban como "broken" pese a existir vía https.
 
-    El respaldo se intenta UNA sola vez ante la primera falla de un enlace
-    "http://" (no cuenta como uno de los reintentos), y si también falla,
-    el resto del presupuesto de reintentos se gasta sobre la variante
-    https (más probable de ser la correcta) en vez de seguir insistiendo
-    con el esquema que ya falló.
+    El respaldo se intenta una sola vez (no consume un reintento); si
+    también falla, el resto del presupuesto se gasta sobre la variante
+    https en vez de insistir con el esquema que ya falló.
 
     Returns:
-        Diccionario con al menos la clave "status" en
+        Diccionario con al menos "status" en
         {"valid", "broken", "timeout", "redirect"}, más detalle según el
-        caso (http_status, redirect_target, detail del error, checked_url
-        si se terminó verificando una URL distinta a la original, etc.).
+        caso (http_status, redirect_target, detail, checked_url si se
+        verificó una URL distinta a la original, etc.).
     """
     original_url = url
     candidate_url = url
@@ -439,34 +375,18 @@ def _build_summary(
 
 def write_report(report: dict, output_path: Path = REPORT_PATH) -> None:
     """
-    Escribe el reporte de forma atómica: primero a un archivo temporal en el
-    mismo directorio, luego un os.replace() (rename atómico en Windows y
-    POSIX). Así, si el proceso se corta a mitad de una escritura (crash,
-    kill externo, corte de luz), el reporte en disco queda o bien la
-    versión anterior completa, o bien la nueva completa — nunca un JSON a
-    medio escribir. Se llama tanto para checkpoints intermedios como para
-    el reporte final.
+    Escribe el reporte de forma atómica: primero a un archivo temporal en
+    el mismo directorio, luego os.replace() (rename atómico). Así, si el
+    proceso se corta a mitad de una escritura, el reporte en disco queda o
+    la versión anterior completa, o la nueva completa, nunca un JSON a
+    medio escribir. Se usa tanto para checkpoints como para el reporte final.
 
-    El nombre del archivo temporal incluye el PID: se detectó en la práctica
-    que si dos procesos llegan a correr contra el mismo REPORT_PATH al mismo
-    tiempo (p.ej. una corrida de verificación que no había terminado de
-    cerrarse cuando arrancó la corrida completa), ambos competían por el
-    MISMO archivo ".tmp" y uno de los dos podía toparse con un
-    PermissionError de Windows al abrirlo. Solo debería correr un proceso a
-    la vez contra un REPORT_PATH dado, pero incluir el PID hace que un
-    solape accidental sea inofensivo en vez de un crash.
-
-    El os.replace() final también se reintenta unas pocas veces: se
-    confirmó en la práctica (WinError 5 "Acceso denegado" real, con el PID
-    ya en el nombre del .tmp, así que no era el choque de arriba) que en
-    Windows, si OTRO proceso tiene el archivo destino abierto para lectura
-    en el instante exacto del rename — p.ej. un chequeo de progreso externo
-    que hace open()/json.load() sobre el mismo REPORT_PATH mientras esta
-    corrida hace un checkpoint tras CADA URL — el rename puede fallar de
-    forma transitoria (a diferencia de POSIX, donde un lector no bloquea un
-    rename). La condición se resuelve sola en milisegundos apenas el lector
-    cierra el archivo, así que un par de reintentos cortos la absorben en
-    vez de tumbar una corrida de horas por un simple `cat` del reporte.
+    El nombre del temporal incluye el PID, para que un solape accidental de
+    dos procesos contra el mismo REPORT_PATH sea inofensivo en vez de un
+    PermissionError. El replace() final se reintenta unas pocas veces
+    porque en Windows puede fallar de forma transitoria si otro proceso
+    tiene el archivo destino abierto para lectura en ese instante (a
+    diferencia de POSIX); la condición se resuelve sola en milisegundos.
     """
     output_path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = output_path.with_suffix(f".{os.getpid()}.tmp")
@@ -486,12 +406,10 @@ def write_report(report: dict, output_path: Path = REPORT_PATH) -> None:
 
 def _load_previous_results(output_path: Path, expected_urls: set[str]) -> dict[str, dict]:
     """
-    Si ya existe un reporte (completo o parcial, p.ej. de una corrida
-    anterior que se cortó) para este mismo conjunto de URLs, recupera las
-    URLs que ya se revisaron para no volver a pegarle a esos servidores de
-    nuevo ni perder ese trabajo. Solo se reutilizan entradas cuya URL siga
-    estando en el conjunto actual de URLs únicas (si el corpus cambió,
-    entradas viejas de URLs que ya no aplican se ignoran).
+    Si ya existe un reporte previo (completo o parcial) para este mismo
+    conjunto de URLs, recupera las entradas ya revisadas para no volver a
+    pegarle a esos servidores ni perder ese trabajo. Ignora entradas de
+    URLs que ya no estén en el conjunto actual (corpus cambiado).
 
     Devuelve un diccionario vacío si no hay reporte previo o no se puede
     leer (nunca falla la corrida por esto).
@@ -517,15 +435,12 @@ def _load_previous_results(output_path: Path, expected_urls: set[str]) -> dict[s
 def validate_links(chunks: list[dict] | None = None, resume: bool = True) -> dict:
     """
     Ejecuta el pipeline completo de validación de enlaces sobre `chunks`
-    (por defecto, los chunks reales que produce
-    chatbot.tutorial_ingestion.run_pipeline()).
+    (por defecto, los que produce chatbot.tutorial_ingestion.run_pipeline()).
 
-    Escribe un checkpoint del reporte a disco tras cada URL revisada (ver
-    CHECKPOINT_EVERY) y respeta un tope global de tiempo (ver
-    MAX_RUNTIME_SECONDS): si se excede, corta la corrida limpio y marca el
-    reporte como parcial en vez de quedarse corriendo indefinidamente. Si
-    `resume=True` (default) y ya existe un reporte previo para este mismo
-    conjunto de URLs, retoma desde ahí en vez de revisar todo de nuevo.
+    Escribe un checkpoint tras cada URL revisada y respeta el tope de
+    tiempo MAX_RUNTIME_SECONDS, cortando limpio y marcando el reporte como
+    parcial si se excede. Si `resume=True` (default) y ya existe un reporte
+    previo para este mismo conjunto de URLs, retoma desde ahí.
 
     Returns:
         Diccionario {"summary": {...}, "results": [...]} listo para
@@ -604,31 +519,23 @@ def validate_links(chunks: list[dict] | None = None, resume: bool = True) -> dic
 # Etapa 4: limpieza de enlaces ya confirmados rotos, sobre el texto servido
 # --------------------------------------------------------------------------
 #
-# Lo de arriba (validate_links()/run_validation()) es de sólo lectura: audita
-# qué enlaces citados en el cuerpo del Tutorial ya no resuelven, pero no toca
-# el corpus (ver ADR 0004: flag, don't drop — aplica al AÑO desactualizado).
-# Un enlace confirmado "broken"/"timeout" es distinto: no aporta nada al
-# usuario y sólo puede llevarlo a una página muerta, así que ACÁ SÍ se
-# elimina del texto servido, conservando el texto descriptivo que lo
-# acompañaba. Los "valid"/"redirect" no se tocan: siguen resolviendo y
-# siguen siendo información útil.
+# validate_links()/run_validation() son de sólo lectura (ADR 0004 aplica al
+# año desactualizado: se reporta, no se borra). Un enlace "broken"/"timeout"
+# es distinto: no aporta nada al usuario, así que acá sí se elimina del
+# texto servido, conservando el texto descriptivo. "valid"/"redirect" no
+# se tocan.
 #
-# Reutilizado por chatbot/vector_ingest.py (build_tutorial_documents()) para
-# que cada corrida completa del pipeline limpie automáticamente el corpus de
-# Tutorial contra el reporte de validación más reciente en disco, y por
-# chatbot/.tools/fix_tutorial_broken_links.py (fix puntual ya aplicado sobre
-# el chatbot/data/vector_docstore.json existente, sin tener que
-# re-embeber/re-subir nada a Pinecone).
+# Reutilizado por vector_ingest.py (build_tutorial_documents()) para limpiar
+# el corpus contra el reporte más reciente en disco en cada corrida.
 
 
 def normalize_url_for_comparison(url: str) -> str:
     """
     Normaliza una URL para compararla contra el reporte de validación,
-    ignorando diferencias que no cambian el recurso real: una barra final
-    "/" de más o de menos en el path, y mayúsculas/minúsculas en
-    esquema/host. Mismo criterio que ya usa scrape_servicios.canonical_url()
-    (quita fragmento y barra final redundante) para deduplicar URLs en el
-    resto del pipeline, para no reinventar la normalización acá.
+    ignorando diferencias que no cambian el recurso real: barra final de
+    más/menos en el path, mayúsculas/minúsculas en esquema/host. Mismo
+    criterio que scrape_servicios.canonical_url() usa en el resto del
+    pipeline.
     """
     if not url:
         return ""
@@ -652,29 +559,20 @@ _TRAILING_LINE_SPACE_PATTERN = re.compile(r"[ \t]+(\n|$)")
 def strip_broken_links_from_text(text: str, broken_urls: set[str]) -> tuple[str, int]:
     """
     Elimina de `text` todo enlace cuya URL esté en `broken_urls` (se espera
-    el conjunto de URLs "broken"/"timeout" del reporte, ver
-    load_broken_urls()). La comparación es normalizada
-    (normalize_url_for_comparison()), no exige coincidencia exacta de
-    string.
+    el set de URLs "broken"/"timeout" de load_broken_urls()); la
+    comparación usa normalize_url_for_comparison(), no string exacto.
 
-    - Enlace o imagen Markdown roto ("[texto](url)" / "![alt](url)"): se
-      reemplaza por sólo el texto/alt descriptivo, sin el link muerto (no
-      se pierde la información, sólo deja de ser un hipervínculo muerto).
-      Si el texto/alt queda vacío tras recortar espacios, el enlace se
-      elimina por completo.
-    - URL suelta rota en texto plano (sin sintaxis Markdown): se elimina la
-      URL, conservando cualquier puntuación de cierre de oración que
-      hubiera quedado pegada a ella (ver _TRAILING_PUNCTUATION) y el resto
-      del texto intacto.
+    - Enlace/imagen Markdown roto: se reemplaza por sólo el texto/alt
+      descriptivo (se conserva la información, se pierde el link muerto).
+      Si queda vacío, el enlace se elimina por completo.
+    - URL suelta rota en texto plano: se elimina, conservando la
+      puntuación de cierre de oración que hubiera quedado pegada.
 
-    Enlaces "valid"/"redirect" (cualquier URL que NO esté en `broken_urls`)
-    no se tocan.
+    Enlaces "valid"/"redirect" no se tocan.
 
     Returns:
-        (texto_limpio, cantidad_de_enlaces_rotos_eliminados). Si no se
-        eliminó ningún enlace, se devuelve el texto original sin cambios
-        (no se aplica el recorte de espacios cuando no hubo nada que
-        limpiar, para no introducir diffs irrelevantes).
+        (texto_limpio, cantidad_eliminada). Si no se eliminó nada, se
+        devuelve el texto original sin cambios.
     """
     if not text or not broken_urls:
         return text, 0
@@ -704,10 +602,8 @@ def strip_broken_links_from_text(text: str, broken_urls: set[str]) -> tuple[str,
         raw = match.group(0)
         if _is_broken(raw):
             removed += 1
-            # Se conserva la puntuación de cierre de oración pegada al
-            # final de la URL (p.ej. el "." de "...ver el sitio: URL.");
-            # _clean_url() la ignora para validar, pero acá SÍ importa
-            # devolverla: es puntuación de la frase, no parte del enlace.
+            # Conserva la puntuación de cierre pegada al final de la URL
+            # (es de la frase, no parte del enlace).
             core = raw.rstrip(_TRAILING_PUNCTUATION)
             return raw[len(core):]
         return raw
@@ -725,16 +621,12 @@ def strip_broken_links_from_text(text: str, broken_urls: set[str]) -> tuple[str,
 
 def load_broken_urls(report_path: Path = REPORT_PATH) -> set[str]:
     """
-    Carga, del reporte de validación de enlaces más reciente en disco
-    (chatbot/scraping/link_validation_report.json por defecto), el conjunto
-    de URLs marcadas "broken" o "timeout" (las que ameritan limpiarse del
-    corpus servido; "valid"/"redirect" quedan afuera porque siguen
-    resolviendo y son información útil).
+    Carga del reporte de validación más reciente en disco el conjunto de
+    URLs marcadas "broken"/"timeout" (las que ameritan limpiarse del
+    corpus; "valid"/"redirect" quedan afuera).
 
-    Si el reporte todavía no existe (p.ej. checkout limpio antes de correr
-    `python -m chatbot.link_validation` una primera vez) o no se puede leer,
-    NO rompe el pipeline: devuelve un set vacío y logea una advertencia
-    clara, dejando el corpus sin limpiar en esa corrida en particular.
+    Si el reporte no existe o no se puede leer, no rompe el pipeline:
+    devuelve un set vacío y logea una advertencia.
     """
     if not report_path.exists():
         print(

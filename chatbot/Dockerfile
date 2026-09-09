@@ -18,39 +18,21 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN adduser --disabled-password --gecos "" appuser && chown -R appuser:appuser /app
 USER appuser
 
-# Copia el resto del código de la aplicación al contenedor asignándolo al usuario creado.
-# Sin este COPY la imagen queda vacía y solo "funciona" gracias al bind mount de
-# desarrollo (./chatbot:/app en docker-compose.yml); una imagen subida a un registro
-# y corrida sin ese bind mount (p. ej. Cloud Run/GKE) fallaría porque /app no
-# tendría main.py. .dockerignore excluye secretos y datos generados en runtime
-# (chatbot/secrets/, chatbot/data/) para que no queden horneados en la imagen.
+# Sin este COPY la imagen queda vacía y solo "funciona" por el bind mount de
+# desarrollo (./chatbot:/app en docker-compose.yml). .dockerignore excluye
+# secretos y datos generados en runtime para que no queden horneados en la imagen.
 COPY --chown=appuser:appuser . .
 
-# main.py es un servidor FastAPI real que se ejecuta con uvicorn. Este CMD
-# NO usa --reload: es el comando "de producción", pensado para que la imagen
-# arranque sola (sin bind mount) y responda /health tal cual, por ejemplo en
-# Cloud Run/GKE. El hot-reload de desarrollo se preserva en docker-compose.yml,
-# que sobreescribe este CMD con `command: [... "--reload"]` cuando monta
-# ./chatbot:/app.
+# CMD "de producción" (sin --reload), para que la imagen arranque sola sin
+# bind mount. docker-compose.yml lo sobreescribe con --reload en desarrollo.
 #
-# --forwarded-allow-ips="": uvicorn trae su ProxyHeadersMiddleware activo por
-# defecto con trusted_hosts="127.0.0.1", así que confía ciegamente en un
-# X-Forwarded-For entrante si el request llega desde loopback (típico detrás
-# de un reverse proxy local) y reescribe la IP del cliente con lo que diga
-# ese header. Como no hay ningún proxy real delante de este servidor, eso
-# permitía evadir por completo el rate limiting de /api/auth/login|signup
-# (chatbot/auth.py) mandando un X-Forwarded-For distinto en cada intento
-# (encontrado con fuzzing real). Con la lista vacía, uvicorn no confía en
-# ese header viniendo de nadie. Si en el futuro se agrega un proxy real
-# delante (nginx, load balancer), esto hay que reconfigurarlo con la IP real
-# de ese proxy, no dejarlo en "".
+# --forwarded-allow-ips="": sin esto, uvicorn confía en X-Forwarded-For
+# entrante desde loopback y reescribe la IP del cliente con ese header, lo
+# que permite evadir el rate limiting de /api/auth/* (chatbot/auth.py)
+# rotándolo en cada intento. No hay proxy real delante de este servidor.
 #
-# EXPOSE 8001: documenta el puerto real en el que escucha uvicorn. Railway NO
-# lee esta instrucción para el ruteo (su "magic port detection" detecta el
-# puerto en el que el proceso ya está escuchando al generar el dominio), pero
-# sí es la convención estándar de Docker y la usan otras plataformas
-# (Cloud Run/GKE) para saber qué puerto exponer. Ver DEPLOY.md para el detalle
-# de cómo Railway resuelve el puerto público de este servicio.
+# EXPOSE 8001: documenta el puerto de uvicorn (convención estándar de Docker;
+# Railway detecta el puerto en runtime y no depende de esta instrucción).
 EXPOSE 8001
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--forwarded-allow-ips="]

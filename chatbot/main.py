@@ -1,47 +1,17 @@
 """
 main.py
-Servidor HTTP real del chatbot RAG de ARCSA (FastAPI).
+Servidor HTTP del chatbot RAG de ARCSA (FastAPI). Expone `POST /api/chat`,
+consumido por frontend/src/services/transport/HttpChatTransport.js.
 
-Este archivo reemplaza al antiguo `main.py` de un solo uso (que sólo hacía
-una llamada de prueba a Gemini y salía). Ahora es el punto de entrada real
-del backend: expone `POST /api/chat`, el endpoint que el frontend
-(frontend/src/services/transport/HttpChatTransport.js) ya consume contra
-`${VITE_API_URL}/api/chat` (por defecto http://localhost:8001, ver
-docker-compose.yml).
+Flujo por solicitud: embebe la pregunta, busca los top-k chunks más
+relevantes en Pinecone, resuelve esos IDs a texto/metadata vía el docstore
+local generado por vector_ingest.py (Pinecone no guarda el texto completo),
+arma un prompt "grounded" para Gemini y devuelve la respuesta + fuentes
+citadas en el formato que espera RagSourcesDrawer.jsx.
 
-Flujo por solicitud:
-  1. Recibe la pregunta del usuario.
-  2. La embebe con el mismo modelo de embeddings usado al cargar el índice.
-  3. Busca los top-k chunks más relevantes en el índice de Pinecone.
-  4. Resuelve esos IDs a texto/metadata real vía el docstore local generado
-     por chatbot/vector_ingest.py (Pinecone sólo guarda id+embedding+metadata
-     corta, nunca el texto completo del chunk).
-  5. Arma un prompt "grounded" (respuesta basada sólo en ese contexto) y se
-     lo envía a Gemini (gemini-3.5-flash-lite, igual que la versión anterior
-     de este archivo).
-  6. Devuelve la respuesta + las fuentes citadas, en el formato que ya
-     esperan frontend/src/services/transport/processUiMessageStream.js y
-     frontend/src/components/chat/RagSourcesDrawer.jsx.
-
-NOTA sobre reutilización de chatbot/vector_store.py
-----------------------------------------------------------------
-Este servidor reutiliza directamente `configure_embeddings()` y
-`get_vector_store()` de vector_store.py: ese módulo es la única fuente de
-verdad para el modelo de embeddings ("models/gemini-embedding-001" con
-output_dimensionality=768, para calzar con la dimensión fija del índice de
-Pinecone) y para la normalización manual a norma 1 (ver `normalize_embedding()`
-en vector_store.py).
-
-NOTA sobre la migración Vertex AI → Pinecone (2026-09-08)
-----------------------------------------------------------------
-El proyecto usó originalmente Vertex AI Vector Search (ver
-docs/adr/0002-vertex-ai-vector-search.md) hasta que se deshabilitó la
-facturación del proyecto GCP por costo, dejándolo inoperativo (403
-BILLING_DISABLED). Se migró a Pinecone (plan Starter, gratuito): sin bucket
-de staging, sin cuenta de servicio de GCP, sin batch job asíncrono — el
-upsert/query es una llamada directa de API. Los embeddings en sí no
-cambiaron (siguen siendo Gemini), sólo el backend de almacenamiento/búsqueda
-vectorial.
+El modelo de embeddings y la normalización a norma 1 están centralizados en
+vector_store.py (fuente de verdad única, ver `configure_embeddings()` /
+`normalize_embedding()`).
 """
 
 from __future__ import annotations
@@ -79,8 +49,8 @@ TOP_K = 5
 ISSUING_ENTITY = "Agencia Nacional de Regulación, Control y Vigilancia Sanitaria (ARCSA)"
 OFFICIAL_ARCSA_URL = "https://www.controlsanitario.gob.ec/"
 
-# Hosts del portal ARCSA que solo sirven por HTTPS (el puerto 80 no
-# responde — ConnectTimeout confirmado). Ver _normalize_official_url_scheme.
+# Hosts del portal ARCSA que solo responden por HTTPS (el puerto 80 no
+# responde). Ver _normalize_official_url_scheme.
 _HTTPS_ONLY_HOSTS = {"controlsanitario.gob.ec", "www.controlsanitario.gob.ec"}
 
 NO_EVIDENCE_TEXT = (
@@ -120,14 +90,10 @@ def _get_pinecone_index():
 
 
 # ---------------------------------------------------------------------------
-# Docstore local (id -> {text, metadata}). Pinecone sólo guarda
-# id + embedding + metadata corta, nunca el texto completo (ver
-# chatbot/vector_ingest.py, decisión de diseño 3). Ese script es quien
-# genera chatbot/data/vector_docstore.json; este servidor SÓLO LO LEE.
-#
-# Se cachea por mtime (no de forma permanente) porque el proceso de carga
-# de datos puede seguir corriendo en paralelo y regenerar/ampliar este
-# archivo mientras el servidor ya está arriba.
+# Docstore local (id -> {text, metadata}). Pinecone no guarda el texto
+# completo del chunk; lo genera vector_ingest.py y este servidor sólo lo lee.
+# Se cachea por mtime (no de forma permanente) porque la ingesta puede seguir
+# corriendo en paralelo y regenerar el archivo con el servidor ya arriba.
 # ---------------------------------------------------------------------------
 
 _docstore_cache: dict[str, Any] = {"mtime": None, "data": {}}
@@ -155,8 +121,7 @@ def _load_docstore() -> dict[str, dict]:
 @functools.lru_cache(maxsize=512)
 def _lookup_normativa_url(file_id: str) -> str | None:
     """Resuelve la URL oficial de un documento de Normativa a partir de su
-    JSON crudo en chatbot/data/normativa/ (el docstore no guarda esta URL,
-    sólo articulo_numero/source/vigente, ver ingestion.py)."""
+    JSON crudo en chatbot/data/normativa/ (el docstore no guarda esta URL)."""
     if not file_id:
         return None
     path = NORMATIVA_DIR / f"{file_id}.json"
@@ -190,18 +155,16 @@ def retrieve_chunks(query: str, top_k: int = TOP_K) -> list[dict]:
     for match in matches:
         entry = docstore.get(match.id)
         if not entry:
-            # El vector existe en Pinecone pero todavía no está en el
-            # docstore local (carga de datos en curso) o es de una corrida
-            # anterior.
+            # Vector en Pinecone sin entrada todavía en el docstore local
+            # (carga en curso) o de una corrida anterior.
             logger.info(f"Vecino id={match.id} sin entrada en el docstore local; se omite.")
             continue
         results.append(
             {
                 "id": match.id,
                 # Con metric="cosine" sobre vectores normalizados, `score` de
-                # Pinecone ES la similitud coseno (más alto = más similar),
-                # mismo significado que tenía `distance` con Vertex (ver nota
-                # más abajo sobre SIMILARITY_THRESHOLD).
+                # Pinecone es directamente la similitud coseno (más alto =
+                # más similar), pese al nombre "distance" del campo.
                 "distance": match.score,
                 "text": entry.get("text", ""),
                 "metadata": entry.get("metadata", {}),
@@ -213,58 +176,22 @@ def retrieve_chunks(query: str, top_k: int = TOP_K) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Umbral de confianza de la recuperación (RAG)
 # ---------------------------------------------------------------------------
-# El índice usa métrica de similitud coseno sobre vectores normalizados a
-# norma 1 (ver `normalize_embedding()` en vector_store.py), así que el campo
-# `distance` que arma `retrieve_chunks()` (a partir de `match.score` de
-# Pinecone; antes venía de `find_neighbors()` de Vertex, mismo significado)
-# es, en realidad, la similitud coseno entre la pregunta y el chunk (más alto
-# = más similar; no es una distancia en el sentido geométrico habitual, a
-# pesar del nombre).
+# `distance` es en realidad la similitud coseno (vectores normalizados,
+# métrica cosine); más alto = más similar, pese al nombre del campo.
 #
-# Este umbral se calibró empíricamente (2026-09-01) llamando a
-# retrieve_chunks() contra el índice real desplegado (entonces Vertex AI
-# Vector Search; los valores siguen siendo válidos tras la migración a
-# Pinecone porque el modelo de embeddings y la normalización no cambiaron,
-# sólo el backend de búsqueda), con preguntas de control diseñadas para
-# cubrir ambos extremos:
-#
-#   - Preguntas totalmente ajenas a ARCSA/normativa sanitaria
-#     ("Dame la receta de ceviche ecuatoriano"):
-#       distancia del mejor vecino = 0.6470, promedio de los 5 = 0.6350
-#   - Preguntas sobre un trámite/categoría que NO existe en la normativa
-#     (permiso de funcionamiento para un "dron fumigador agrícola" como
-#     dispositivo médico): distancia del mejor vecino = 0.6985, promedio =
-#     0.6929 (el modelo sí contestó correctamente "no tengo esa información",
-#     pero isLowConfidence seguía dando False antes de este cambio)
-#   - Preguntas reales con respuesta exacta y verificable en el corpus (monto
-#     exacto de una tasa para una categoría específica de empresa, plazo
-#     exacto en días de un trámite, fórmula de cálculo de otra tasa):
-#       distancias del mejor vecino = 0.7365 / 0.7595 / 0.7865
-#
-# 0.70 sobre la distancia MÁXIMA (el mejor vecino, no el promedio) separa
-# limpiamente ambos grupos en esta calibración. Se usa el máximo y no el
-# promedio porque top_k=5 siempre trae vecinos 2..5 con relevancia
-# decreciente incluso en una búsqueda exitosa; promediarlos castigaría
-# preguntas bien resueltas por un único chunk fuertemente relevante (p. ej.
-# la pregunta de la tasa exacta arriba tenía promedio=0.7220, por debajo de
-# lo que parecería "seguro" a simple vista, pese a que el chunk correcto
-# estaba ahí con distancia 0.7365).
-#
-# Nota: 768 dimensiones + texto en español del mismo dominio regulatorio
-# generan una similitud "de fondo" no despreciable (~0.60-0.65) incluso para
-# preguntas sin relación real; este umbral no pretende ser perfecto, sólo
-# reflejar mejor la señal real que ya se calcula y se descartaba.
+# 0.70 se calibró empíricamente comparando preguntas fuera de dominio
+# (similitud ~0.63-0.70) contra preguntas reales con respuesta verificable
+# en el corpus (similitud >0.73). Se usa el máximo de los top-k, no el
+# promedio: top_k=5 siempre trae vecinos con relevancia decreciente incluso
+# en una búsqueda exitosa, así que promediar castigaría preguntas bien
+# resueltas por un único chunk muy relevante.
 SIMILARITY_THRESHOLD = 0.70
 
 
 def _is_low_confidence(chunks: list[dict]) -> bool:
-    """Señal real de confianza de la recuperación: True si ni siquiera el
-    mejor vecino recuperado supera SIMILARITY_THRESHOLD, es decir, si lo más
-    parecido que se encontró en la base normativa no es lo bastante relevante
-    como para confiar en que el CONTEXTO realmente contiene la respuesta.
-    Antes de este cambio, isLowConfidence sólo era True cuando no había NINGÚN
-    chunk recuperado (lista vacía), lo cual no detectaba recuperación
-    irrelevante-pero-no-vacía (ver docstring de SIMILARITY_THRESHOLD)."""
+    """True si ni siquiera el mejor vecino recuperado supera
+    SIMILARITY_THRESHOLD, es decir, la base normativa no tiene nada lo
+    bastante relevante como para confiar en el CONTEXTO."""
     if not chunks:
         return True
     best_distance = max(chunk.get("distance", 0.0) for chunk in chunks)
@@ -274,79 +201,21 @@ def _is_low_confidence(chunks: list[dict]) -> bool:
 # ---------------------------------------------------------------------------
 # Filtrado de fuentes citadas por relevancia INDIVIDUAL (por chunk)
 # ---------------------------------------------------------------------------
-# Bug real, medido empíricamente (evaluación documentada en
-# chatbot/eval/RESULTADOS.md, tag `tfe-evaluacion`): antes de este cambio,
-# TODOS los chunks recuperados (top_k=5 de Pinecone) se convertían en fuente
-# citada en /api/chat sin excepción — `_is_low_confidence()` ya calculaba una
-# señal de similitud, pero sólo la del MEJOR vecino, para decidir un flag
-# GLOBAL (isLowConfidence); nunca se usó para decidir, chunk por chunk, cuáles
-# de los 5 merecían citarse. Resultado medido en chatbot/eval/exactitud_cita.json:
-# de 120 fuentes citadas evaluadas, sólo 34.2% respaldaba de verdad la
-# afirmación (criterio 2) y sólo 45% aplicaba de verdad al caso consultado
-# (criterio 5) — el patrón típico era citar 5 fuentes en bloque cuando en
-# realidad sólo 1-2 eran relevantes.
-#
-# Umbral elegido: se reutiliza el mismo SIMILARITY_THRESHOLD (0.70) ya
-# calibrado más arriba, en vez de inventar un segundo número, aplicándolo por
-# chunk en lugar de sólo al máximo. Esto SÍ es una mejora real y segura
-# (nunca cita más fuentes que antes, nunca calla una que ya pasaba el propio
-# umbral de confianza del sistema) pero es importante ser honestos sobre su
-# alcance real, verificado con los datos de la propia evaluación:
-#
-#   Se cruzaron los veredictos de criterio_2/criterio_5 de
-#   chatbot/eval/exactitud_cita.json (120 fuentes, 24 casos) contra la
-#   `distance` real de cada una en chatbot/eval/traces.jsonl. Resultado:
-#     - Fuentes REALMENTE relevantes (criterio_2 Y criterio_5 = true, n=35):
-#       distance mínima 0.7250, máxima 0.8461, media 0.7668.
-#     - Fuentes NO relevantes (n=85): distance mínima 0.7243, máxima 0.8203,
-#       media 0.7584.
-#   Es decir, dentro de una recuperación EN DOMINIO (una pregunta real de
-#   ARCSA, no una completamente ajena tipo "receta de ceviche"), la similitud
-#   coseno de un chunk individual casi no separa lo relevante de lo que no lo
-#   es: los rangos se solapan casi por completo y la diferencia de medias
-#   (0.0084) es ínfima frente a esa dispersión. Confirmado también sobre los
-#   40 casos completos de golden_set.json: de los 32 casos "en dominio"
-#   (ejes producto/tramite/establecimiento/codigo), NINGUNO tiene un chunk
-#   individual por debajo de 0.70 en su top-5 — este filtro no cambia nada
-#   en esos casos. Donde sí actúa (y evita citas que antes eran una
-#   contradicción lógica del propio sistema) es en preguntas fuera de
-#   dominio o de confianza ya baja en conjunto: ahí, con este cambio, deja
-#   de citarse como "fuente" un chunk que ni siquiera el propio sistema
-#   consideraría creíble si fuera el único candidato.
-#
-#   Conclusión honesta: este filtro por umbral de similitud NO resuelve por
-#   sí solo el hallazgo del 34.2%/45% para preguntas en dominio (para eso
-#   haría falta un mecanismo que sí pueda distinguir "relevante" de "sólo
-#   temáticamente parecido" a nivel de contenido, p. ej. un juez LLM o un
-#   reranker por cada chunk contra la pregunta — no una similitud coseno
-#   global de embeddings, que estructuralmente no tiene esa resolución en
-#   este corpus). Sí es una mejora real, acotada y sin riesgo de regresión
-#   dentro de su alcance (preguntas fuera de dominio / de baja confianza
-#   agregada), que es exactamente el mismo terreno donde ya opera
-#   SIMILARITY_THRESHOLD para is_low_confidence.
+# Sin este filtro, los 5 chunks de top_k se citaban siempre en bloque como
+# fuente aunque sólo 1-2 fueran realmente relevantes (medido en la
+# evaluación de chatbot/eval/). Se reutiliza el mismo SIMILARITY_THRESHOLD
+# ya calibrado, pero aplicado por chunk en vez de sólo al máximo del grupo.
 def _filter_citable_sources(chunks: list[dict]) -> list[tuple[int, dict]]:
     """Devuelve pares (índice_original_1-based, chunk) sólo para los chunks
     cuya `distance` individual alcanza SIMILARITY_THRESHOLD.
 
-    Se preserva el índice ORIGINAL (posición dentro de los `chunks` pasados
-    a `_build_grounded_prompt`, no una renumeración 1..n del subconjunto)
-    porque ese mismo número es el que ve Gemini como "Fuente N" en el
-    CONTEXTO del prompt: si el modelo dice "según la Fuente 3", ese 3 debe
-    seguir señalando al mismo chunk en la lista de `sources` que recibe el
-    frontend.
+    Se preserva el índice ORIGINAL porque es el mismo número que ve Gemini
+    como "Fuente N" en el prompt; renumerar rompería esa correspondencia.
 
-    Si NINGÚN chunk supera el umbral se devuelve una lista vacía a
-    propósito, sin forzar "el mejor de los 5" como fallback: ese escenario
-    equivale exactamente a `_is_low_confidence()=True` (el máximo de las
-    distancias —que es la de este mismo "mejor" chunk— también quedaría por
-    debajo del mismo umbral), caso en el que el prompt ya le agrega a Gemini
-    la advertencia de baja confianza para que responda con cautela o
-    directamente indique que no tiene información suficiente. Citar ahí una
-    fuente que no pasó ni su propio umbral de relevancia repetiría el mismo
-    bug que se está arreglando (presentar como evidencia validada algo que
-    el propio sistema ya no considera confiable); es más coherente devolver
-    0 fuentes, igual que ya hace el camino de "0 chunks recuperados" en
-    chat() más abajo.
+    Si ningún chunk supera el umbral se devuelve una lista vacía (sin
+    fallback al "mejor de los 5"): ese caso coincide con
+    `_is_low_confidence()=True`, donde el prompt ya advierte a Gemini de la
+    baja confianza.
     """
     return [
         (i, chunk)
@@ -418,19 +287,10 @@ def _build_grounded_prompt(question: str, chunks: list[dict], *, low_confidence:
 def _normalize_official_url_scheme(url: str | None) -> str | None:
     """
     Fuerza esquema https:// para cualquier officialUrl de
-    controlsanitario.gob.ec que llegue con http://.
-
-    Defensa en tiempo de request contra citas muertas en
-    RagSourcesDrawer.jsx: el sitio real solo responde por HTTPS (el
-    puerto 80 no responde, ConnectTimeout confirmado), pero
-    chatbot/data/vector_docstore.json puede tener (o volver a tener, si se
-    re-ingesta sin pasar por el fix de tutorial_ingestion.py) entradas de
-    Tutorial con `metadata.source_url` en http://. Este parche hace que la
-    corrección tome efecto de inmediato para el docstore YA existente, sin
-    depender de un re-scrape/re-ingest (costoso) ni de una limpieza manual
-    del JSON — es un complemento defensivo, no un reemplazo, del fix en el
-    origen (tutorial_ingestion.py._normalize_source_url_scheme) y del
-    parche aplicado directamente sobre vector_docstore.json.
+    controlsanitario.gob.ec que llegue con http:// (el sitio no responde por
+    puerto 80). Defensa en tiempo de request para docstores existentes que
+    puedan tener entradas antiguas en http://; el fix de origen está en
+    tutorial_ingestion.py._normalize_source_url_scheme.
     """
     if not url or not url.startswith("http://"):
         return url
@@ -452,7 +312,7 @@ def _build_source_citation(chunk: dict, index: int) -> dict:
         document_title = metadata.get("title") or "Instructivo ARCSA"
         section = None
         official_url = metadata.get("source_url")
-        validity_date = "Vigente"
+        validity_status = "Vigente"
     else:
         document_title = metadata.get("source") or "Normativa ARCSA"
         articulo = metadata.get("articulo_numero")
@@ -461,7 +321,7 @@ def _build_source_citation(chunk: dict, index: int) -> dict:
         )
         official_url = _lookup_normativa_url(metadata.get("file_id", ""))
         vigente = metadata.get("vigente", True)
-        validity_date = "Vigente" if vigente else "Posiblemente desactualizada"
+        validity_status = "Vigente" if vigente else "Posiblemente desactualizada"
 
     official_url = _normalize_official_url_scheme(official_url)
 
@@ -470,7 +330,7 @@ def _build_source_citation(chunk: dict, index: int) -> dict:
         "documentTitle": document_title,
         "issuingEntity": ISSUING_ENTITY,
         "section": section,
-        "validityDate": validity_date,
+        "validityStatus": validity_status,
         "snippet": snippet,
         "officialUrl": official_url or OFFICIAL_ARCSA_URL,
     }
@@ -485,10 +345,7 @@ app = FastAPI(title="ARCSA RAG Chatbot API")
 _default_cors_origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    # Puerto real del dev server de Vite usado en este proyecto (ver
-    # frontend/package.json / npm run dev): sin esto, el preflight CORS de
-    # /api/auth/* y /api/conversations/* falla con 400 contra un frontend
-    # local recién levantado que no seteó CORS_ORIGINS a mano en .env.
+    # Puerto del dev server de Vite (npm run dev).
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
@@ -499,11 +356,8 @@ _allow_origins = (
     else _default_cors_origins
 )
 
-# "*" combinado con allow_credentials=True es un error de configuración
-# fácil de cometer (es la respuesta intuitiva a "abrir CORS") que deja la
-# app rota de forma confusa: el navegador rechaza igual las respuestas con
-# credenciales contra un origen wildcard. Falla rápido acá en vez de dejar
-# que se descubra en producción con un error de CORS opaco en el browser.
+# "*" con allow_credentials=True es inválido (el navegador rechaza igual la
+# respuesta); falla rápido acá en vez de un error de CORS opaco en runtime.
 if "*" in _allow_origins:
     raise SystemExit(
         "CORS_ORIGINS no puede incluir '*' porque allow_credentials=True está "
@@ -519,15 +373,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Endpoints de autenticación real (POST /api/auth/signup, /login, GET /me,
-# POST /logout). Quedan cubiertos por el mismo middleware de CORS de arriba,
-# no hace falta configurarlo de nuevo (ver chatbot/auth.py).
+# Endpoints de autenticación (ver chatbot/auth.py).
 app.include_router(auth_router)
 
-# Endpoints de persistencia de historial de conversaciones, atados al
-# usuario logueado (GET/POST /api/conversations, GET/DELETE
-# /api/conversations/{id}, POST /api/conversations/{id}/messages). Mismo
-# middleware de CORS de arriba, ver chatbot/conversations.py.
+# Endpoints de historial de conversaciones (ver chatbot/conversations.py).
 app.include_router(conversations_router)
 
 
@@ -617,13 +466,10 @@ def chat(payload: ChatRequest):
 if __name__ == "__main__":
     import uvicorn
 
-    # forwarded_allow_ips="": sin esto, uvicorn confía por defecto en un
-    # X-Forwarded-For entrante desde loopback y reescribe la IP del cliente
-    # con lo que diga ese header — evadía por completo el rate limiting de
-    # /api/auth/login|signup (chatbot/auth.py) con solo rotar ese header en
-    # cada intento (encontrado con fuzzing real). No hay ningún proxy real
-    # delante de este servidor, así que no hay que confiar en ese header.
-    # OJO: esto sólo cubre `python main.py`; si se levanta con
-    # `python -m uvicorn main:app ...` a mano hay que pasar el mismo
-    # `--forwarded-allow-ips=""` en la línea de comandos (ver Dockerfile).
+    # forwarded_allow_ips="": sin esto, uvicorn confía en X-Forwarded-For
+    # entrante desde loopback y reescribe la IP del cliente con ese header,
+    # lo que permite evadir el rate limiting de /api/auth/* (chatbot/auth.py)
+    # rotándolo en cada intento. No hay proxy real delante de este servidor.
+    # Si se levanta con `uvicorn main:app` a mano, pasar el mismo flag
+    # `--forwarded-allow-ips=""` (ver Dockerfile).
     uvicorn.run(app, host="0.0.0.0", port=8001, forwarded_allow_ips="")

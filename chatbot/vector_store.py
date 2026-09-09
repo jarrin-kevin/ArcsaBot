@@ -67,10 +67,7 @@ def configure_embeddings() -> GoogleGenAIEmbedding:
 
 def normalize_embedding(vector: list[float]) -> list[float]:
     """Normaliza un embedding a norma 1: con output_dimensionality=768,
-    gemini-embedding-001 no devuelve vectores unitarios. Pinecone con
-    metric="cosine" normaliza internamente para el cálculo de similitud, pero
-    se normaliza igual acá para mantener consistencia con el resto del
-    pipeline (p. ej. si en algún momento se compara contra `metric="dotproduct"`)."""
+    gemini-embedding-001 no devuelve vectores unitarios."""
     norm = math.sqrt(sum(x * x for x in vector))
     if norm == 0:
         return vector
@@ -84,15 +81,8 @@ def get_pinecone_client() -> Pinecone:
 
 
 def get_vector_store():
-    """Crea (si no existe) y retorna el índice de Pinecone ya listo para usar.
-
-    Reemplaza a Vertex AI Vector Search (ver docs/adr/0002-vertex-ai-vector-search.md
-    para la decisión original, y la sección de migración en la memoria del
-    proyecto para el motivo del cambio: se deshabilitó la facturación de GCP
-    por costo). A diferencia de Vertex, Pinecone es una única entidad "índice"
-    (no hay index + endpoint + bucket de staging separados), así que esta
-    función devuelve directamente el objeto índice, listo para upsert()/query().
-    """
+    """Crea (si no existe) y retorna el índice de Pinecone, listo para
+    upsert()/query()."""
     pc = get_pinecone_client()
 
     if not pc.has_index(name=PINECONE_INDEX_NAME):

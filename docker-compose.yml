@@ -3,10 +3,8 @@ services:
     build:
       context: ./chatbot
       dockerfile: Dockerfile
-    # El Dockerfile ahora define un CMD "de producción" sin --reload (para que
-    # la imagen funcione sola, sin bind mount). En desarrollo seguimos
-    # montando ./chatbot:/app abajo, así que reactivamos --reload acá para
-    # mantener el hot-reload de siempre.
+    # El Dockerfile define un CMD "de producción" sin --reload. En desarrollo
+    # montamos ./chatbot:/app abajo, así que reactivamos --reload acá.
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload", "--forwarded-allow-ips="]
     ports:
       - "8001:8001"

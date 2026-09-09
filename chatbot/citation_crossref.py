@@ -3,41 +3,24 @@ Cruce entre las citas a Normativa detectadas en el corpus de Tutorial
 (chatbot/tutorial_ingestion.py) y el Corpus Documental real de Normativa
 Vigente (chatbot/data/normativa/*.json).
 
-Objetivo (ver CONTEXT.md y docs/adr/0004-flag-dont-drop-outdated-tutorial-
-citations.md): para cada cita a Normativa que aparece en una página de
-Tutorial (p. ej. "ARCSA-DE-2021-016-AKRG", "Acuerdo Ministerial Nº 705",
-"Decisión 833"), determinar si esa Normativa existe en el Corpus Documental
-actual. Las citas que NO aparecen en el corpus son candidatas a "Cita
-Desactualizada": pueden apuntar a una Normativa derogada, superada por una
-reforma con otro código, o simplemente todavía no incorporada al corpus.
-Este módulo NO distingue esos tres casos ni concluye que el Tutorial esté
-equivocado: solo produce la bandera "no_encontrada_en_corpus" para que una
-persona la revise (ADR 0004: "flag, don't drop/assume", aplicado aquí a
-nivel de cita individual).
+Objetivo (ver ADR 0004 "flag, don't drop"): para cada cita a Normativa que
+aparece en una página de Tutorial, determinar si esa Normativa existe en
+el Corpus Documental actual. Las citas que no aparecen son candidatas a
+"Cita Desactualizada" (Normativa derogada, reformada con otro código, o
+simplemente aún no incorporada); este módulo no distingue esos casos, solo
+marca "no_encontrada_en_corpus" para que una persona la revise.
 
-Estrategia de matching (ver limitaciones honestas en el reporte final del
-trabajo, no solo aquí):
-  - El campo "source" de un chunk de Normativa es el título del documento
-    (nombre de archivo original sin extensión), no un campo de código
-    estructurado. Los títulos reales SÍ suelen embeber el código de la
-    Normativa (p. ej. "Resolución_ARCSA-DE-002-2020-LDCL Buenas Prácticas
-    de..."), así que el cruce se hace extrayendo ese código del título con
-    el mismo tipo de patrón que ya usa tutorial_ingestion.py para
-    extraerlo del cuerpo del Tutorial, y comparando identificadores
-    normalizados (no substrings crudos) entre ambos lados.
-  - Resolución ARCSA-DE-*: se compara el código completo (letras, dígitos y
-    guiones) ignorando espacios en blanco, porque el scrape del Tutorial
-    introduce a veces un espacio accidental dentro del código (defecto ya
-    documentado en tutorial_ingestion.py, p. ej. "ARCSA-DE-2021- 008-AKRG").
-  - Acuerdo Ministerial: se compara solo el número (ignorando "N°/No./Nº" y
-    ceros a la izquierda), y el año si ambos lados lo traen.
-  - Decisión CAN: se compara solo el número, tolerando además la variante
-    mal escrita "DESICION" que aparece en el corpus real.
+Estrategia de matching: el campo "source" de un chunk de Normativa es el
+título del documento, que suele embeber el código de la Normativa (p. ej.
+"Resolución_ARCSA-DE-002-2020-LDCL..."). El cruce extrae ese código del
+título con el mismo tipo de patrón que usa tutorial_ingestion.py, y
+compara identificadores normalizados (no substrings crudos): el código
+ARCSA-DE completo ignorando espacios, el número de Acuerdo Ministerial
+(más año si ambos lados lo traen), y el número de Decisión CAN.
 
-Este módulo NO modifica tutorial_ingestion.py, ingestion.py,
-normativa_extraction.py, vector_store.py, main.py ni vector_ingest.py: solo
-importa run_pipeline() de tutorial_ingestion (igual que ya hace
-vector_ingest.py). No hace embeddings ni llamadas a un vector store.
+No modifica tutorial_ingestion.py ni el resto del pipeline: solo importa
+run_pipeline() de tutorial_ingestion. No hace embeddings ni llamadas a un
+vector store.
 
 Modo de uso (desde la raíz del repositorio):
 
@@ -70,33 +53,24 @@ OUTPUT_PATH = BASE_DIR / "data" / "citation_crossref_report.json"
 
 _ARCSA_DE_PREFIX_PATTERN = re.compile(r"^ARCSA-DE-", re.IGNORECASE)
 
-# OJO: este patrón se corre sobre el título ORIGINAL de la Normativa (con
-# sus espacios intactos), nunca sobre una versión con todo el whitespace
-# ya eliminado. Un título real es prosa ("...LDCL Buenas Prácticas de
-# Almacenamiento..."), y si se le quita el espacio antes de aplicar el
-# regex, el cuantificador ávido "[A-Z]{2,6}" del sufijo se come letras de
-# la palabra siguiente (p. ej. "LDCL" + "Buenas" -> "LDCLBU"), produciendo
-# un código incorrecto y un falso negativo. El "(?![A-Za-z])" es una
-# segunda barrera para el caso (no visto en el corpus real, pero posible)
-# de un título sin separador entre el código y la palabra siguiente.
+# Se corre sobre el título original (con espacios intactos): si se quitara
+# el whitespace antes, el cuantificador ávido "[A-Z]{2,6}" del sufijo se
+# comería letras de la palabra siguiente en la prosa del título. El
+# "(?![A-Za-z])" es una barrera extra para el mismo caso.
 _ARCSA_DE_CODE_PATTERN = re.compile(
     r"ARCSA-DE-\d{2,4}-\s?\d{2,4}-\s?[A-Z]{2,6}(?![A-Za-z])",
     re.IGNORECASE,
 )
 
 # Mismo espíritu que _ACUERDO_MINISTERIAL_PATTERN de tutorial_ingestion.py,
-# pero con el número/año capturados en grupos para poder comparar solo el
-# identificador (no el string completo, que varía en "N°/No./Nº").
+# pero con el número/año capturados en grupos para comparar el
+# identificador, no el string completo (que varía en "N°/No./Nº").
 _ACUERDO_NUM_PATTERN = re.compile(
     r"Acuerdo\s+Ministerial\s+(?:N[°ºo]\.?\s*)?(\d{1,6})(?:-(\d{4}))?",
     re.IGNORECASE,
 )
 
-# Incluye la variante mal escrita "DESICION" encontrada en el título real
-# "DESICION 826_Notificación Sanitaria Obligatoria..." del Corpus
-# Documental: un ejemplo concreto de que un matching por substring de texto
-# (en vez de por número normalizado) habría fallado en encontrar ese
-# documento aunque la Decisión sí está en el corpus.
+# Incluye la variante mal escrita "DESICION" que aparece en el corpus real.
 _DECISION_NUM_PATTERN = re.compile(
     r"(?:Decisi[oó]n(?:es)?|DESICION)\s+(\d{1,5})",
     re.IGNORECASE,
@@ -104,12 +78,9 @@ _DECISION_NUM_PATTERN = re.compile(
 
 
 def _strip_ws_upper(text: str) -> str:
-    """Quita todo whitespace y pasa a mayúsculas.
-
-    Se usa para comparar códigos ARCSA-DE tolerando el espacio accidental
-    que el scrape a veces introduce dentro del código (ver docstring del
-    módulo y comentarios de tutorial_ingestion.py sobre este defecto).
-    """
+    """Quita todo whitespace y pasa a mayúsculas, para comparar códigos
+    ARCSA-DE tolerando el espacio accidental que el scrape a veces
+    introduce dentro del código."""
     return re.sub(r"\s+", "", text).upper()
 
 
@@ -152,13 +123,9 @@ def classify_citation(citation: str):
 def load_normativa_sources(normativa_dir: Path = NORMATIVA_DIR) -> list[str]:
     """
     Carga el título ("source") de cada chunk de Normativa Vigente,
-    deduplicado.
-
-    Se cruza contra el título del documento (no contra el texto de cada
-    Artículo): la cita del Tutorial identifica una Normativa completa
-    (una Resolución, un Acuerdo Ministerial, una Decisión CAN), no un
-    Artículo específico dentro de ella, y el título es el único campo
-    donde el código de la Normativa aparece de forma reconocible.
+    deduplicado. Se cruza contra el título del documento completo, no
+    contra el texto de cada Artículo, porque una cita del Tutorial
+    identifica la Normativa entera y el título es donde su código aparece.
     """
     sources: set[str] = set()
     for path in sorted(normativa_dir.glob("*.json")):
@@ -175,22 +142,16 @@ def build_normativa_index(sources: list[str]):
     """
     Construye tres índices (uno por tipo de cita) que mapean un
     identificador normalizado hacia la lista de títulos de Normativa donde
-    aparece ese identificador.
-
-    Un título puede alimentar más de una entrada si menciona más de un
-    identificador (p. ej. un título de Reforma que menciona tanto su propio
-    código como el código que reforma), y un identificador puede recibir
-    más de un título si más de un documento lo menciona (p. ej. una
-    Decisión modificatoria que menciona la Decisión original en su título).
+    aparece. Un título de Reforma puede alimentar más de una entrada
+    (menciona su propio código y el que reforma).
     """
     resolucion_index: dict[str, list[str]] = defaultdict(list)
     acuerdo_index: dict[AcuerdoKey, list[str]] = defaultdict(list)
     decision_index: dict[int, list[str]] = defaultdict(list)
 
     for source in sources:
-        # Se busca sobre el título tal cual (ver docstring del patrón):
-        # solo se normaliza (quitar whitespace, mayúsculas) el fragmento ya
-        # extraído, para usarlo como llave del índice.
+        # Se busca sobre el título tal cual; solo se normaliza el
+        # fragmento ya extraído, para usarlo como llave del índice.
         for match in _ARCSA_DE_CODE_PATTERN.finditer(source):
             code = _strip_ws_upper(match.group(0))
             resolucion_index[code].append(source)

@@ -4,16 +4,11 @@
 secrets/
 .env
 
-# Datos generados en runtime por los scripts de ingesta (vector_ingest.py,
-# tutorial_ingestion.py, etc.). No hacen falta para construir ni arrancar el
-# servidor (main.py los lee de forma perezosa si existen) y pesan cientos de
-# MB, así que no tiene sentido copiarlos a la imagen. Además, chatbot/data/
-# está en .gitignore: en un build desde GitHub (Railway) estos archivos ni
-# siquiera existen en el código fuente que se clona, así que una excepción
-# acá para "hornearlos" no puede funcionar nunca (probado en Railway: la
-# imagen se rompe con "file not found" al referenciarlos por nombre). El
-# Volume de /app/data se puebla aparte, subiendo los archivos directo desde
-# la máquina local vía la CLI de Railway — ver DEPLOY.md sección 1.6.
+# Datos generados en runtime por los scripts de ingesta. No hacen falta
+# para construir ni arrancar el servidor (main.py los lee de forma
+# perezosa si existen), pesan cientos de MB y están en .gitignore, así
+# que no existen en un build desde GitHub. Ver DEPLOY.md sección 1.6 para
+# cómo se puebla /app/data en producción.
 data/
 
 # Artefactos de scraping/herramientas puntuales: logs y reportes pesados que

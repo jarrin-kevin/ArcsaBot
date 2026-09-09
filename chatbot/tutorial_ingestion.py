@@ -2,29 +2,19 @@
 Módulo de limpieza y parsing del corpus de Tutorial (páginas scrapeadas de
 https://www.controlsanitario.gob.ec/servicios/).
 
-Este módulo es DISTINTO de chatbot/ingestion.py: parse_normativa() en ese
-otro módulo está pensado para Normativa Vigente con estructura legal
-Artículo/Numeral/Literal. El contenido de Tutorial no tiene esa estructura
-(son guías en lenguaje natural sobre cómo completar un Trámite, ver
-CONTEXT.md), así que aquí se define un pipeline de limpieza/parsing propio,
-sin tocar ni reutilizar parse_normativa().
+Distinto de chatbot/ingestion.py: ese módulo parsea Normativa Vigente con
+estructura legal Artículo/Numeral/Literal, mientras que Tutorial son guías
+en lenguaje natural sin esa estructura, así que usa su propio pipeline.
 
-Etapas de este módulo:
-  1. filter_pages(): decide qué páginas del scrape NO entran al corpus
-     ingestionable, y por qué (ver ADR 0004: "flag, don't drop" — en vez de
-     saltarlas en silencio, se escribe un reporte explícito de exclusión).
-  2. parse_tutorial(): convierte una página sobreviviente en un chunk listo
-     para RAG, extrayendo además menciones a Normativa ARCSA (Resoluciones,
-     Acuerdos Ministeriales, Decisiones de la CAN) vía regex, para que en un
-     trabajo futuro se puedan cruzar contra el Corpus Documental y detectar
-     Cita Desactualizada (ese cruce NO se implementa en este módulo).
-  3. to_documents(): adaptador delgado hacia llama_index.core.Document,
-     igual que el de chatbot/ingestion.py.
-  4. run_pipeline(): orquesta las tres etapas anteriores sobre el corpus
-     real en disco y reporta conteos.
+Etapas: filter_pages() descarta páginas no aprovechables dejando un reporte
+explícito (ver ADR 0004 "flag, don't drop"); parse_tutorial() limpia una
+página y extrae menciones a Normativa ARCSA vía regex para un cruce futuro
+contra el Corpus Documental; to_documents() adapta a
+llama_index.core.Document; run_pipeline() orquesta todo sobre el corpus
+real en disco.
 
-Este módulo NO hace embeddings ni llamadas a un vector store, y NO modifica
-el scraper (chatbot/scraping/scrape_servicios.py) ni chatbot/ingestion.py.
+No hace embeddings ni llamadas a un vector store, y no modifica el scraper
+ni chatbot/ingestion.py.
 """
 
 from __future__ import annotations
@@ -51,17 +41,13 @@ EXCLUDED_PAGES_REPORT_PATH = SCRAPING_DIR / "excluded_pages.json"
 # Etapa 1: filtrado del corpus crudo
 # --------------------------------------------------------------------------
 
-# Valores de capture_status que indican que la página NO tiene contenido
-# aprovechable (verificado contra capture_summary.json real: 41 páginas
-# "broken" —típicamente HTTP 404 o un enlace que dispara una descarga de
-# Nextcloud en vez de navegar— y 4 "empty_content" —el contenedor principal
-# quedó vacío tras la limpieza del DOM, un defecto del sitio—).
+# capture_status sin contenido aprovechable: "broken" (404 o descarga de
+# Nextcloud en vez de navegación) y "empty_content" (DOM vacío tras limpieza).
 _UNUSABLE_CAPTURE_STATUSES = {"broken", "empty_content"}
 
-# Rama de section_path que es una trampa de rastreo genuina: carpetas
-# "Coordinación Zonal N / Files" con enlaces a descargas de Nextcloud
-# (nube.controlsanitario.gob.ec/.../download?...). No es contenido de
-# Trámite/Tutorial, son anexos de rendición de cuentas financiera.
+# Rama de section_path que es una trampa de rastreo: carpetas
+# "Coordinación Zonal N / Files" con descargas de Nextcloud, no contenido
+# de Trámite/Tutorial sino anexos de rendición de cuentas financiera.
 _RENDICION_CUENTAS_SECTION = "RENDICIÓN DE CUENTAS ARCSA"
 
 # Nodo del árbol de secciones que agrupa las biografías individuales del
@@ -86,28 +72,14 @@ def _canonical_url_ignoring_scheme(url: str | None) -> str:
     """
     Clave de deduplicación por URL que ignora el esquema (http/https).
 
-    Motivo: scrape_servicios.canonical_url() normaliza host/path/fragmento
-    de una URL para su set `visited` (deduplicación durante el crawl) y
-    para el hash de stable_id() (generación del "id" de cada página), pero
-    NO normaliza el esquema. Si el sitio real contiene un enlace interno
-    escrito en http:// hacia una página que en otro lugar del sitio se
-    enlaza en https://, el scraper las trata como DOS páginas DISTINTAS
-    (dos ids, dos archivos .md, dos registros en capture_summary.json)
-    aunque sea la MISMA página real (mismo contenido, mismo destino final).
-    Verificado contra la data real: 4 páginas del corpus tienen
-    exactamente este defecto (mismo texto exacto, "id" e
-    "source_url"-esquema distintos).
+    scrape_servicios.canonical_url() normaliza host/path/fragmento pero no
+    el esquema, así que un enlace interno en http:// hacia una página que
+    en otro lugar del sitio se referencia en https:// termina tratado como
+    dos páginas distintas. Esta función es la red de seguridad en el
+    filtrado de este módulo para detectar y excluir esos duplicados.
 
-    Ese defecto vive en scrape_servicios.py (fuera de alcance de este fix:
-    no se modifica el scraper), así que esta función existe como red de
-    seguridad en la etapa de filtrado de este módulo: si un futuro
-    re-scrape reintroduce el mismo par http/https para una página, se
-    detecta y excluye acá antes de que vuelva a producir un duplicado en
-    el corpus ingestionable, en vez de depender de una limpieza manual
-    posterior sobre el docstore ya generado.
-
-    Conserva el query string (dos páginas con distinto "?p=..." son
-    páginas DISTINTAS, no un duplicado de esquema).
+    Conserva el query string (dos páginas con distinto "?p=..." no son
+    duplicadas).
     """
     if not url:
         return ""
@@ -119,20 +91,12 @@ def _canonical_url_ignoring_scheme(url: str | None) -> str:
 
 def _is_comite_expertos_bio_leaf(section_path: list[str], title: str) -> bool:
     """
-    True si la página es una biografía individual dentro del Comité de
-    Expertos Externos (hoja del árbol), y no la página índice/landing del
-    comité o de "Expertos Externos" en general.
+    True si la página es una biografía individual del Comité de Expertos
+    Externos (hoja del árbol), y no la página índice/landing del comité.
 
-    En la data real:
-      - La página landing "Expertos Externos" tiene section_path de solo
-        2 niveles (["Servicios", "Otros servicios"]) y título propio
-        "Expertos Externos": NO cae aquí (no tiene contenido de biografía).
-      - La página índice "COMITÉ DE EXPERTOS ARCSA" tiene section_path de
-        3 niveles terminando en "Expertos Externos": tampoco cae aquí,
-        se conserva aunque su contenido resulte casi vacío en el scrape.
-      - Las 8 biografías individuales ("Dr. Fray Martínez Reyes", etc.)
-        tienen section_path de 4 niveles terminando en
-        "COMITÉ DE EXPERTOS ARCSA": SÍ caen aquí.
+    Se distingue exigiendo section_path terminado en
+    _COMITE_EXPERTOS_SECTION junto con un título que empieza con un
+    prefijo honorífico; las páginas índice no cumplen ambas condiciones.
     """
     if not section_path or section_path[-1] != _COMITE_EXPERTOS_SECTION:
         return False
@@ -143,31 +107,20 @@ def filter_pages(records: list[dict]) -> tuple[list[dict], list[dict]]:
     """
     Divide los registros de capture_summary.json en (kept, excluded).
 
-    Cada registro excluido conserva su reason (string) además de sus datos
-    originales, para poder escribir un reporte explícito de exclusión en
-    vez de descartar la página en silencio (ver ADR 0004: "flag, don't
-    drop" aplicado aquí a nivel de corpus, no solo de citas).
-
-    La precedencia de reglas es: (a) capture_status inutilizable, luego
-    (b) trampa de rastreo de Rendición de Cuentas, luego (c) biografía de
-    experto, luego (d) variante de esquema http/https de una URL ya
-    conservada (ver _canonical_url_ignoring_scheme). Cada página excluida
-    cae bajo UNA sola razón (la primera que aplique), para que los
-    conteos por razón no se solapen.
-
-    La regla (d) depende del ORDEN de `records` (gana la primera aparición
-    de cada URL canónica, igual que el criterio "primera vez que se
-    descubre" que ya usa el `visited` set de scrape_servicios.py), así que
-    esta función debe recibir los registros en el mismo orden en que
-    aparecen en capture_summary.json.
+    Cada excluido conserva su "exclusion_reason" en vez de descartarse en
+    silencio (ver ADR 0004: "flag, don't drop"). Precedencia de reglas:
+    (a) capture_status inutilizable, (b) trampa de rastreo de Rendición de
+    Cuentas, (c) biografía de experto, (d) variante de esquema http/https
+    de una URL ya conservada. La regla (d) depende del orden de `records`
+    (gana la primera aparición), así que deben venir en el mismo orden que
+    en capture_summary.json.
 
     Args:
         records: lista de diccionarios tal como vienen de capture_summary.json.
 
     Returns:
-        (kept, excluded): kept es la lista de registros que sí entran al
-        corpus ingestionable; excluded es la lista de registros descartados,
-        cada uno con una clave adicional "exclusion_reason".
+        (kept, excluded): páginas que entran al corpus ingestionable y
+        páginas descartadas, cada una con la clave "exclusion_reason".
     """
     kept: list[dict] = []
     excluded: list[dict] = []
@@ -193,8 +146,7 @@ def filter_pages(records: list[dict]) -> tuple[list[dict], list[dict]]:
         elif _is_comite_expertos_bio_leaf(section_path, title):
             reason = "personnel_directory_bio"
 
-        # (d) Ya se conservó una página con la misma URL canónica (solo
-        # difiere el esquema http/https): duplicado, no una página nueva.
+        # (d) Duplicado de esquema http/https de una URL ya conservada.
         elif canonical_url and canonical_url in seen_canonical_urls:
             first_id = seen_canonical_urls[canonical_url]
             reason = f"duplicate_scheme_variant_of:{first_id}"
@@ -214,8 +166,8 @@ def write_exclusion_report(excluded: list[dict], output_path: Path = EXCLUDED_PA
     Escribe el reporte explícito de páginas excluidas del corpus.
 
     Cada entrada conserva source_url, title, section_path, capture_status
-    y exclusion_reason, para que el reporte sea auditable sin tener que
-    volver a cruzar contra capture_summary.json.
+    y exclusion_reason para que sea auditable sin recruzar contra
+    capture_summary.json.
     """
     report = [
         {
@@ -238,28 +190,16 @@ def write_exclusion_report(excluded: list[dict], output_path: Path = EXCLUDED_PA
 # Etapa 2: parsing de una página sobreviviente
 # --------------------------------------------------------------------------
 
-# El front matter YAML lo escribe scrape_servicios.py como
-# "---\n{yaml}---\n" al inicio del archivo. Este patrón captura solo el
-# PRIMER bloque delimitado por "---" al inicio del texto (no confundirlo
-# con líneas "---" que puedan aparecer como separador horizontal más abajo
-# en el cuerpo Markdown, porque el match no es codicioso y se detiene en el
-# primer cierre).
+# Front matter YAML escrito por scrape_servicios.py como "---\n{yaml}---\n".
+# El match no es codicioso: solo captura el primer bloque "---" al inicio,
+# sin confundirse con separadores horizontales más abajo en el Markdown.
 _FRONT_MATTER_PATTERN = re.compile(r"\A---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
 
-# Patrones de citas a Normativa ARCSA/relacionada, calibrados contra
-# ejemplos reales encontrados en el corpus (ver justificación en el
-# reporte de este trabajo, no solo en la especificación original):
-#
-#   - Resolución ARCSA-DE-...: el código real varía en el orden de sus
-#     partes numéricas (a veces "AÑO-NÚMERO", a veces "NÚMERO-AÑO", p.ej.
-#     "ARCSA-DE-2021-016-AKRG" y "ARCSA-DE-008-2018-JCGO" both existen), y
-#     ocasionalmente el scrape introduce un espacio extra alrededor de un
-#     guion por un salto de línea del sitio original (p.ej.
-#     "ARCSA-DE-2021- 008-AKRG"). El patrón tolera ambos.
-#   - Acuerdo Ministerial: aparece como "Nº 705", "No. 763", "012-2019"
-#     (número-año) o "00069-2024", sin un orden fijo de N°/No./nada.
-#   - Decisión (de la Comunidad Andina, CAN): aparece como "Decisión 833"
-#     o "DECISIÓN 833", siempre número simple sin sufijo de año.
+# Patrones de citas a Normativa ARCSA/relacionada. El orden de las partes
+# numéricas de una Resolución varía (año-número o número-año) y el scrape
+# a veces introduce un espacio extra alrededor de un guion; el patrón
+# tolera ambos. Acuerdo Ministerial y Decisión CAN también varían en el
+# uso de "Nº"/"No."/nada.
 _RESOLUCION_ARCSA_PATTERN = re.compile(r"ARCSA-DE-\d{2,4}-\s?\d{2,4}-\s?[A-Z]{2,6}")
 _ACUERDO_MINISTERIAL_PATTERN = re.compile(
     r"Acuerdo\s+Ministerial\s+(?:N[°ºo]\.?\s*)?\d{1,6}(?:-\d{4})?",
@@ -274,12 +214,9 @@ _NORMATIVA_CITATION_PATTERNS = (
 )
 
 
-# Hosts del portal de Servicios ARCSA para los que se fuerza esquema
-# https:// en source_url (ver justificación abajo en
-# _normalize_source_url_scheme). www.controlsanitario.gob.ec es el host
-# real usado por scrape_servicios.BASE_URL; controlsanitario.gob.ec (sin
-# "www.") se incluye por si algún enlace interno del sitio lo referencia
-# sin el subdominio.
+# Hosts del portal ARCSA para los que se fuerza esquema https:// en
+# source_url (ver _normalize_source_url_scheme). Se incluye la variante
+# sin "www." por si algún enlace interno del sitio la usa.
 _HTTPS_ONLY_HOSTS = {"controlsanitario.gob.ec", "www.controlsanitario.gob.ec"}
 
 
@@ -287,18 +224,10 @@ def _normalize_source_url_scheme(source_url: str | None) -> str | None:
     """
     Fuerza esquema https:// para URLs de controlsanitario.gob.ec.
 
-    Motivo (ver investigación de citas muertas en RagSourcesDrawer): el
-    sitio real solo sirve por HTTPS —el puerto 80 no responde
-    (ConnectTimeout confirmado)—, pero el scraper (scrape_servicios.py)
-    puede descubrir y capturar un enlace interno escrito en http:// tal
-    cual aparece en el HTML de origen, sin normalizar el esquema
-    (canonical_url() ahí normaliza host/path/fragmento pero NO esquema).
-    Si ese source_url http:// llega tal cual hasta acá, queda horneado en
-    el docstore y en chatbot/main.py._build_source_citation() se expone
-    como "officialUrl" un enlace muerto en la UI. Se corrige en esta etapa
-    (parse_tutorial) para que cualquier futuro re-scrape/re-ingest produzca
-    URLs correctas desde el origen, sin depender solo del parche defensivo
-    en tiempo de request de main.py.
+    El sitio solo sirve por HTTPS, pero el scraper puede capturar un
+    enlace interno escrito en http:// tal cual aparece en el HTML de
+    origen. Sin normalizar, ese source_url queda horneado en el docstore
+    y se expone como un enlace muerto en la UI (RagSourcesDrawer).
 
     No se toca el resto de la URL (path, query, fragment): solo el
     esquema, y solo para los hosts de _HTTPS_ONLY_HOSTS.
@@ -321,19 +250,15 @@ def _strip_front_matter(markdown_text: str) -> str:
 
 def _extract_normativa_citations(body: str) -> list[str]:
     """
-    Extrae menciones a Normativa ARCSA/relacionada del cuerpo de texto,
-    deduplicadas y en orden de primera aparición.
-
-    No se resuelve aquí si la cita está Vigente o Derogada (Cita
-    Desactualizada, ver CONTEXT.md/ADR 0004): eso requiere cruzar contra el
-    Corpus Documental, que es trabajo de otro workstream. Esta función solo
-    extrae el string de la cita tal como aparece en el Tutorial.
+    Extrae menciones a Normativa ARCSA del cuerpo, deduplicadas y en orden
+    de primera aparición. No resuelve si la cita está Vigente o Derogada
+    (eso requiere cruzar contra el Corpus Documental, ver
+    citation_crossref.py); solo extrae el string tal como aparece.
     """
     seen: dict[str, None] = {}
     for pattern in _NORMATIVA_CITATION_PATTERNS:
         for match in pattern.finditer(body):
-            # Normaliza espacios internos accidentales (p. ej. el guion con
-            # espacio visto en "ARCSA-DE-2021- 008-AKRG").
+            # Normaliza espacios internos accidentales dentro del código.
             citation = re.sub(r"\s+", " ", match.group(0)).strip()
             seen.setdefault(citation, None)
     return list(seen.keys())
@@ -345,26 +270,15 @@ def parse_tutorial(markdown_text: str, front_matter: dict) -> dict:
     listo para RAG.
 
     Args:
-        markdown_text: contenido crudo del archivo .md tal como se leyó de
-            disco (incluye el bloque de front matter YAML al inicio).
-        front_matter: metadata ya conocida de la página (típicamente el
-            registro correspondiente de capture_summary.json, que trae
-            id/title/source_url/section_path/captured_at/etc.).
+        markdown_text: contenido crudo del .md (incluye front matter YAML).
+        front_matter: metadata de la página (típicamente el registro de
+            capture_summary.json: id/title/source_url/section_path/etc.).
 
     Returns:
-        Diccionario con las claves:
-            - "id": identificador de la página.
-            - "title": título de la página.
-            - "text": cuerpo limpio, sin el front matter YAML.
-            - "source_url": URL original de la página, con esquema https://
-              forzado para controlsanitario.gob.ec (ver
-              _normalize_source_url_scheme).
-            - "section_path": lista de secciones (breadcrumb) de la página.
-            - "captured_at": timestamp de captura del scraper.
-            - "normativa_citations": lista de menciones a Normativa ARCSA
-              (Resoluciones, Acuerdos Ministeriales, Decisiones CAN)
-              encontradas en el cuerpo, para cruce futuro contra el Corpus
-              Documental (detección de Cita Desactualizada).
+        Diccionario con "id", "title", "text" (cuerpo limpio), "source_url"
+        (esquema https:// forzado, ver _normalize_source_url_scheme),
+        "section_path", "captured_at" y "normativa_citations" (menciones a
+        Normativa ARCSA para cruce futuro contra el Corpus Documental).
     """
     body = _strip_front_matter(markdown_text)
     citations = _extract_normativa_citations(body)
@@ -387,9 +301,8 @@ def parse_tutorial(markdown_text: str, front_matter: dict) -> dict:
 def to_documents(chunks: list[dict]):
     """
     Envuelve cada chunk de parse_tutorial() en un llama_index.core.Document,
-    dejando el resto de campos como metadata. Espeja el patrón de
-    to_documents() en chatbot/ingestion.py para mantener consistencia entre
-    ambos pipelines de ingesta.
+    dejando el resto de campos como metadata. Espeja to_documents() de
+    chatbot/ingestion.py para mantener consistencia entre pipelines.
 
     Args:
         chunks: lista de diccionarios producidos por parse_tutorial().
@@ -429,12 +342,9 @@ def _build_file_index(pages_dir: Path) -> dict[str, Path]:
     Construye un índice hash -> ruta de archivo a partir de los .md en
     disco.
 
-    No se puede reconstruir la ruta de un archivo a partir de
-    section_path/title porque el slug del nombre de archivo en disco puede
-    estar truncado distinto al "id" corto que trae capture_summary.json
-    (verificado: mismo hash de 8 hex al final, pero longitudes de slug
-    distintas). El hash de 8 caracteres al final del nombre de archivo (y
-    del campo "id") es la clave de unión confiable entre ambos.
+    El slug del nombre de archivo puede estar truncado distinto al "id"
+    corto de capture_summary.json, así que se usa el hash de 8 caracteres
+    al final de ambos como clave de unión confiable.
     """
     index: dict[str, Path] = {}
     for path in pages_dir.rglob("*.md"):

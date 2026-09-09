@@ -1,66 +1,30 @@
 """
-Módulo de extracción vía OCR para los 7 PDF de Normativa ARCSA que
-`chatbot/normativa_extraction.py` NO pudo procesar porque son escaneos
-puros (cada página es una sola imagen rasterizada de página completa, sin
-ninguna capa de texto extraíble — verificado página por página antes de
-escribir este módulo, ver `chatbot/data/normativa_extraction_report.json`,
-sección "extraccion_fallida").
+ocr_extraction.py
+Extrae texto vía OCR de los 7 PDF de Normativa ARCSA que
+`chatbot/normativa_extraction.py` no pudo procesar por ser escaneos de
+imagen sin capa de texto (ver
+`chatbot/data/normativa_extraction_report.json`, sección
+"extraccion_fallida").
 
-Decisión de herramienta (ver docs/adr/0003-self-hosted-ocr.md): el ADR ya
-decidió OCR self-hosted (vendor-independiente, sin API de nube) con
-Tesseract vía pytesseract como opción por defecto, escalando a
-PaddleOCR/docTR solo si la precisión de Tesseract resulta insuficiente.
+Usa PaddleOCR en vez de Tesseract (opción por defecto de
+docs/adr/0003-self-hosted-ocr.md) porque Tesseract no pudo instalarse en
+este entorno sin privilegios de administrador interactivos; PaddleOCR es
+la alternativa self-hosted que el propio ADR ya contempla. Corre en un
+entorno virtual aparte (`C:\\ocrenv`) porque el intérprete del proyecto
+tiene una ruta de site-packages demasiado profunda para instalar
+PaddlePaddle sin superar el límite MAX_PATH de Windows; fuera de ese
+entorno solo depende de `chatbot.ingestion.parse_normativa`.
 
-En ESTE entorno (Windows, sin privilegios de administrador interactivos)
-Tesseract NO se pudo instalar de forma headless:
-  - No hay binario de Tesseract ya instalado (ni en PATH ni en
-    "C:\\Program Files\\Tesseract-OCR\\").
-  - El instalador oficial de Tesseract para Windows (NSIS, UB-Mannheim)
-    trae un manifiesto que exige elevación de UAC sin importar el
-    directorio de instalación elegido (se probó instalar en una carpeta
-    de usuario vía `/D=`, y aun así Windows rechazó la elevación con
-    "El usuario ha cancelado la operación" — no hay ningún usuario
-    interactivo en este entorno para aceptar el UAC).
-  - `pip install tesserocr` tampoco sirve de atajo: no hay wheel
-    precompilado para Windows/Python 3.12 y su build intenta enlazar
-    contra una libtesseract del sistema que no existe aquí.
-Por lo tanto, siguiendo lo que el propio ADR 0003 ya autoriza como
-escalón siguiente (PaddleOCR/docTR — ambos self-hosted, sin API de
-nube, cumpliendo el mismo requisito de independencia de proveedor que
-motivó el ADR), este módulo usa PaddleOCR. Se instaló en un entorno
-virtual aparte en `C:\\ocrenv` (fuera del `.venv` del proyecto) porque el
-intérprete de Python de Microsoft Store usado por el proyecto tiene una
-ruta de site-packages tan profunda que instalar PaddlePaddle (que incluye
-árboles de headers C++ muy anidados, p. ej. rutas bajo
-`.../cutlass_extensions/epilogue/...`) supera el límite MAX_PATH de
-Windows. Este módulo se ejecuta con ese intérprete
-(`C:\\ocrenv\\Scripts\\python.exe`), pero solo importa
-`chatbot.ingestion.parse_normativa` (mismo chunking a nivel de Artículo
-que usa el resto del pipeline) — no depende de nada específico de ese
-entorno salvo `paddleocr` y `pymupdf`.
+Reutiliza `parse_normativa()` de `chatbot/ingestion.py` sin modificarlo y
+escribe sus propios archivos de salida: un JSON por documento en
+`chatbot/data/normativa/` (mismo esquema que la etapa nativa, con
+"extraction_method": "ocr") y un reporte aparte en
+`chatbot/data/ocr_extraction_report.json`. Nunca toca los documentos ya
+extraídos por vía nativa ni su reporte.
 
-Alcance deliberadamente acotado: NO reintenta los 296 documentos que ya
-se extrajeron con éxito por vía nativa, NO modifica
-`chatbot/normativa_extraction.py` ni su reporte
-(`chatbot/data/normativa_extraction_report.json` se lee, nunca se
-escribe), y reutiliza `parse_normativa()` de `chatbot/ingestion.py` sin
-tocar ese módulo. Escribe sus propios archivos de salida:
-  - Un JSON por documento en `chatbot/data/normativa/` (mismo directorio
-    y mismo formato de esquema que usa normativa_extraction.py, para que
-    un futuro paso de indexado los trate exactamente igual), con
-    "extraction_method": "ocr" tanto a nivel de documento como dentro de
-    cada chunk (el chunk-level no existía en el esquema previo — se
-    agrega aquí de forma aditiva, sin tocar parse_normativa(), para que
-    cualquier consumidor pueda distinguir un chunk nativo, implícitamente
-    "native", de uno OCR sin ambigüedad).
-  - Un reporte aparte, `chatbot/data/ocr_extraction_report.json`, que dejar
-    explícito que estos 7 documentos vienen de OCR (confianza menor que
-    la extracción nativa) y no pisa el reporte de la etapa anterior.
-
-Política "flag, don't drop" (igual que en normativa_extraction.py, ADR
-0004): un documento cuyo OCR sale vacío o ilegible NUNCA se fuerza dentro
-del corpus disfrazado de bueno. Se marca `ocr_quality: "failed"` (o
-"poor") en el reporte para que quede visible y un humano decida.
+Sigue la política "flag, don't drop" (ADR 0004): un documento cuyo OCR
+sale vacío o ilegible se marca como tal en el reporte en vez de forzarse
+al corpus.
 """
 
 from __future__ import annotations
@@ -71,27 +35,19 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-# Igual que en normativa_extraction.py/link_validation.py: algunos títulos
-# y textos reales (y este propio log, que imprime títulos con tildes) usan
-# caracteres que la consola de Windows (cp1252) no puede codificar. Se
-# reconfigura stdout/stderr a UTF-8 con reemplazo para que una corrida real
-# no se caiga a mitad de camino solo por un print().
+# La consola de Windows (cp1252) no codifica los tildes de algunos títulos
+# reales; se reconfigura stdout/stderr a UTF-8 para que un print() no
+# corte la ejecución a mitad de camino.
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 except (AttributeError, ValueError):
     pass
 
-# Debe fijarse ANTES de importar paddleocr (lee el flag al importar
-# paddlex.utils.flags): en este entorno, PP-OCRv6_medium_det con MKL-DNN
-# habilitado (el modo por defecto en CPU) revienta con
-# "NotImplementedError: ConvertPirAttribute2RuntimeAttribute not support
-# [pir::ArrayAttribute<pir::DoubleAttribute>]" al correr el modelo de
-# detección de texto — un bug de la combinación paddlepaddle 3.3.1 +
-# oneDNN + nuevo IR (PIR) en este build de Windows/CPU, no un problema de
-# nuestro código. Desactivar MKL-DNN (ejecución en modo "paddle" puro,
-# más lenta pero funcional en CPU) evita el bug. Verificado con un smoke
-# test real antes de escribir este módulo.
+# Debe fijarse antes de importar paddleocr. Con MKL-DNN habilitado (modo
+# CPU por defecto), el modelo de detección de texto falla en este build de
+# Windows/CPU (bug de paddlepaddle + oneDNN). El modo "paddle" puro es más
+# lento pero funciona.
 os.environ.setdefault("PADDLE_PDX_ENABLE_MKLDNN_BYDEFAULT", "False")
 
 import fitz  # PyMuPDF
@@ -117,17 +73,14 @@ OUTPUT_DIR = Path(__file__).resolve().parent / "data" / "normativa"
 NATIVE_REPORT_PATH = Path(__file__).resolve().parent / "data" / "normativa_extraction_report.json"
 OCR_REPORT_PATH = Path(__file__).resolve().parent / "data" / "ocr_extraction_report.json"
 
-# DPI de renderizado de página a imagen. 300 da buena densidad de detalle
-# para OCR de texto impreso; PaddleOCR reescala internamente si supera su
-# límite interno de lado máximo (4000px), así que un DPI algo generoso acá
-# no rompe nada, solo agrega el resize automático (se ve como advertencia
-# en el log, no como error).
+# DPI de renderizado a imagen. 300 da buena densidad para OCR de texto
+# impreso; PaddleOCR reescala solo si supera su límite interno de lado
+# máximo (4000px).
 RENDER_DPI = 300
 
-# Umbral de confianza (promedio de rec_scores por página) por debajo del
-# cual se marca la página como "poor" en vez de "ok" en el reporte — no
-# afecta si el chunk se conserva (ver política flag-don't-drop: igual se
-# conserva el texto, pero el reporte deja constancia de que es sospechoso).
+# Umbral de confianza (promedio de rec_scores por página) para marcar una
+# página "poor" en el reporte. No afecta si el chunk se conserva (política
+# flag-don't-drop): solo deja constancia de que el texto es sospechoso.
 LOW_CONFIDENCE_THRESHOLD = 0.70
 
 
@@ -138,13 +91,9 @@ LOW_CONFIDENCE_THRESHOLD = 0.70
 
 def load_ocr_targets(native_report_path: Path = NATIVE_REPORT_PATH) -> list[dict]:
     """
-    Lee `chatbot/data/normativa_extraction_report.json` (generado por
-    normativa_extraction.py, que este módulo NUNCA modifica) y devuelve
-    las entradas de "extraccion_fallida" cuya extensión es ".pdf" — los 7
-    escaneos puros verificados manualmente antes de esta etapa. Cualquier
-    entrada .doc/.xlsx fallida (no hay ninguna en la corrida real, pero
-    por robustez) se ignora aquí: esta etapa es específicamente para
-    escaneos de imagen, no para otros tipos de fallo de extracción.
+    Lee el reporte de la etapa nativa (solo lectura, nunca se modifica) y
+    devuelve las entradas de "extraccion_fallida" cuya extensión es .pdf:
+    los escaneos de imagen que necesitan OCR.
     """
     with native_report_path.open(encoding="utf-8") as f:
         report = json.load(f)
@@ -169,15 +118,9 @@ class PageOcrResult:
 
 def _get_ocr_engine():
     """
-    Crea (una sola vez, reutilizada entre documentos) la instancia de
-    PaddleOCR. Se instancia perezosamente porque la primera vez descarga
-    los modelos (~decenas de MB) desde el hoster configurado.
-
-    use_doc_orientation_classify/use_doc_unwarping/use_textline_orientation
-    se desactivan: los 7 escaneos son fotocopias/escaneos derechos de
-    documentos oficiales ARCSA (verificado visualmente), no fotos torcidas
-    ni dobladas, así que ese preprocesamiento extra solo agregaría tiempo
-    de cómputo sin beneficio.
+    Crea (una sola vez) la instancia de PaddleOCR, reutilizada entre
+    documentos. Las opciones de orientación/unwarping se desactivan porque
+    los escaneos ARCSA están derechos, sin fotos torcidas que corregir.
     """
     global _OCR_ENGINE
     try:
@@ -198,17 +141,14 @@ def _get_ocr_engine():
 
 def ocr_pdf(path: Path, tmp_dir: Path) -> tuple[str, list[dict]]:
     """
-    Renderiza cada página de `path` a PNG (vía PyMuPDF) y le aplica OCR
-    (PaddleOCR). Devuelve (texto_completo_del_documento, detalle_por_pagina)
-    donde detalle_por_pagina es una lista de dicts con
+    Renderiza cada página de `path` a PNG (PyMuPDF) y le aplica OCR
+    (PaddleOCR). Devuelve (texto_completo, detalle_por_pagina), con
+    detalle_por_pagina como lista de dicts
     {"pagina", "n_lineas", "avg_confidence", "calidad"} para el reporte.
 
-    El texto de cada página se une con líneas en el orden que devuelve
-    PaddleOCR (que ya ordena las cajas de texto detectadas de arriba hacia
-    abajo / izquierda a derecha para el pipeline general de OCR, sin
-    análisis de layout adicional) — suficiente para que el patrón de
-    encabezado de Artículo de `parse_normativa()` (que busca inicio de
-    línea) encuentre los "Art. N.-" reales del documento.
+    Las líneas se unen en el orden que devuelve PaddleOCR (arriba-abajo,
+    izquierda-derecha), suficiente para que parse_normativa() reconozca
+    los encabezados "Art. N.-" al inicio de línea.
     """
     ocr = _get_ocr_engine()
     doc = fitz.open(path)
@@ -274,12 +214,8 @@ def _fallback_whole_document_chunk(text: str, source_name: str) -> dict:
 
 def chunk_ocr_text(text: str, source_name: str) -> tuple[list[dict], bool]:
     """
-    Aplica parse_normativa() (chatbot/ingestion.py, SIN modificar) al texto
-    ya reconocido por OCR, igual que hace normativa_extraction.py con el
-    texto nativo. A cada chunk resultante se le agrega "extraction_method":
-    "ocr" — parse_normativa() no conoce ese campo (es información de ESTA
-    etapa, no del parser genérico), así que se añade aquí de forma
-    aditiva sobre los dicts que devuelve, sin tocar ingestion.py.
+    Aplica parse_normativa() (sin modificarlo) al texto reconocido por OCR
+    y agrega "extraction_method": "ocr" a cada chunk resultante.
     """
     chunks = parse_normativa(text, source_name=source_name)
     sin_estructura = False

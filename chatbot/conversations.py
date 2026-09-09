@@ -1,11 +1,7 @@
 """
 conversations.py
-Persistencia real del historial de conversaciones del chatbot ARCSA (FastAPI).
-
-Reemplaza el historial 100% client-side que tenía antes
-frontend/src/services/transport/ChatStore.js (sessionStorage del navegador,
-sin backend real, ver los TODOs "[TEMPORAL - FRONTEND F5]" que este módulo
-resuelve). Expone un APIRouter con los endpoints:
+Persistencia del historial de conversaciones del chatbot ARCSA (FastAPI).
+Expone un APIRouter con:
 
   - GET    /api/conversations                 (lista las del usuario actual)
   - POST   /api/conversations                 (crea una conversación nueva)
@@ -13,38 +9,16 @@ resuelve). Expone un APIRouter con los endpoints:
   - POST   /api/conversations/{id}/messages   (agrega un mensaje)
   - DELETE /api/conversations/{id}            (borra la conversación)
 
-que chatbot/main.py incluye en la app principal, igual que auth_router.
+incluido por chatbot/main.py, igual que auth_router.
 
-Diseño (deliberadamente simple, proporcional al tamaño del proyecto — no es
-un sistema enterprise, mismo espíritu que chatbot/auth.py):
-  - Mismo archivo SQLite que auth.py: chatbot/data/users.db, con sqlite3 de
-    la stdlib (sin ORM). Se agregan 2 tablas nuevas (conversations, messages)
-    al lado de la tabla users ya existente.
-  - Cada conversación pertenece a un user_id (FK -> users.id). Los mensajes
-    pertenecen a una conversation_id (FK -> conversations.id), con
-    ON DELETE CASCADE en ambos niveles: borrar una conversación borra sus
-    mensajes; si algún día se borrara un usuario, se llevaría sus
-    conversaciones (y con ellas sus mensajes) automáticamente. SQLite no
-    aplica FKs por defecto: hace falta `PRAGMA foreign_keys = ON` en cada
-    conexión (ver _get_connection()).
-  - Autenticación: mismo esquema que el resto de la API — todos los
-    endpoints requieren `Authorization: Bearer <token>` y reutilizan
-    get_user_from_token() de chatbot/auth.py tal cual (no se duplica la
-    validación de tokens). 401 si falta o es inválido.
-  - Aislamiento entre usuarios: toda consulta de una conversación puntual
-    (GET/POST mensajes/DELETE) filtra siempre por `user_id = ?` además de
-    `id = ?`. Si el id existe pero es de otro usuario, se responde 404 (no
-    403): no se revela si el recurso existe pero pertenece a otra persona.
-  - `sources` (fuentes RAG citadas) y `metadata` (p. ej. isLowConfidence,
-    officialUrl, reasoning) de cada mensaje se guardan serializados como JSON
-    en columnas TEXT — no hace falta un esquema relacional más fino para el
-    tamaño de este proyecto, y así el shape va y viene sin transformación
-    especial entre frontend y backend (frontend/src/services/transport/
-    uiMessages.js ya trabaja con "parts" tipados en ese mismo espíritu).
-  - Sólo se persisten mensajes reales (no placeholders "sending"/"error" del
-    frontend): ChatStore.js decide cuándo llamar a POST .../messages, ver
-    ese archivo para el detalle de cuándo persiste el mensaje de usuario vs.
-    el de asistente.
+Diseño: mismo archivo SQLite que auth.py (chatbot/data/users.db), con 2
+tablas nuevas (conversations, messages) con FK a users/conversations y
+ON DELETE CASCADE (SQLite no aplica FKs por defecto, ver _get_connection).
+Autenticación vía Bearer token reutilizando get_user_from_token() de
+auth.py. Aislamiento entre usuarios: toda consulta por id filtra también por
+user_id; si el id existe pero es de otro usuario se responde 404 (no 403)
+para no revelar su existencia. `sources`/`metadata` de cada mensaje se
+guardan serializados como JSON en columnas TEXT.
 """
 
 from __future__ import annotations
@@ -65,25 +39,20 @@ from pydantic import BaseModel, Field
 
 from auth import get_user_from_token
 
-# Cargar variables de entorno desde un archivo .env si existe (mismo patrón
-# defensivo que chatbot/auth.py y chatbot/main.py).
 load_dotenv()
 
 logger = logging.getLogger("chatbot.conversations")
 
 CHATBOT_DIR = Path(__file__).resolve().parent
-# Configurable vía CHATBOT_DB_PATH (mismo mecanismo que chatbot/auth.py, ver
-# su comentario; ambos módulos comparten el mismo archivo SQLite en
-# producción y deben apuntar a la misma ruta temporal durante los tests).
+# Mismo mecanismo que chatbot/auth.py; ambos módulos comparten el archivo
+# SQLite y deben apuntar a la misma ruta durante los tests.
 DB_PATH = Path(os.getenv("CHATBOT_DB_PATH", str(CHATBOT_DIR / "data" / "users.db")))
 
 DEFAULT_TITLE = "Nueva conversación"
 
-# SQLite INTEGER es de 64 bits con signo; un id fuera de ese rango (p. ej.
-# .../api/conversations/999999999999999999999) hacía que sqlite3 tirara
-# OverflowError sin capturar (encontrado con fuzzing) porque FastAPI/Pydantic
-# no le ponen techo a `int` por sí solos. Estos límites lo cortan en la capa
-# de FastAPI (422 prolijo) antes de llegar a la query.
+# SQLite INTEGER es de 64 bits con signo; un id fuera de ese rango tira
+# OverflowError sin capturar. Este límite lo corta en FastAPI (422 prolijo)
+# antes de llegar a la query.
 SQLITE_MAX_INT = 2**63 - 1
 
 

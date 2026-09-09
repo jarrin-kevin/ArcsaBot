@@ -1,35 +1,21 @@
 """
 auth.py
-Autenticación real del chatbot ARCSA (FastAPI).
-
-Reemplaza el mock 100% client-side que tenía antes
-frontend/src/context/AuthContext.jsx (setTimeout + localStorage, sin request
-al backend). Expone un APIRouter con los endpoints:
+Autenticación del chatbot ARCSA (FastAPI). Expone un APIRouter con:
 
   - POST /api/auth/signup
   - POST /api/auth/login
   - GET  /api/auth/me
   - POST /api/auth/logout
 
-que chatbot/main.py incluye en la app principal (comparte ahí mismo el CORS
-ya configurado, no se duplica nada acá).
+incluido por chatbot/main.py en la app principal (mismo CORS ya configurado).
 
-Diseño (deliberadamente simple, proporcional al tamaño del proyecto — no es
-un sistema enterprise):
-  - Usuarios: SQLite local en chatbot/data/users.db, con sqlite3 de la
-    stdlib (sin ORM), siguiendo la misma convención de archivo local bajo
-    chatbot/data/ que ya usa chatbot/data/vector_docstore.json.
-  - Contraseñas: hasheadas con bcrypt (salt aleatorio por hash, nunca texto
-    plano ni un hash sin salt).
-  - Sesión: token firmado con itsdangerous.URLSafeTimedSerializer (HMAC-SHA256
-    por debajo) que codifica sólo el user id; la expiración (7 días) se
-    valida al leer el token, no queda embebida en su contenido.
+Diseño: usuarios en SQLite local (chatbot/data/users.db, sqlite3 de stdlib,
+sin ORM); contraseñas hasheadas con bcrypt; sesión como token firmado con
+itsdangerous.URLSafeTimedSerializer (HMAC-SHA256) que codifica sólo el user
+id, con expiración de 7 días validada al leer el token.
 
-NOTA sobre 'logout': no existe una lista de revocación de tokens (ver arriba),
-así que POST /api/auth/logout es un no-op del lado servidor: sólo confirma
-200 para que el frontend pueda limpiar su propio localStorage. Si más
-adelante hiciera falta poder invalidar una sesión antes de que expire sola,
-habría que agregar una tabla de tokens revocados.
+No hay lista de revocación de tokens, así que /logout es un no-op del lado
+servidor (sólo confirma 200 para que el frontend limpie su estado local).
 """
 
 from __future__ import annotations
@@ -49,18 +35,13 @@ from fastapi.responses import JSONResponse
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from pydantic import BaseModel, Field
 
-# Cargar variables de entorno desde un archivo .env si existe (mismo patrón
-# defensivo que chatbot/main.py y chatbot/vector_store.py: cada módulo que
-# necesita variables de entorno llama a load_dotenv() por su cuenta).
 load_dotenv()
 
 logger = logging.getLogger("chatbot.auth")
 
 CHATBOT_DIR = Path(__file__).resolve().parent
-# Configurable vía CHATBOT_DB_PATH (usado por la suite de tests en
-# chatbot/tests/ para apuntar a una base SQLite temporal por test y así
-# nunca tocar chatbot/data/users.db real); sin esa variable de entorno el
-# comportamiento en producción es idéntico al de antes.
+# CHATBOT_DB_PATH permite a los tests apuntar a una base SQLite temporal
+# sin tocar chatbot/data/users.db real.
 DB_PATH = Path(os.getenv("CHATBOT_DB_PATH", str(CHATBOT_DIR / "data" / "users.db")))
 
 EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
@@ -133,12 +114,10 @@ def _find_user_by_id(user_id: int) -> sqlite3.Row | None:
 def _create_user(email: str, password: str) -> sqlite3.Row | None:
     """Crea el usuario, o devuelve None si el email ya existe.
 
-    El chequeo previo de _find_user_by_email() en signup() no es atómico con
-    este INSERT: dos signups concurrentes para el mismo email pueden pasar
-    ambos ese chequeo antes de que cualquiera inserte. El UNIQUE de la tabla
-    igual evita el duplicado, pero sin capturar este error acá el request
-    perdedor de la carrera reventaba con un 500 crudo en vez del mismo 409
-    que ya se usa para el caso no-concurrente.
+    El chequeo previo en signup() no es atómico con este INSERT: dos signups
+    concurrentes para el mismo email pueden pasar ambos el chequeo. El
+    UNIQUE de la tabla evita el duplicado; capturamos el IntegrityError acá
+    para devolver el mismo 409 en vez de un 500.
     """
     password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
     created_at = datetime.now(timezone.utc).isoformat()
@@ -182,9 +161,7 @@ def _decode_token(token: str) -> int | None:
 
 def get_user_from_token(token: str) -> sqlite3.Row | None:
     """Resuelve un token de sesión a su usuario real; None si el token es
-    inválido/expiró o el usuario ya no existe. Se expone (no sólo se usa
-    internamente en /me) para que, si en el futuro otro endpoint necesita
-    requerir sesión, reutilice esta misma validación en vez de duplicarla."""
+    inválido/expiró o el usuario ya no existe."""
     user_id = _decode_token(token)
     if user_id is None:
         return None
@@ -200,11 +177,8 @@ def _extract_bearer_token(authorization: str | None) -> str | None:
 # ---------------------------------------------------------------------------
 # Rate limiting (en memoria, por IP) para /signup y /login
 # ---------------------------------------------------------------------------
-# Ventana fija simple, alcanza para el tamaño de este proyecto (un solo
-# proceso). Si en algún momento corre con múltiples workers/instancias, esto
-# habría que moverlo a un store compartido (Redis, etc.) — cada proceso
-# llevaría su propio conteo y el límite real efectivo sería
-# RATE_LIMIT_MAX_ATTEMPTS * cantidad_de_workers.
+# Ventana fija en memoria, válida para un solo proceso. Con múltiples
+# workers habría que moverlo a un store compartido (Redis, etc.).
 _rate_limit_attempts: dict[str, list[float]] = {}
 RATE_LIMIT_MAX_ATTEMPTS = 5
 RATE_LIMIT_WINDOW_SECONDS = 60
@@ -224,11 +198,9 @@ def _check_rate_limit(request: Request) -> JSONResponse | None:
     return None
 
 
-# Hash bcrypt precomputado de una password fija, usado únicamente para que
-# login() tarde lo mismo cuando el email NO existe que cuando existe pero la
-# password es incorrecta — sin esto, el cortocircuito de `user is None`
-# devuelve 401 casi instantáneo mientras que un email real fuerza un
-# bcrypt.checkpw() real (~100ms), permitiendo enumerar cuentas por timing.
+# Hash bcrypt precomputado usado para que login() tarde lo mismo cuando el
+# email no existe que cuando existe pero la password es incorrecta, evitando
+# enumerar cuentas por timing.
 _DUMMY_PASSWORD_HASH = bcrypt.hashpw(b"dummy-password-para-timing-constante", bcrypt.gensalt())
 
 
