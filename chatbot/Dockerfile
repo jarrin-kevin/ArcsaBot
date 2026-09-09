@@ -44,4 +44,13 @@ COPY --chown=appuser:appuser . .
 # ese header viniendo de nadie. Si en el futuro se agrega un proxy real
 # delante (nginx, load balancer), esto hay que reconfigurarlo con la IP real
 # de ese proxy, no dejarlo en "".
+#
+# EXPOSE 8001: documenta el puerto real en el que escucha uvicorn. Railway NO
+# lee esta instrucción para el ruteo (su "magic port detection" detecta el
+# puerto en el que el proceso ya está escuchando al generar el dominio), pero
+# sí es la convención estándar de Docker y la usan otras plataformas
+# (Cloud Run/GKE) para saber qué puerto exponer. Ver DEPLOY.md para el detalle
+# de cómo Railway resuelve el puerto público de este servicio.
+EXPOSE 8001
+
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--forwarded-allow-ips="]
