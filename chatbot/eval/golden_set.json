@@ -1,0 +1,442 @@
+[
+  {
+    "id": "q001",
+    "consulta": "¿Qué se considera 'alimento procesado' según la normativa de ARCSA y qué productos incluye ese término?",
+    "eje": "producto",
+    "fuente_esperada": {
+      "file_id": "arcsa_10854",
+      "articulo": "3_PARTE_1_DE_7",
+      "documento": "Resolución ARCSA-DE-2023-001-AKRG_ Normativa Técnica Sanitaria Sustitutiva para otorgar el permiso de funcionamiento sanitario a los establecimiento sujetos a control y vigilancia sanitaria"
+    },
+    "contexto_referencia": "Alimento procesado.- Es toda materia alimenticia natural o artificial que para el \nconsumo humano ha sido sometida a operaciones tecnológicas necesarias para su \ntransformación, modificación y conservación, que se distribuye y comercializa en \nenvases rotulados bajo una marca de fábrica determinada. \nEl término alimento procesado, se extiende a bebidas alcohólicas y no alcohólicas, aguas \nde mesa, condimentos, especias y aditivos alimentarios."
+  },
+  {
+    "id": "q002",
+    "consulta": "¿Cuál es el objeto de la normativa técnica sanitaria para el registro sanitario de medicamentos en general de uso humano?",
+    "eje": "producto",
+    "fuente_esperada": {
+      "file_id": "arcsa_13907",
+      "articulo": "1",
+      "documento": "Resolución ARCSA-DE-2024-058-DASP_Medicamentos en general de uso humano."
+    },
+    "contexto_referencia": "Art. 1.-Objeto. - La presente normativa técnica sanitaria tiene por objeto establecer los \nrequisitos legales y técnicos que garanticen la calidad, seguridad y eficacia, bajo los \ncuales se otorgará el certificado de registro sanitario a los medicamentos en general de \nuso humano; así como, los criterios para el control y vigilancia de los mismos."
+  },
+  {
+    "id": "q003",
+    "consulta": "¿A quiénes se aplica de forma obligatoria la normativa de registro sanitario de medicamentos en general de uso humano?",
+    "eje": "producto",
+    "fuente_esperada": {
+      "file_id": "arcsa_13907",
+      "articulo": "2",
+      "documento": "Resolución ARCSA-DE-2024-058-DASP_Medicamentos en general de uso humano."
+    },
+    "contexto_referencia": "Art. 2.- Ámbito de aplicación. - La presente normativa técnica sanitaria es de aplicación \ny cumplimiento obligatorio para todas las personas naturales o jurídicas, nacionales o \nextranjeras, de derecho público o privado, que soliciten la inscripción, reinscripción o \nmodificación del registro sanitario de medicamentos en general de uso humano."
+  },
+  {
+    "id": "q004",
+    "consulta": "¿Qué tipo de sustancias o formulaciones NO se consideran productos cosméticos según la normativa ARCSA, aunque se apliquen sobre el cuerpo humano?",
+    "eje": "producto",
+    "fuente_esperada": {
+      "file_id": "arcsa_10074",
+      "articulo": "FRAGMENTO_2_DE_25",
+      "documento": "Resolución ARCSA-DE-2021-016-AKRG"
+    },
+    "contexto_referencia": "No se consideran productos cosméticos aquellas sustancias o formulaciones \ndestinadas a la prevención, tratamiento o diagnóstico de enfermedades, o \ndestinados a ser ingeridos, inhalados, inyectados o implantados en el cuerpo \nhumano.\n  Los productos cosméticos no podrán declarar indicaciones terapéuticas ni otra que \ncontravenga su definición"
+  },
+  {
+    "id": "q005",
+    "consulta": "¿Cuál es el objeto de la normativa técnica sanitaria de registro sanitario de dispositivos médicos de uso humano?",
+    "eje": "producto",
+    "fuente_esperada": {
+      "file_id": "arcsa_15631",
+      "articulo": "1",
+      "documento": "Resolución ARCSA-DE-026-2016-YMIH NTS Sustitutiva para el registro sanitario y control de dispositivos médicos de uso humano, y de los establecimientos en donde se fabrican"
+    },
+    "contexto_referencia": "Art. 1.- Objeto.- La presente normativa técnica sanitaria tiene por objeto establecer los \nparámetros de calidad, seguridad y eficacia, bajo los cuales se otorgará el Registro Sanitario \na los Dispositivos Médicos de Uso Humano; así como, los criterios para el control, vigilancia \nde dichos productos.\nEste documento tiene como objeto además, establecer los parámetros para la operación, \ncontrol y vigilancia de los establecimientos donde se fabrican, importan, dispensan, \nexpenden y comercializan los Dispositivos Médicos de Uso Humano."
+  },
+  {
+    "id": "q006",
+    "consulta": "Según la definición amplia de la normativa ARCSA, ¿qué tipo de artículos pueden considerarse 'dispositivo médico' más allá de un instrumento físico tradicional (por ejemplo, en el caso de un software)?",
+    "eje": "producto",
+    "fuente_esperada": {
+      "file_id": "arcsa_15631",
+      "articulo": "3_PARTE_3_DE_7",
+      "documento": "Resolución ARCSA-DE-026-2016-YMIH NTS Sustitutiva para el registro sanitario y control de dispositivos médicos de uso humano, y de los establecimientos en donde se fabrican"
+    },
+    "contexto_referencia": "Se considerará también “Dispositivo médico” a cualquier instrumento, aparato, \nimplemento, máquina, aplicación, implante, reactivo para uso in vitro, software, material u \notro artículo similar o relacionado, destinado por el fabricante a ser utilizado solo o en \ncombinación, para seres humanos, para uno o más de los propósitos médicos específico(s) \nde:\n• Diagnóstico, prevención, monitorización, tratamiento o alivio de la enfermedad\n• Diagnóstico, monitorización, tratamiento, alivio o compensación de una lesión\n• Investigación, reemplazo, modificación o soporte de la anatomía o de un proceso \nfisiológico\n• Soporte o mantenimiento de la vida,\n• Control de la concepción,\n• Desinfección de dispositivos médicos\n• Suministro de información por medio de un examen in vitro de muestras procedentes del \ncuerpo humano.\ny no ejerce la acción primaria prevista por medios farmacológicos, inmunológicos ni \nmetabólicos, en o sobre el cuerpo humano, pero que puede ser asistido en su función por \ntales medios"
+  },
+  {
+    "id": "q007",
+    "consulta": "¿Qué tipos de productos están cubiertos por el certificado de Buenas Prácticas de Almacenamiento, Distribución y Transporte (BPADT) que otorga ARCSA?",
+    "eje": "producto",
+    "fuente_esperada": {
+      "file_id": "arcsa_15480",
+      "articulo": "1",
+      "documento": "Resolución_ ARCSA-DE-002-2020-LDCL Buenas Prácticas de Almacenamiento, Distribución y Transporte para Establecimientos Farmacéuticos y Establecimiento de Dispositivos Médicos de uso humano"
+    },
+    "contexto_referencia": "Art. 1.- La presente normativa técnica sanitaria tiene por objeto establecer los requisitos y \nlineamientos bajo los cuales se otorgará el certificado de Buenas Prácticas de \nAlmacenamiento, Distribución y/o Transporte de: medicamentos en general, gases \nmedicinales, medicamentos que contengan sustancias catalogadas sujetas a fiscalización, \nproductos o medicamentos biológicos, producto o medicamento homeopático, productos \nnaturales procesados de uso medicinal, productos para la industria farmacéutica y \n\nhttps://edicioneslegales.com.ec/\nPág. 5 de 71\nTodos los derechos reservados. Prohibida su reproducción parcial o total.\n Piense en el medio ambiente. Imprima solo de ser necesario.\ndispositivos médicos de uso humano; con la finalidad de precautelar las propiedades y \nmantener la calidad y características fisicoquímicas, microbiológicas y farmacológicas, \nsegún aplique, de los citados productos."
+  },
+  {
+    "id": "q008",
+    "consulta": "¿Qué documentación debe presentarse a ARCSA para modificar el grado alcohólico inicialmente declarado en la notificación sanitaria de un alimento procesado?",
+    "eje": "producto",
+    "fuente_esperada": {
+      "file_id": "arcsa_11457",
+      "articulo": "184",
+      "documento": "RESOLUCIÓN ARCSA-DE-2022-016-AKRG_NORMATIVA TECNICA SANITARIA SUSTITUTIVA ALIMENTOS PROCESADOS"
+    },
+    "contexto_referencia": "artículo 184.- Se permitirá la modificación de grado alcohólico inicialmente declarado en la inscripción de la notificación\nsanitaria. Se debe presentar a la Agencia la siguiente documentación:\na. Solicitud firmada por el titular de la notificación sanitaria (solicitante).\nb. Sustento técnico del motivo de la modificación con firma del responsable técnico nacional.\nc. Proyecto etiqueta.- Se debe presentar el proyecto de etiqueta donde conste el cambio realizado, siguiendo los\nlineamientos que establece el Reglamento de Rotulado de Alimentos Procesados para Consumo Humano vigente o\ndocumento que lo reemplace y las NTE INEN respectiva de acuerdo al tipo de bebida alcohólica."
+  },
+  {
+    "id": "q009",
+    "consulta": "¿Con cuántos días de anticipación al vencimiento se puede presentar la solicitud de reinscripción de un registro sanitario o notificación sanitaria a través de la VUE?",
+    "eje": "tramite",
+    "fuente_esperada": {
+      "file_id": "arcsa_10018",
+      "articulo": "FRAGMENTO_3_DE_22",
+      "documento": "IE-D.1.1-VUE-01_Procedimiento a traves de la -VUE"
+    },
+    "contexto_referencia": "La solicitud de reinscripción podrá ser presentada desde noventa (90) días previos a la fecha de \nvencimiento del respectivo Registro Sanitario/Notificación Sanitaria/Notificación Sanitaria \nObligatoria, y se realizará el ingreso a través de la VUE con una carta declaratoria por parte del \nTitular del Registro Sanitario/Notificación Sanitaria/Notificación Sanitaria Obligatoria, en la cual se \nmencione que su producto no ha sufrido cambios o modificaciones en su uso o consumo previsto, \nque no ha registrado problemas de calidad, inocuidad, seguridad y eficacia, y no ha sido objeto de \nsuspensión por parte de la Autoridad Sanitaria Nacional."
+  },
+  {
+    "id": "q010",
+    "consulta": "¿En qué plazo debe el Organismo de Inspección Acreditado (OIA) entregar al usuario los resultados de una inspección de certificación de Buenas Prácticas de Manufactura (BPM)?",
+    "eje": "tramite",
+    "fuente_esperada": {
+      "file_id": "arcsa_11650",
+      "articulo": "FRAGMENTO_4_DE_17",
+      "documento": "IE-B.3.1.3.1-B.P.M-01-01_Direct. para los OIA con fines de Cert. BPM v5"
+    },
+    "contexto_referencia": "Los resultados de las inspecciones tanto de certificación, recertificación, \nreinspección, ampliación o de seguimiento; sean estas favorables o no favorables, \ndeberán ser entregados en término de diez (10) días laborales al usuario, con el \nobjetivo de que el usuario tenga la opción de elaborar el plan de acción (cuando \naplique) y este sea verificado y aprobado por el OIA, lo cual no debe exceder los \n30 días plazo."
+  },
+  {
+    "id": "q011",
+    "consulta": "¿Con cuántos días de anticipación al vencimiento de su certificado BPM debe una planta procesadora de alimentos iniciar el proceso de recertificación ante la ARCSA?",
+    "eje": "tramite",
+    "fuente_esperada": {
+      "file_id": "arcsa_11457",
+      "articulo": "83/84/85",
+      "documento": "RESOLUCIÓN ARCSA-DE-2022-016-AKRG_NORMATIVA TECNICA SANITARIA SUSTITUTIVA ALIMENTOS PROCESADOS"
+    },
+    "contexto_referencia": "La ARCSA realizará la revisión de la información ingresada en el término de quince (15) días; si la misma se\nArt. 83\nencuentra completa y correcta, se generará la orden de pago correspondiente al importe por registro de certificación.\n.- La ARCSA validará el pago realizado en el término de cinco (5) días y procederá a registrar el certificado en el\nArt. 84\nsistema BPM o en el sistema que la Agencia implemente para el efecto.\n.- Las plantas procesadoras que requieran recertificarse en BPM y deseen inscribir su certificado en la ARCSA,\nArt. 85\ndeben iniciar el proceso de inscripción del nuevo certificado dentro del plazo de los ciento veinte (120) días previos a que\nculmine la vigencia del mismo."
+  },
+  {
+    "id": "q012",
+    "consulta": "¿Qué certificación de calidad pueden presentar temporalmente los fabricantes nacionales de dispositivos médicos mientras obtienen la certificación ISO 13485?",
+    "eje": "tramite",
+    "fuente_esperada": {
+      "file_id": "arcsa_12504",
+      "articulo": "FRAGMENTO_5_DE_26",
+      "documento": "IE-B.3.2.1-DM-01 Requisitos para la Inscripción_reinscricpción_modificación del Registro_Sanitario de dispositivos médicos de uso humano"
+    },
+    "contexto_referencia": "Las solicitudes de inscripción de registros sanitarios de dispositivos médicos de fabricación \nnacional que se encuentren en trámite o las solicitudes de inscripción que se presenten en los \nsiguientes dieciocho (18) meses a partir de la entrada en vigencia de Resolución ARCSA-DE-\n2023-033-AKRG, presentarán la certificación ISO 9001 hasta que los laboratorios nacionales \nfabricantes de dispositivos médicos dispongan de la certificación ISO 13485 acreditada, \ndesignada o reconocida por el SAE."
+  },
+  {
+    "id": "q013",
+    "consulta": "¿En qué plazo máximo debe solicitarse el permiso de funcionamiento al abrir una nueva farmacia o botiquín privado?",
+    "eje": "tramite",
+    "fuente_esperada": {
+      "file_id": "arcsa_11973",
+      "articulo": "26",
+      "documento": "Resolución ARCSA-DE-2022-012-AKRG_Funcionamiento de farmacias y botiquines privados a nivel nacional, control de expendio y dispensación de medicamentos, y atención farmacéutica"
+    },
+    "contexto_referencia": "Cuando se apertura una nueva farmacia privada o botiquín privado, el representante legal debe solicitar el\nArt. 26\nrespectivo permiso de funcionamiento en un término no mayor a sesenta (60) días."
+  },
+  {
+    "id": "q014",
+    "consulta": "¿A través de qué sistema o portal se debe presentar la solicitud de inscripción del registro sanitario de dispositivos médicos de uso humano?",
+    "eje": "tramite",
+    "fuente_esperada": {
+      "file_id": "arcsa_12504",
+      "articulo": "FRAGMENTO_4_DE_26",
+      "documento": "IE-B.3.2.1-DM-01 Requisitos para la Inscripción_reinscricpción_modificación del Registro_Sanitario de dispositivos médicos de uso humano"
+    },
+    "contexto_referencia": "La inscripción del Registro Sanitario está sujeta al pago del importe establecido en la Ley y \nnormativa correspondiente. \n \nLa Solicitud de Inscripción del Registro Sanitario se realizará vía electrónica a la Agencia \nNacional de Regulación, Control y Vigilancia Sanitaria, Doctor Leopoldo Izquieta Pérez, a \ntravés de la Ventanilla Única Ecuatoriana (VUE) del Portal Web ECUAPASS."
+  },
+  {
+    "id": "q015",
+    "consulta": "¿Qué requisito de formación académica deben cumplir los representantes técnicos de las plantas procesadoras de alimentos para la notificación sanitaria de alimentos procesados?",
+    "eje": "tramite",
+    "fuente_esperada": {
+      "file_id": "arcsa_15697",
+      "articulo": "FRAGMENTO_5_DE_19",
+      "documento": "IE-B.3.1.2-ALI-01_REQUISITOS INSCRIP_REINSCRIP_NS_V6"
+    },
+    "contexto_referencia": "epresentantes técnicos de plantas procesadoras de alimentos deben contar con \nformación académica y título reconocido por el Ministerio de Educación, Deporte y \nCultura o quien ejerza sus competencias, conforme a las profesiones descritas en el \nInstructivo Externo LINEAMIENTOS PARA REPRESENTANTES TÉCNICOS DE PLANTAS \nPROCESADORAS DE ALIMENTOS. - EVALUACIÓN DEL RÉCORD ACADÉMICO o \ndocumento que se emita para el efecto."
+  },
+  {
+    "id": "q016",
+    "consulta": "¿Se exige la patente del producto como requisito para tramitar el registro sanitario o la notificación sanitaria de un medicamento en Ecuador?",
+    "eje": "tramite",
+    "fuente_esperada": {
+      "file_id": "arcsa_14955",
+      "articulo": "FRAGMENTO_3_DE_55",
+      "documento": "Resol. ARCSA-DE-2025-034-DASP_IE_Requisitos para la inscripción_reinscripción_medicamentos en general V4"
+    },
+    "contexto_referencia": "Para el trámite de notificación o registro sanitario no se considerará como requisito la \npatente de los productos. \nEl registro sanitario de medicamentos no da derecho de exclusividad en el uso de la \nfórmula. \nCuando se solicite una modificación de las notificaciones y registros sanitarios, la entidad \ncompetente no exigirá requisitos innecesarios. Únicamente se requerirán los directamente \nrelacionados con el objeto de la modificación y aquellos indispensables y proporcionales \npara salvaguardar la salud pública."
+  },
+  {
+    "id": "q017",
+    "consulta": "¿Cuál es la vigencia del permiso de funcionamiento sanitario que deben tener los establecimientos sujetos a control sanitario en Ecuador?",
+    "eje": "establecimiento",
+    "fuente_esperada": {
+      "file_id": "arcsa_10074",
+      "articulo": "130 (Ley Orgánica de Salud, citado en FRAGMENTO_4_DE_25)",
+      "documento": "Resolución ARCSA-DE-2021-016-AKRG"
+    },
+    "contexto_referencia": "Artículo 130.- Los establecimientos sujetos a \ncontrol sanitario para su funcionamiento deberán contar con el permiso otorgado por \nla autoridad sanitaria nacional. El permiso de funcionamiento tendrá vigencia de un \naño calendario."
+  },
+  {
+    "id": "q018",
+    "consulta": "¿Cómo define la normativa de permiso de funcionamiento sanitario el término 'establecimiento'?",
+    "eje": "establecimiento",
+    "fuente_esperada": {
+      "file_id": "arcsa_10854",
+      "articulo": "3_PARTE_4_DE_7",
+      "documento": "Resolución ARCSA-DE-2023-001-AKRG_ Normativa Técnica Sanitaria Sustitutiva para otorgar el permiso de funcionamiento sanitario a los establecimiento sujetos a control y vigilancia sanitaria"
+    },
+    "contexto_referencia": "Establecimiento.- Lugar en el cual se ejerce una actividad comercial, industrial, \nsanitaria, entre otros; pudiendo ser un local, casa o edificio. Para aplicación de esta \nnormativa los tipos de establecimientos se encuentran descritos en el artículo 52, según \nsu actividad comercial."
+  },
+  {
+    "id": "q019",
+    "consulta": "¿Cuál es el objeto de la normativa técnica sanitaria que regula el permiso de funcionamiento de los establecimientos sujetos a control sanitario?",
+    "eje": "establecimiento",
+    "fuente_esperada": {
+      "file_id": "arcsa_10854",
+      "articulo": "1",
+      "documento": "Resolución ARCSA-DE-2023-001-AKRG_ Normativa Técnica Sanitaria Sustitutiva para otorgar el permiso de funcionamiento sanitario a los establecimiento sujetos a control y vigilancia sanitaria"
+    },
+    "contexto_referencia": "Art. 1.- Objeto.- El objeto de la presente normativa técnica sanitaria es categorizar, \ncodificar y establecer los requisitos que los establecimientos sujetos a control y vigilancia \nsanitaria deben cumplir, previo a la emisión del permiso de funcionamiento sanitario por \nparte de la Autoridad Sanitaria Nacional, a través de la Agencia Nacional de Regulación, \nControl y Vigilancia Sanitaria – ARCSA, Doctor Leopoldo Izquieta Pérez; sin perjuicio de \nlos demás requisitos que consten en las normas que rigen para cada tipo de producto o \nservicio prestado por los establecimientos sujetos a control y vigilancia sanitaria, que son \ncompetencia de la Agencia."
+  },
+  {
+    "id": "q020",
+    "consulta": "¿Qué actividades tienen prohibido realizar las farmacias y botiquines privados según la normativa de ARCSA?",
+    "eje": "establecimiento",
+    "fuente_esperada": {
+      "file_id": "arcsa_11973",
+      "articulo": "17",
+      "documento": "Resolución ARCSA-DE-2022-012-AKRG_Funcionamiento de farmacias y botiquines privados a nivel nacional, control de expendio y dispensación de medicamentos, y atención farmacéutica"
+    },
+    "contexto_referencia": "a. La consulta médica, obstétrica, odontológica, realizar toma de muestras ni tener laboratorios clínicos o áreas de\nmuestras biológicas, realizar terapias alternativas y de diagnóstico;\n\nLEXIS S.A.\nb. Aplicar tratamientos, sean invasivos o no;\nc. Mantener acumulados envases secundarios vacíos de medicamentos u otros productos;\nd. Almacenar, entregar, obsequiar o comercializar muestras médicas;"
+  },
+  {
+    "id": "q021",
+    "consulta": "¿Qué tipo de establecimientos regula la normativa técnica sanitaria de control y funcionamiento de establecimientos farmacéuticos (exceptuando farmacias y botiquines)?",
+    "eje": "establecimiento",
+    "fuente_esperada": {
+      "file_id": "arcsa_5818",
+      "articulo": "1",
+      "documento": "Resolución ARCSA-DE-007-2017-JCGO_Normativa Técnica Sanitaria para el control y funcionamiento de establecimientos farmacéuticos, exceptuando las farmacias y botiquines privados"
+    },
+    "contexto_referencia": "Art. 1.- La presente Normativa Técnica Sanitaria tiene por objeto regular, controlar y vigilar la\nautorización y emisión del permiso de funcionamiento para distribuidoras farmacéuticas, casas de\nrepresentación de medicamentos y laboratorios farmacéuticos en todo el territorio nacional así como,\ndefinir las responsabilidades de los profesionales que ejerzan la responsabilidad técnica de estos\nestablecimientos y el cumplimiento de Buenas Prácticas de Manufactura y Buenas Prácticas de\nAlmacenamiento, Transporte y Distribución."
+  },
+  {
+    "id": "q022",
+    "consulta": "¿Qué profesional debe estar a cargo como responsable técnico en una distribuidora o casa de representación de medicamentos?",
+    "eje": "establecimiento",
+    "fuente_esperada": {
+      "file_id": "arcsa_5818",
+      "articulo": "4",
+      "documento": "Resolución ARCSA-DE-007-2017-JCGO_Normativa Técnica Sanitaria para el control y funcionamiento de establecimientos farmacéuticos, exceptuando las farmacias y botiquines privados"
+    },
+    "contexto_referencia": "Art. 4.- Toda distribuidora y casa de representación de medicamentos para su funcionamiento\ndeberá contar con un responsable técnico; quién será el responsable de cualquier incumplimiento del\nestablecimiento correspondiente al ámbito de sus competencias descritas en esta Resolución."
+  },
+  {
+    "id": "q023",
+    "consulta": "¿Cuál es la función del Director Técnico en un laboratorio farmacéutico según la normativa de Buenas Prácticas de Manufactura de ARCSA?",
+    "eje": "establecimiento",
+    "fuente_esperada": {
+      "file_id": "arcsa_11974",
+      "articulo": "FRAGMENTO_5_DE_37",
+      "documento": "Resolución ARCSA-DE-008-2018-JCGO Normativa Técnica Sanitaria Sustitutiva de Buenas Prácticas de Manufactura para laboratorios farmacéuticos."
+    },
+    "contexto_referencia": "Director técnico.- Es el profesional que asegura que cada lote de producto terminado haya sido manufacturado, controlado\ny aprobado para su liberación en conformidad con las leyes y reglamentaciones vigentes en el país."
+  },
+  {
+    "id": "q024",
+    "consulta": "¿Ante qué organismo debe acreditarse un Organismo de Inspección que quiera certificar Buenas Prácticas de Manufactura (BPM) de plantas procesadoras de alimentos en Ecuador?",
+    "eje": "establecimiento",
+    "fuente_esperada": {
+      "file_id": "arcsa_11650",
+      "articulo": "FRAGMENTO_2_DE_17",
+      "documento": "IE-B.3.1.3.1-B.P.M-01-01_Direct. para los OIA con fines de Cert. BPM v5"
+    },
+    "contexto_referencia": "Los Organismos de Inspección con fines de certificación en Buenas Prácticas \nde Manufactura, deben acreditarse en el Servicio de Acreditación Ecuatoriano – \nSAE con el alcance en Inspección de Plantas procesadoras de alimentos Buenas \nPrácticas alimentos y registrarse en la ARCSA, adjuntando los requisitos \nestablecidos en el presente instructivo, previo a la realización de las inspecciones."
+  },
+  {
+    "id": "q025",
+    "consulta": "Según la Resolución ARCSA-DE-2022-016-AKRG (Normativa Técnica Sanitaria Sustitutiva para Alimentos Procesados), ¿qué documentos se deben adjuntar para inscribir un alimento procesado de fabricación nacional en línea certificada en BPM?",
+    "eje": "codigo",
+    "fuente_esperada": {
+      "file_id": "arcsa_11457",
+      "articulo": "53",
+      "documento": "RESOLUCIÓN ARCSA-DE-2022-016-AKRG_NORMATIVA TECNICA SANITARIA SUSTITUTIVA ALIMENTOS PROCESADOS"
+    },
+    "contexto_referencia": "al formulario de solicitud, los siguientes documentos:\nRequisitos generales:\na. Descripción e interpretación del código de lote.\nb. Proyecto de etiqueta, ajustado a los requisitos que establece el Reglamento de Rotulado de Alimentos Procesados para\nConsumo Humano vigente o documento que lo reemplace y las NTE INEN de acuerdo al tipo de producto."
+  },
+  {
+    "id": "q026",
+    "consulta": "Según la Resolución ARCSA-DE-2021-016-AKRG, ¿qué trámite requieren los productos de higiene doméstica y absorbentes de higiene personal para poder comercializarse o importarse?",
+    "eje": "codigo",
+    "fuente_esperada": {
+      "file_id": "arcsa_10074",
+      "articulo": "FRAGMENTO_3_DE_25",
+      "documento": "Resolución ARCSA-DE-2021-016-AKRG"
+    },
+    "contexto_referencia": "mediante la Decisión 706 Armonización de Legislaciones en materia de productos \nde higiene doméstica y productos absorbentes de higiene personal, menciona: \n“Artículo 5 \"Los productos a los que se refiere la presente Decisión requieren para \nsu comercialización y/o importación, de la Notificación Sanitaria Obligatoria (NSO) \npresentada ante la Autoridad Nacional Competente del primer País Miembro de \ncomercialización."
+  },
+  {
+    "id": "q027",
+    "consulta": "Según la Resolución ARCSA-DE-026-2016-YMIH (normativa sustitutiva de dispositivos médicos), ¿en qué envase debe realizarse el proceso de acondicionamiento de un dispositivo médico importado?",
+    "eje": "codigo",
+    "fuente_esperada": {
+      "file_id": "arcsa_15631",
+      "articulo": "3_PARTE_1_DE_7",
+      "documento": "Resolución ARCSA-DE-026-2016-YMIH NTS Sustitutiva para el registro sanitario y control de dispositivos médicos de uso humano, y de los establecimientos en donde se fabrican"
+    },
+    "contexto_referencia": "Acondicionamiento de dispositivios médicos.- (Sustituido por el Art. 1 de la Res. ARCSA-\nDE-2023-033-AKRG, R.O. 470, 4-I-2024).- Son todas las operaciones de etiquetado, \nempaque y rotulado para que un producto terminado cumpla con la normativa vigente y \npueda ser distribuido y comercializado. El proceso de acondicionamiento de dispositivos \nmédicos importados debe realizarse únicamente en el envase secundario, y cuando el \ndispositivo médico no cuente con envase secundario en su envase primario, actividad que \npuede llevarse a cabo en un establecimiento certificado en Buenas Prácticas de \nManufactura de dispositivos médicos o en un establecimiento que cuente con certificado \nISO 13485."
+  },
+  {
+    "id": "q028",
+    "consulta": "¿A qué tipo de establecimientos se aplica la Resolución ARCSA-DE-2023-001-AKRG sobre el permiso de funcionamiento sanitario, y qué establecimientos quedan excluidos de su ámbito?",
+    "eje": "codigo",
+    "fuente_esperada": {
+      "file_id": "arcsa_10854",
+      "articulo": "2",
+      "documento": "Resolución ARCSA-DE-2023-001-AKRG_ Normativa Técnica Sanitaria Sustitutiva para otorgar el permiso de funcionamiento sanitario a los establecimiento sujetos a control y vigilancia sanitaria"
+    },
+    "contexto_referencia": "Art. 2.- Ámbito de aplicación.- Las disposiciones de la presente normativa técnica \nsanitaria serán de aplicación obligatoria a nivel nacional para todas las personas \nnaturales o jurídicas que sean propietarios o representantes legales de establecimientos \nsujetos a control y vigilancia sanitaria, públicos o privados, donde se realicen actividades \nde producción, almacenamiento, acondicionamiento, distribución, comercialización, \ndispensación, expendio, importación o exportación de productos de uso y consumo \nhumano, y otras actividades que son competencia de la Agencia; con excepción de los \nestablecimientos de servicios de salud públicos y privados."
+  },
+  {
+    "id": "q029",
+    "consulta": "¿Qué normativa expide la Resolución ARCSA-DE-008-2018-JCGO?",
+    "eje": "codigo",
+    "fuente_esperada": {
+      "file_id": "arcsa_11974",
+      "articulo": "FRAGMENTO_3_DE_37",
+      "documento": "Resolución ARCSA-DE-008-2018-JCGO Normativa Técnica Sanitaria Sustitutiva de Buenas Prácticas de Manufactura para laboratorios farmacéuticos."
+    },
+    "contexto_referencia": "Resuelve:\nEXPEDIR LA NORMATIVA TÉCNICA SANITARIA SUSTITUTIVA DE BUENAS PRÁCTICAS DE MANUFACTURA PARA\nLABORATORIOS FARMACÉUTICOS\nCAPÍTULO I\nDEL OBJETO, ÁMBITO DE"
+  },
+  {
+    "id": "q030",
+    "consulta": "Según la Resolución ARCSA-DE-2022-012-AKRG, ¿en qué casos una farmacia o botiquín privado debe tramitar una modificación de su permiso de funcionamiento?",
+    "eje": "codigo",
+    "fuente_esperada": {
+      "file_id": "arcsa_11973",
+      "articulo": "32",
+      "documento": "Resolución ARCSA-DE-2022-012-AKRG_Funcionamiento de farmacias y botiquines privados a nivel nacional, control de expendio y dispensación de medicamentos, y atención farmacéutica"
+    },
+    "contexto_referencia": "modificaciones al permiso de funcionamiento en los siguientes casos:\na. Cambio del representante legal, en caso de personas jurídicas;\nb. Para el caso de farmacias privadas, el cambio del responsable técnico, deberá ser notificado a la ARCSA"
+  },
+  {
+    "id": "q031",
+    "consulta": "Según la Resolución ARCSA-DE-002-2020-LDCL, ¿qué establecimientos están exceptuados de obtener el certificado de Buenas Prácticas de Almacenamiento, Distribución y Transporte (BPADT) aunque manejen dispositivos médicos?",
+    "eje": "codigo",
+    "fuente_esperada": {
+      "file_id": "arcsa_15480",
+      "articulo": "2",
+      "documento": "Resolución_ ARCSA-DE-002-2020-LDCL Buenas Prácticas de Almacenamiento, Distribución y Transporte para Establecimientos Farmacéuticos y Establecimiento de Dispositivos Médicos de uso humano"
+    },
+    "contexto_referencia": "Se exceptúa de la obtención de este certificado a las casas de representación y \ndistribuidoras de dispositivos médicos y/o reactivos bioquímicos de diagnóstico in vitro \npara uso humano que almacenen, distribuyan y/o transporten únicamente tetinas y \nbiberones y a los establecimientos de comercialización de dispositivos médicos; sin \nembargo, los establecimientos antes mencionados, para la obtención del permiso de \nfuncionamiento, deben cumplir con buenas prácticas de almacenamiento, distribución y/o \ntransporte de conformidad al instructivo que se elabore para el efecto."
+  },
+  {
+    "id": "q032",
+    "consulta": "¿Qué exige la Resolución ARCSA-DE-007-2017-JCGO respecto al cumplimiento de Buenas Prácticas de Almacenamiento, Distribución y Transporte para los establecimientos farmacéuticos?",
+    "eje": "codigo",
+    "fuente_esperada": {
+      "file_id": "arcsa_5818",
+      "articulo": "5",
+      "documento": "Resolución ARCSA-DE-007-2017-JCGO_Normativa Técnica Sanitaria para el control y funcionamiento de establecimientos farmacéuticos, exceptuando las farmacias y botiquines privados"
+    },
+    "contexto_referencia": "Art. 5.- Todo establecimiento farmacéutico conforme la normativa vigente deberá cumplir con\nNormas de Buenas Prácticas De Almacenamiento, Distribución y Transporte."
+  },
+  {
+    "id": "q033",
+    "consulta": "¿Cuál es la receta tradicional para preparar un buen ceviche ecuatoriano?",
+    "eje": "fuera_de_cobertura",
+    "fuente_esperada": {
+      "file_id": null,
+      "articulo": null,
+      "documento": null
+    },
+    "contexto_referencia": null
+  },
+  {
+    "id": "q034",
+    "consulta": "¿Qué permiso de funcionamiento necesita un dron fumigador agrícola para operar como dispositivo médico?",
+    "eje": "fuera_de_cobertura",
+    "fuente_esperada": {
+      "file_id": null,
+      "articulo": null,
+      "documento": null
+    },
+    "contexto_referencia": null
+  },
+  {
+    "id": "q035",
+    "consulta": "¿Cómo se tramita el registro sanitario de un medicamento ante la COFEPRIS en México?",
+    "eje": "fuera_de_cobertura",
+    "fuente_esperada": {
+      "file_id": null,
+      "articulo": null,
+      "documento": null
+    },
+    "contexto_referencia": null
+  },
+  {
+    "id": "q036",
+    "consulta": "¿Qué requisitos exige la FDA de Estados Unidos para aprobar un nuevo medicamento?",
+    "eje": "fuera_de_cobertura",
+    "fuente_esperada": {
+      "file_id": null,
+      "articulo": null,
+      "documento": null
+    },
+    "contexto_referencia": null
+  },
+  {
+    "id": "q037",
+    "consulta": "¿Qué documentos necesito para matricular un vehículo en la Agencia Nacional de Tránsito (ANT) de Ecuador?",
+    "eje": "fuera_de_cobertura",
+    "fuente_esperada": {
+      "file_id": null,
+      "articulo": null,
+      "documento": null
+    },
+    "contexto_referencia": null
+  },
+  {
+    "id": "q038",
+    "consulta": "¿Cuánto cuesta en promedio una consulta con un cardiólogo particular en Quito?",
+    "eje": "fuera_de_cobertura",
+    "fuente_esperada": {
+      "file_id": null,
+      "articulo": null,
+      "documento": null
+    },
+    "contexto_referencia": null
+  },
+  {
+    "id": "q039",
+    "consulta": "¿Cuál es la mejor estrategia para invertir en criptomonedas en 2026?",
+    "eje": "fuera_de_cobertura",
+    "fuente_esperada": {
+      "file_id": null,
+      "articulo": null,
+      "documento": null
+    },
+    "contexto_referencia": null
+  },
+  {
+    "id": "q040",
+    "consulta": "¿Qué inteligencia artificial es mejor para escribir código, Claude o ChatGPT?",
+    "eje": "fuera_de_cobertura",
+    "fuente_esperada": {
+      "file_id": null,
+      "articulo": null,
+      "documento": null
+    },
+    "contexto_referencia": null
+  }
+]

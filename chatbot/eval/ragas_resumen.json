@@ -1,0 +1,287 @@
+{
+  "metodologia": {
+    "modelo_juez": "gpt-5.5",
+    "modelo_embeddings_answer_relevancy": "text-embedding-3-small",
+    "n_casos_total": 40,
+    "n_casos_con_contexto_referencia": 32,
+    "n_casos_fuera_de_cobertura_excluidos_de_context_metrics": 8,
+    "decision_exclusion": "Context Precision y Context Recall se calculan solo sobre los 32 casos con contexto_referencia != null (ejes producto/tramite/establecimiento/codigo). Los 8 casos fuera_de_cobertura no tienen ground truth de referencia (la pregunta no tiene respuesta en el corpus por diseno), asi que esas 2 metricas no estan bien definidas para ellos y se excluyen explicitamente. Faithfulness y Answer Relevancy SI se calculan sobre los 40 casos, incluidos los 8 fuera_de_cobertura, porque no requieren contexto de referencia: evaluan si la respuesta es fiel/relevante respecto de lo efectivamente recuperado, sea o no ese contexto pertinente a la pregunta.",
+    "desviacion_estandar": "muestral (ddof=1, statistics.stdev). Indefinida (null) cuando n<2.",
+    "manejo_de_fallos": "Un fallo real de RAGAS para un caso puntual (timeout, error de parseo del juez, etc.) se reintenta hasta 2 veces con backoff; si persiste, se registra explicitamente en ragas_resultados.json (campo errors.<metrica> con el texto del error real) y se EXCLUYE del promedio de esa metrica, pero el conteo de fallos (n_fallos_ragas) y los ids afectados (ids_con_fallo_ragas) se reportan siempre junto a cada media/mediana/desvio. Nunca se promedian como si fueran 0 ni se omiten sin declararlo."
+  },
+  "global": {
+    "faithfulness": {
+      "n": 40,
+      "media": 0.7134407259407259,
+      "mediana": 0.788888888888889,
+      "desv_std": 0.2811575779342688,
+      "aplicable": true,
+      "n_casos_totales": 40,
+      "n_excluidos_por_fallo_pipeline_fase2": 0,
+      "n_intentados_con_ragas": 40,
+      "n_fallos_ragas": 0
+    },
+    "answer_relevancy": {
+      "n": 40,
+      "media": 0.49215397245731607,
+      "mediana": 0.6825840690617759,
+      "desv_std": 0.4038387809832599,
+      "aplicable": true,
+      "n_casos_totales": 40,
+      "n_excluidos_por_fallo_pipeline_fase2": 0,
+      "n_intentados_con_ragas": 40,
+      "n_fallos_ragas": 0
+    },
+    "context_precision": {
+      "n": 32,
+      "media": 0.6657986110672729,
+      "mediana": 0.8194444444101852,
+      "desv_std": 0.38529424657158723,
+      "aplicable": true,
+      "n_casos_totales": 32,
+      "n_excluidos_por_fallo_pipeline_fase2": 0,
+      "n_intentados_con_ragas": 32,
+      "n_fallos_ragas": 0
+    },
+    "context_recall": {
+      "n": 32,
+      "media": 0.6927083333333334,
+      "mediana": 1.0,
+      "desv_std": 0.42567545944556584,
+      "aplicable": true,
+      "n_casos_totales": 32,
+      "n_excluidos_por_fallo_pipeline_fase2": 0,
+      "n_intentados_con_ragas": 32,
+      "n_fallos_ragas": 0
+    }
+  },
+  "por_eje": {
+    "codigo": {
+      "faithfulness": {
+        "n": 8,
+        "media": 0.7701388888888889,
+        "mediana": 0.8166666666666667,
+        "desv_std": 0.20168902101823624,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "answer_relevancy": {
+        "n": 8,
+        "media": 0.5259016867406524,
+        "mediana": 0.7434441594905249,
+        "desv_std": 0.44328950909334747,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_precision": {
+        "n": 8,
+        "media": 0.5034722221891204,
+        "mediana": 0.5694444444087963,
+        "desv_std": 0.3847390546750425,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_recall": {
+        "n": 8,
+        "media": 0.6666666666666666,
+        "mediana": 1.0,
+        "desv_std": 0.4714045207910317,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      }
+    },
+    "establecimiento": {
+      "faithfulness": {
+        "n": 8,
+        "media": 0.4147727272727273,
+        "mediana": 0.4083333333333333,
+        "desv_std": 0.30714175124652565,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "answer_relevancy": {
+        "n": 8,
+        "media": 0.48335942785798197,
+        "mediana": 0.5809468159980126,
+        "desv_std": 0.35472108299441557,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_precision": {
+        "n": 8,
+        "media": 0.8505208332651953,
+        "mediana": 0.9999999999,
+        "desv_std": 0.3504280085329258,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_recall": {
+        "n": 8,
+        "media": 0.6875,
+        "mediana": 1.0,
+        "desv_std": 0.45806269065645216,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      }
+    },
+    "fuera_de_cobertura": {
+      "faithfulness": {
+        "n": 8,
+        "media": 0.9074675324675324,
+        "mediana": 1.0,
+        "desv_std": 0.17717874869665265,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "answer_relevancy": {
+        "n": 8,
+        "media": 0.0,
+        "mediana": 0.0,
+        "desv_std": 0.0,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_precision": {
+        "aplicable": false,
+        "motivo": "excluido: eje fuera_de_cobertura no tiene contexto_referencia"
+      },
+      "context_recall": {
+        "aplicable": false,
+        "motivo": "excluido: eje fuera_de_cobertura no tiene contexto_referencia"
+      }
+    },
+    "producto": {
+      "faithfulness": {
+        "n": 8,
+        "media": 0.7977182539682539,
+        "mediana": 0.8888888888888888,
+        "desv_std": 0.2908165724053365,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "answer_relevancy": {
+        "n": 8,
+        "media": 0.7466792077641496,
+        "mediana": 0.8299191582153038,
+        "desv_std": 0.3060812761454117,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_precision": {
+        "n": 8,
+        "media": 0.6430555555171065,
+        "mediana": 0.738888888830926,
+        "desv_std": 0.4039678641390596,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_recall": {
+        "n": 8,
+        "media": 0.8125,
+        "mediana": 1.0,
+        "desv_std": 0.37201190457142247,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      }
+    },
+    "tramite": {
+      "faithfulness": {
+        "n": 8,
+        "media": 0.6771062271062271,
+        "mediana": 0.6214285714285714,
+        "desv_std": 0.17654363962929778,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "answer_relevancy": {
+        "n": 8,
+        "media": 0.7048295399237963,
+        "mediana": 0.8312098013483655,
+        "desv_std": 0.2977654349266417,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_precision": {
+        "n": 8,
+        "media": 0.6661458332976693,
+        "mediana": 0.7979166666428993,
+        "desv_std": 0.39206184152658496,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      },
+      "context_recall": {
+        "n": 8,
+        "media": 0.6041666666666666,
+        "mediana": 0.75,
+        "desv_std": 0.4537104523847501,
+        "aplicable": true,
+        "n_casos_totales": 8,
+        "n_excluidos_por_fallo_pipeline_fase2": 0,
+        "n_intentados_con_ragas": 8,
+        "n_fallos_ragas": 0
+      }
+    }
+  },
+  "costo_fase3": {
+    "modelo_juez": "gpt-5.5",
+    "prompt_tokens_juez_llm": 626132,
+    "prompt_tokens_cached_juez_llm": 5888,
+    "completion_tokens_juez_llm": 150532,
+    "reasoning_tokens_juez_llm": 79208,
+    "total_tokens_juez_llm": 776664,
+    "llamadas_exitosas_juez_llm": 312,
+    "elapsed_seconds": 604.5,
+    "nota": "El contador de tokens/llamadas es el que reporta el callback de LangChain (get_openai_callback) sobre TODAS las llamadas reales hechas al modelo juez (gpt-5.5) durante esta corrida, incluyendo reintentos. NO incluye las llamadas de embeddings (text-embedding-3-small) que usa Answer Relevancy para comparar preguntas generadas contra la pregunta original: ese costo es marginal (modelo de embeddings, no de razonamiento) y LangChain no lo agrega a este mismo contador."
+  }
+}
